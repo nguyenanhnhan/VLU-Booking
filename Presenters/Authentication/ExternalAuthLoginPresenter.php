@@ -170,6 +170,10 @@ class ExternalAuthLoginPresenter
             LoginRedirector::Redirect($this->page);
         }
         else{
+            // Xác định nhóm của người dùng dựa trên dữ liệu đầu vào
+            //-------------------------------------------Source VLU--------------------------------
+            $userRepository = new UserRepository();
+            $groups = $userRepository->determineUserGroups($email);
             $this->registration->Synchronize(new AuthenticatedUser(
                 $username,
                 $email,
@@ -180,11 +184,14 @@ class ExternalAuthLoginPresenter
                 Configuration::Instance()->GetDefaultTimezone(),
                 null,
                 null,
-                null),
+                null,
+            $groups),
                 false,
                 false);
             $this->authentication->Login($email, new WebLoginContext(new LoginData()));
             LoginRedirector::Redirect($this->page);
+            //-------------------------------------------END Source VLU--------------------------------
         }
     }
+
 }
