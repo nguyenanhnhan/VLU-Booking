@@ -1255,6 +1255,12 @@ class Queries
         'SELECT `user_id`, `password`, `salt`, `legacypassword`
 		FROM `users`
 		WHERE (`username` = @username OR `email` = @username) AND `status_id` = 1';
+
+	//-------------------------------------------Source VLU--------------------------------
+	const GET_STUDENT_DEPARTMENT = "SELECT department_id FROM students WHERE email = :email";
+    const GET_LECTURER_DEPARTMENT = "SELECT department_id FROM lecturers WHERE email = :email";
+    const GET_DEPARTMENT_INFO = "SELECT department_code, department_name FROM departments WHERE department_id = :department_id";
+	//-------------------------------------------END Source VLU--------------------------------
 }
 
 class QueryBuilder
