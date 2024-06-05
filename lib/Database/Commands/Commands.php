@@ -2987,3 +2987,33 @@ class UpdateUserSessionCommand extends SqlCommand
         $this->AddParameter(new Parameter(ParameterNames::USER_SESSION, $serializedSession));
     }
 }
+
+//-------------------------------------------Source VLU--------------------------------
+class GetStudentCommand extends SqlCommand
+{
+    public function __construct($email)
+    {
+        parent::__construct(Queries::GET_STUDENT_DEPARTMENT);
+
+        $this->AddParameter(new Parameter(ParameterNames::EMAIL, $email));
+    }
+}
+class GetLecturerCommand extends SqlCommand
+{
+    public function __construct($email)
+    {
+        parent::__construct(Queries::GET_LECTURER_DEPARTMENT);
+
+        $this->AddParameter(new Parameter(ParameterNames::EMAIL, $email));
+    }   
+}
+class GetDepartmentCommand extends SqlCommand
+{
+    public function __construct($departmentId)
+    {
+        parent::__construct(Queries::GET_DEPARTMENT_INFO);
+
+        $this->AddParameter(new Parameter(ParameterNames::DEPARTMENT_ID, $departmentId));
+    }
+}
+//-------------------------------------------END Source VLU--------------------------------
