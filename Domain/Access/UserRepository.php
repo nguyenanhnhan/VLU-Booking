@@ -828,6 +828,95 @@ class UserRepository implements IUserRepository, IAccountActivationRepository
         $reader->Free();
         return 0;
     }
+
+    //-------------------------------------------Source VLU--------------------------------
+    public function GetStudent($email)
+    {
+        // Tạo đối tượng GetStudentCommand với email
+        $command = new GetStudentCommand($email);
+
+        // Thực thi lệnh truy vấn và lấy kết quả
+        $studentResult = ServiceLocator::GetDatabase()->Query($command);
+
+        // Lấy hàng kết quả đầu tiên
+        $studentData = $studentResult->GetRow();
+        $studentResult->Free();
+        // Trả về dữ liệu sinh viên 
+        return $studentData;
+    }
+    public function GetLecturer($email)
+    {
+        // Tạo đối tượng GetLecturerCommand với email
+        $command = new GetLecturerCommand($email);
+
+        // Thực thi lệnh truy vấn và lấy kết quả
+        $lecturerResult = ServiceLocator::GetDatabase()->Query($command);
+
+        // Lấy hàng kết quả đầu tiên
+        $lecturerData = $lecturerResult->GetRow();
+
+        $lecturerResult->Free();
+        // Trả về dữ liệu giảng viên 
+        return $lecturerData;
+    }
+
+    public function GetDepartment($departmentId)
+    {
+        // Tạo đối tượng GetDepartment với departmentId
+        $command = new GetDepartmentCommand($departmentId);
+
+        // Thực thi lệnh truy vấn và lấy kết quả
+        $departmentResult = ServiceLocator::GetDatabase()->Query($command);
+
+        // Lấy hàng kết quả đầu tiên
+        $departmentData = $departmentResult->GetRow();
+
+        $departmentResult->Free();
+        // Trả về dữ liệu department 
+        return $departmentData;
+    }
+    public function determineUserGroups($email) {
+        $groups = [];
+        
+        // Kiểm tra xem người dùng là sinh viên hay giảng viên và lấy department_id
+        $departmentId = $this->getUserDepartmentId($email);
+        
+        if ($departmentId !== null) {
+            // Thêm các nhóm dựa trên thông tin khoa
+            $this->addDepartmentGroups($departmentId, $groups);
+        }
+        
+        return $groups;
+    }
+
+    private function getUserDepartmentId($email) {
+        // Kiểm tra sinh viên
+        $studentResult = $this->GetStudent($email);
+        if ($studentResult) {
+            return $studentResult[ColumnNames::DEPARTMENT_ID];
+        }
+        
+        // Kiểm tra giảng viên
+        $lecturerResult = $this->GetLecturer($email);
+        if ($lecturerResult) {
+            return $lecturerResult[ColumnNames::DEPARTMENT_ID];
+        }
+        
+        // Không tìm thấy sinh viên hoặc giảng viên
+        return null;
+    }
+
+    private function addDepartmentGroups($departmentId, &$groups) {
+        $departmentResult = $this->GetDepartment($departmentId);
+        if ($departmentResult) {
+            $groups[] = $departmentResult[ColumnNames::DEPARTMENT_CODE];
+            $groups[] = $departmentResult[ColumnNames::DEPARTMENT_NAME];
+        } else {
+            echo "No department found for department ID: $departmentId"; 
+        }
+    }
+    //-------------------------------------------END Source VLU--------------------------------
+
 }
 
 class UserDto
