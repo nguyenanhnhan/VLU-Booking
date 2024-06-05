@@ -265,4 +265,9 @@ class ParameterNames
     public const PHONE_SETTING = '@phone_setting';
     public const HOMEPAGE_SELECTION_SETTING = '@homepage_setting';
     public const TIMEZONE_SELECTION_SETTING = '@timezone_setting';
+
+    //-------------------------------------------Source VLU--------------------------------
+    public const EMAIL = ':email';
+    public const DEPARTMENT_ID = ':department_id';
+    //-------------------------------------------END Source VLU--------------------------------
 }
