@@ -352,4 +352,24 @@ class ColumnNames
     public const PUBLIC_ID = 'public_id';
     public const RESOURCE_ADMIN_GROUP_ID_RESERVATIONS = 'resource_admin_group_id';
     public const SCHEDULE_ADMIN_GROUP_ID_RESERVATIONS = 'schedule_admin_group_id';
+
+    //-------------------------------------------Source VLU--------------------------------
+    public const DEPARTMENT_ID = 'department_id';
+    public const FULL_NAME = 'full_name';
+    // Students
+    public const STUDENT_ID = 'student_id';
+    public const STUDENT_ENROLLMENT_DATE = 'enrollment_date';
+    public const STUDENT_TYPE = 'student_type';
+    public const STUDENT_STATUS = 'status';
+    public const STUDENT_MAJOR_NAME = 'major_name';
+    public const STUDENT_TRAINING_PROGRAM = 'training_program';
+    public const STUDENT_CLASS = 'student_class';
+    // Lecturers
+    public const LECTURER_ID = 'lecturer_id';
+    public const LECTURER_PHONE_NUMBER = 'phone_number';
+    public const LECTURER_HIRE_DATE = 'hire_date';
+    // Departments
+    public const DEPARTMENT_CODE = 'department_code';
+    public const DEPARTMENT_NAME = 'department_name';
+    //-------------------------------------------END Source VLU--------------------------------
 }
