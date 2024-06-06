@@ -269,5 +269,8 @@ class ParameterNames
     //-------------------------------------------Source VLU--------------------------------
     public const EMAIL = ':email';
     public const DEPARTMENT_ID = ':department_id';
+    // Regular Expressions
+    public const STUDENT_EMAIL_REGEX = '/^[a-zA-Z0-9_.+-]+@vanlanguni\.vn$/';
+    public const LECTURER_EMAIL_REGEX = '/^[a-zA-Z0-9_.+-]+@vlu\.edu\.vn$/';
     //-------------------------------------------END Source VLU--------------------------------
 }
