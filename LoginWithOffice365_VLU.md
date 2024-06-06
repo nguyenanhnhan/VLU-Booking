@@ -107,11 +107,10 @@ Tệp này chứa các **hằng số** được khai báo được đại diện
 */lib/Database/Commands/ParameterNames.php*
 
 - **Mô tả**
-Tệp này chứa các **hằng số** để định nghĩa tên tham số trong các lệnh SQL
+Tệp này chứa các **hằng số** để định nghĩa tên tham số trong các lệnh SQL hoặc các phương thức
 
 - **Các thay đổi**
   - Thêm các hằng số định nghĩa placeholder trong câu lệnh SQL. Một phương pháp thông thường để tránh các vấn đề về bảo mật như SQL Injection
-
     <details>
     <summary>Nhấn vào đây để xem mã nguồn</summary>
 
@@ -122,6 +121,15 @@ Tệp này chứa các **hằng số** để định nghĩa tên tham số trong
     //-------------------------------------------END Source VLU--------------------------------
     ```
 
+  - Thêm các hằng số định nghĩa các biểu thức chính quy để kiểm tra email giảng viên, sinh viên
+    <details>
+    <summary>Nhấn vào đây để xem mã nguồn</summary>
+
+    ```php
+    // Regular Expressions
+    public const STUDENT_EMAIL_REGEX = '/^[a-zA-Z0-9_.+-]+@vanlanguni\.vn$/';
+    public const LECTURER_EMAIL_REGEX = '/^[a-zA-Z0-9_.+-]+@vlu\.edu\.vn$/';
+    ```
 #### 1.1.1.4. Queries.php
 */lib/Database/Commands/Queries.php*
 
@@ -272,18 +280,20 @@ Tệp này chứa lớp **UserRepository**, cung cấp các phương thức đ�
 
     ```php
     private function getUserDepartmentId($email) {
-        // Kiểm tra sinh viên
-        $studentResult = $this->GetStudent($email);
-        if ($studentResult) {
-            return $studentResult[ColumnNames::DEPARTMENT_ID];
+        // Sử dụng biểu thức chính quy kiểm tra email
+        if (preg_match(ParameterNames::STUDENT_EMAIL_REGEX, $email)) {
+            //Kiểm tra email sinh viên
+            $studentResult = $this->GetStudent($email);
+            if ($studentResult) {
+                return $studentResult[ColumnNames::DEPARTMENT_ID];
+            }
+        } elseif (preg_match(ParameterNames::LECTURER_EMAIL_REGEX, $email)) {
+            //Kiểm tra email giảng viên
+            $lecturerResult = $this->GetLecturer($email);
+            if ($lecturerResult) {
+                return $lecturerResult[ColumnNames::DEPARTMENT_ID];
+            }
         }
-        
-        // Kiểm tra giảng viên
-        $lecturerResult = $this->GetLecturer($email);
-        if ($lecturerResult) {
-            return $lecturerResult[ColumnNames::DEPARTMENT_ID];
-        }
-        
         // Không tìm thấy sinh viên hoặc giảng viên
         return null;
     }
