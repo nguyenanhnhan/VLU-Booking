@@ -890,18 +890,20 @@ class UserRepository implements IUserRepository, IAccountActivationRepository
     }
 
     private function getUserDepartmentId($email) {
-        // Kiểm tra sinh viên
-        $studentResult = $this->GetStudent($email);
-        if ($studentResult) {
-            return $studentResult[ColumnNames::DEPARTMENT_ID];
+        // Sử dụng biểu thức chính quy kiểm tra email
+        if (preg_match(ParameterNames::STUDENT_EMAIL_REGEX, $email)) {
+            //Kiểm tra email sinh viên
+            $studentResult = $this->GetStudent($email);
+            if ($studentResult) {
+                return $studentResult[ColumnNames::DEPARTMENT_ID];
+            }
+        } elseif (preg_match(ParameterNames::LECTURER_EMAIL_REGEX, $email)) {
+            //Kiểm tra email giảng viên
+            $lecturerResult = $this->GetLecturer($email);
+            if ($lecturerResult) {
+                return $lecturerResult[ColumnNames::DEPARTMENT_ID];
+            }
         }
-        
-        // Kiểm tra giảng viên
-        $lecturerResult = $this->GetLecturer($email);
-        if ($lecturerResult) {
-            return $lecturerResult[ColumnNames::DEPARTMENT_ID];
-        }
-        
         // Không tìm thấy sinh viên hoặc giảng viên
         return null;
     }
