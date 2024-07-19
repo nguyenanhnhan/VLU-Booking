@@ -1,5 +1,8 @@
 <?php
 
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+
 // debugging tools / libs
 if (file_exists(ROOT_DIR . 'vendor/autoload.php')) {
     require ROOT_DIR . 'vendor/autoload.php';
@@ -391,6 +394,39 @@ abstract class Page implements IPage
         $this->Display($templateName);
     }
 
+    protected function DisplayXlsx($templateName, $fileName)
+    {
+        // Nội dung file CSV từ template
+        ob_start();
+        $this->Display($templateName);
+        $csvContent = ob_get_clean();
+        $csvRows = str_getcsv($csvContent, "\n");
+
+        // Tạo đối tượng Spreadsheet
+        $spreadsheet = new Spreadsheet();
+        // Lấy trang tính (sheet) đầu tiên từ đối tượng Spreadsheet.
+        $sheet = $spreadsheet->getActiveSheet();
+
+        // Lặp qua từng dòng và cột để thiết lập giá trị
+        foreach ($csvRows as $rowIndex => $csvRow) {
+            $csvData = str_getcsv($csvRow);
+            foreach ($csvData as $columnIndex => $cellValue) {
+                //stringFromColumnIndex($columnIndex + 1) chuyển đổi chỉ số cột (0, 1, 2, ...) thành chữ cái cột của Excel (A, B, C, ...).
+                $columnLetter = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($columnIndex + 1);
+                $rowNumber = $rowIndex + 1;
+                //$columnLetter$rowNumber là tọa độ của ô (ví dụ: A1, B2, C3...).
+                $sheet->setCellValue("$columnLetter$rowNumber", $cellValue);
+            }
+        }
+
+        // Xuất file Excel
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header("Content-Disposition: attachment; filename=\"$fileName\"");
+        header('Cache-Control: max-age=0');
+
+        $writer = new Xlsx($spreadsheet);
+        $writer->save('php://output');
+    }
     /**
      * @param string $templateName
      * @param null $languageCode uses current language is nothing is passed in

@@ -269,6 +269,20 @@ class ParameterNames
     //-------------------------------------------Source VLU--------------------------------
     public const EMAIL = ':email';
     public const DEPARTMENT_ID = ':department_id';
+    public const DEPARTMENT_CODE = ':department_code';
+    public const DEPARTMENT_NAME = ':department_name';
+    public const STUDENT_ID = ':student_id';
+    public const STUDENT_MSSV = ':studentid';
+    public const FULL_NAME = ':full_name';
+    public const ENROLLMENT_DATE = ':enrollment_date';
+    public const STUDENT_TYPE = ':student_type';
+    public const STUDENT_STATUS = ':status';
+    public const MAJOR_NAME = ':major_name';
+    public const TRAINING_PROGRAM = ':training_program';
+    public const STUDENT_CLASS = ':student_class';
+    public const LECTURER_ID = ':lecturer_id';
+    public const HIRE_DATE = ':hire_date';
+    public const PHONE_NUMBER = ':phone_number';
     // Regular Expressions
     public const STUDENT_EMAIL_REGEX = '/^[a-zA-Z0-9_.+-]+@vanlanguni\.vn$/';
     public const LECTURER_EMAIL_REGEX = '/^[a-zA-Z0-9_.+-]+@vlu\.edu\.vn$/';

@@ -229,6 +229,16 @@
                                     <li id="navManageAttributes"><a
                                                 href="{$Path}admin/manage_attributes.php">{translate key="CustomAttributes"}</a>
                                     </li>
+                                    <li class="divider"></li>
+                                    <li id="navManageStudents"><a
+                                                href="{$Path}admin/manage_vluers.php">{translate key="ManageStudents"}</a>
+                                    </li>
+                                    <li id="navManageLecturers"><a
+                                                href="{$Path}admin/manage_lecturers.php">{translate key="ManageLecturers"}</a>
+                                    </li>
+                                    <li id="navManageDepartments"><a
+                                                href="{$Path}admin/manage_departments.php">{translate key="ManageDepartments"}</a>
+                                    </li>
                                 </ul>
                             </li>
                         {/if}

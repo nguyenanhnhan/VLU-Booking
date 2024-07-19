@@ -8,6 +8,17 @@
       - [1.1.1.5. Commands.php](#1115-commandsphp)
       - [1.1.1.6. UserRepository.php](#1116-userrepositoryphp)
       - [1.1.1.7. ExternalAuthLoginPresenter.php](#1117-externalauthloginpresenterphp)
+  - [2.1. Xây dựng trang quản lý sinh viên](#21-xây-dựng-trang-quản-lý-sinh-viên)
+    - [2.1.1 Mục đích](#211-mục-đích)
+    - [2.1.2 Chức năng](#212-chức-năng)
+      - [2.1.1.1 Hiển thị danh sách sinh viên](#2111-hiển-thị-danh-sách-sinh-viên)
+      - [2.1.1.2 Thêm sinh viên](#2112-thêm-sinh-viên)
+      - [2.1.1.3 Cập nhật sinh viên](#2113-cập-nhật-sinh-viên)
+      - [2.1.1.4 Xóa sinh viên](#2114-xóa-sinh-viên)
+      - [2.1.1.5 Xóa nhiều đối tượng sinh viên](#2115-xóa-nhiều-đối-tượng-sinh-viên)
+      - [2.1.1.6 Xuất file mẫu khi import sinh viên bằng Excel hoặc Csv](#2116-xuất-file-mẫu-khi-import-sinh-viên-bằng-excel-hoặc-csv)
+      - [2.1.1.7 Import danh sách sinh viên bằng Excel hoặc Csv](#2117-import-danh-sách-sinh-viên-bằng-excel-hoặc-csv)
+      - [2.1.1.8 Tìm kiểm sinh viên](#2118-tìm-kiểm-sinh-viên)
 
 
 # 1. Tài liệu mô tả bổ sung mã nguồn
@@ -379,3 +390,23 @@ Tệp này chứa lớp **ExternalAuthLoginPresenter**, xử lý đăng nhập x
     }
     ```
 
+## 2.1. Xây dựng trang quản lý sinh viên
+### 2.1.1 Mục đích
+### 2.1.2 Chức năng
+*Ngoài các file mới được tạo thì các chức năng được bổ sung trong mã nguồn ban đầu đã được comment Source VLU*
+#### 2.1.1.1 Hiển thị danh sách sinh viên
+- **Mục đích**
+Xây dựng trang hiển thị giao diện danh sách sinh viên
+- **Các thay đổi**
+  - manage_vluers.tpl: Xây dựng giao diện danh sách sinh viên
+  - ManageVluersPage.php: Tạo mới interface chứa các phương thức liên quan đến sinh viên
+  - ColumnNames.php: Tạo các hằng số đại diện cho cột trong bảng students
+  - ManageVluersPresenter.php: Chứa các phương thức xử lý các chức năng quản lý sinh viên, tương tác nhiều với ManageVluersPage, UserRepository
+  - 
+#### 2.1.1.2 Thêm sinh viên
+#### 2.1.1.3 Cập nhật sinh viên
+#### 2.1.1.4 Xóa sinh viên
+#### 2.1.1.5 Xóa nhiều đối tượng sinh viên
+#### 2.1.1.6 Xuất file mẫu khi import sinh viên bằng Excel hoặc Csv
+#### 2.1.1.7 Import danh sách sinh viên bằng Excel hoặc Csv
+#### 2.1.1.8 Tìm kiểm sinh viên

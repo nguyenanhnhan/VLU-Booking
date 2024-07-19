@@ -174,6 +174,7 @@ class ExternalAuthLoginPresenter
             //-------------------------------------------Source VLU--------------------------------
             $userRepository = new UserRepository();
             $groups = $userRepository->determineUserGroups($email);
+            // var_dump($groups);
             $this->registration->Synchronize(new AuthenticatedUser(
                 $username,
                 $email,
@@ -188,6 +189,14 @@ class ExternalAuthLoginPresenter
             $groups),
                 false,
                 false);
+
+            // Lấy user_id của user mới thêm
+            $userId = $userRepository->GetUserIdByEmail($email);
+            
+            // Cập nhật user_id trong bảng students nếu email tồn tại
+            if ($userId !== null) {
+                $userRepository->syncUserIdWithStudent($email, $userId);
+            }
             $this->authentication->Login($email, new WebLoginContext(new LoginData()));
             LoginRedirector::Redirect($this->page);
             //-------------------------------------------END Source VLU--------------------------------

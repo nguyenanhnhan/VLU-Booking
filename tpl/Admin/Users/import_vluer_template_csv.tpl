@@ -1,0 +1,1 @@
+studentid,fullname,enrollmentdate,studenttype,studentstatus,departmentid,departmentname,majorname,trainingprogram,studentclass,email

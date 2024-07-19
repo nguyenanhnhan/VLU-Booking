@@ -1,5 +1,7 @@
 <?php
 
+use Google\Service\Classroom\Student;
+
 require_once(ROOT_DIR . 'Domain/User.php');
 require_once(ROOT_DIR . 'Domain/Values/AccountStatus.php');
 require_once(ROOT_DIR . 'Domain/Values/FullName.php');
@@ -32,6 +34,138 @@ interface IUserRepository extends IUserViewRepository
      */
     public function Update(User $user);
 
+    //-------------------------Source VLU----------------------
+    /**
+     * @param int $userId
+     * @return User
+     */
+    public function StudentLoadById($userId);
+
+    /**
+     * @param User $user
+     * @return int
+     */
+    public function AddStudent(User $user);
+
+    /**
+     * @param int $userId
+     * @return User
+     */
+    public function DepartmentLoadById($userId);
+
+    /**
+     * @param int $userId
+     * @return User
+     */
+    public function LecturerLoadById($userId);
+
+    /**
+     * @param User $user
+     * @return int
+     */
+    public function AddDepartment(User $user);
+    
+    /**
+     * @param $userId int
+     * @return void
+     */
+    public function DeleteByStudent($userId);
+
+    /**
+     * @param $userId int
+     * @return void
+     */
+    public function DeleteByDepartment($userId);
+
+    /**
+     * @param $userId int
+     * @return void
+     */
+    public function DeleteByLecturer($userId);
+    
+
+    /**
+     * @param string $publicId
+     * @return User
+     */
+    public function StudentLoadByPublicId($publicId);
+
+    /**
+     * @param string $fullname
+     * @return User
+     */
+    public function StudentLoadByUsername($fullname);
+
+    /**
+     * @param string $departmentname
+     * @return User
+     */
+    public function DepartmentLoadByUsername($departmentname);
+
+    /**
+     * @param string $fullname
+     * @return User
+     */
+    public function LecturerLoadByUsername($fullname);
+
+    /**
+     * @param string $departmentid
+     * @return User
+     */
+    public function DepartmentExists($departmentid);
+
+    /**
+     * @param string $departmentid
+     * @param string $departmentcode
+     * @param string $departmentname
+     * @param string $groupid
+     * @return User
+     */
+    public function InsertDepartment($departmentid, $departmentcode, $departmentname);
+
+    /**
+     * @param string $email
+     * @param string $userId
+     * @return User
+     */
+    public function syncUserIdWithStudent($email, $userId);
+
+    /**
+     * @param string $departmentid
+     * @param string $groupid
+     * @return User
+     */
+    public function UpdateUserGroupsByDepartment($departmentid, $groupid);
+
+    /**
+     * @param User $user
+     * @return void
+     */
+
+    public function StudentUpdate(User $user);
+
+    /**
+     * @param User $user
+     * @return void
+     */
+
+    public function DepartmentUpdate(User $user);
+
+    /**
+     * @param User $user
+     * @return void
+     */
+
+     public function LecturerUpdate(User $user);
+
+    /**
+     * @param User $user
+     * @return int
+     */
+    public function AddLecturer(User $user);
+    
+    //--------------------------END Source VLU------------------
+    
     /**
      * @param User $user
      * @return int
@@ -60,6 +194,20 @@ class UserFilter
     private $organization;
     private $position;
     private $attributes;
+
+    //-----------------------Source VLU--------------------
+    private $studentclass;
+    private $trainingprogram;
+    private $majorname;
+    private $studentstatus;
+    private $departmentid;
+    private $departmentcode;
+    private $departmentname;
+    private $studenttype;
+    private $enrollmentdate;
+    private $fullname;
+    private $studentid;
+    //-----------------------END Source VLU----------------
     /**
      * @var array|ISqlFilter[]
      */
@@ -74,7 +222,18 @@ class UserFilter
         $phone = null,
         $organization = null,
         $position = null,
-        $attributes = null
+        $attributes = null,
+        
+        //-----------------------Source VLU--------------------
+        $studentclass = null,
+        $trainingprogram = null,
+        $majorname = null,
+        $studentstatus = null,
+        $studenttype = null,
+        $enrollmentdate = null,
+        $fullname = null,
+        $studentid = null,
+        //-----------------------END Source VLU----------------
     ) {
         $this->username = $username;
         $this->email = $email;
@@ -84,6 +243,16 @@ class UserFilter
         $this->organization = $organization;
         $this->position = $position;
         $this->attributes = $attributes;
+        //-----------------------Source VLU--------------------
+        $this->studentclass = $studentclass;
+        $this->trainingprogram = $trainingprogram;
+        $this->majorname = $majorname;
+        $this->studentstatus = $studentstatus;
+        $this->studenttype = $studenttype;
+        $this->enrollmentdate = $enrollmentdate;
+        $this->fullname = $fullname;
+        $this->studentid = $studentid;
+        //-----------------------END Source VLU----------------
     }
 
     /**
@@ -121,6 +290,33 @@ class UserFilter
         if (!empty($this->position)) {
             $filter->_And(new SqlFilterEquals(ColumnNames::POSITION, $this->position));
         }
+        //-----------------------Source VLU--------------------
+        if (!empty($this->studentclass)) {
+            $filter->_And(new SqlFilterEquals(ColumnNames::STUDENT_CLASS, $this->studentclass));
+        }
+        if (!empty($this->trainingprogram)) {
+            $filter->_And(new SqlFilterEquals(ColumnNames::STUDENT_TRAINING_PROGRAM, $this->trainingprogram));
+        }
+        if (!empty($this->majorname)) {
+            $filter->_And(new SqlFilterEquals(ColumnNames::STUDENT_MAJOR_NAME, $this->majorname));
+        }
+        if (!empty($this->studentstatus)) {
+            $filter->_And(new SqlFilterEquals(ColumnNames::STUDENT_STATUS, $this->studentstatus));
+        }
+        if (!empty($this->studenttype)) {
+            $filter->_And(new SqlFilterEquals(ColumnNames::STUDENT_TYPE, $this->studenttype));
+        }
+        if (!empty($this->enrollmentdate)) {
+            $filter->_And(new SqlFilterEquals(ColumnNames::STUDENT_ENROLLMENT_DATE, $this->enrollmentdate));
+        }
+        if (!empty($this->fullname)) {
+            $filter->_And(new SqlFilterEquals(ColumnNames::FULL_NAME, $this->fullname));
+        }
+        if (!empty($this->studentid)) {
+            $filter->_And(new SqlFilterEquals(ColumnNames::STUDENT_ID, $this->studentid));
+        }
+        //-----------------------END Source VLU----------------
+        
 
         if (!empty($this->attributes)) {
             $attributeFilter = AttributeFilter::Create('`'. TableNames::USERS_ALIAS . '`.`' . ColumnNames::USER_ID . '`', $this->attributes);
@@ -129,6 +325,7 @@ class UserFilter
                 $filter->_And($attributeFilter);
             }
         }
+        
 
         foreach ($this->_and as $and) {
             $filter->_And($and);
@@ -168,7 +365,34 @@ interface IUserViewRepository
         $filter = null,
         $accountStatus = AccountStatus::ALL
     );
+//-----------------------Source VLU--------------------
+    public function GetStudentList(
+        $pageNumber,
+        $pageSize,
+        $sortField = null,
+        $sortDirection = null,
+        $filter = null
+        
+    );
 
+    public function GetDepartmentList(
+        $pageNumber,
+        $pageSize,
+        $sortField = null,
+        $sortDirection = null,
+        $filter = null
+        
+    );
+
+    public function GetLecturerList(
+        $pageNumber,
+        $pageSize,
+        $sortField = null,
+        $sortDirection = null,
+        $filter = null
+        
+    );
+//-----------------------END Source VLU----------------
     /**
      * @param int $resourceId
      * @return array|UserDto[]
@@ -319,7 +543,71 @@ class UserRepository implements IUserRepository, IAccountActivationRepository
         $builder = ['UserItemView', 'Create'];
         return PageableDataStore::GetList($command, $builder, $pageNumber, $pageSize, $sortField, $sortDirection);
     }
+    //-----------------------Source VLU--------------------
+    // Định nghĩa phương thức GetStudentList với các tham số:
+    // $pageNumber: số trang hiện tại
+    // $pageSize: số lượng mục trên mỗi trang
+    // $sortField: trường dùng để sắp xếp (mặc định là null)
+    // $sortDirection: hướng sắp xếp (mặc định là null)
+    // $filter: bộ lọc (mặc định là null)
+    public function GetStudentList(
+        $pageNumber,
+        $pageSize,
+        $sortField = null,
+        $sortDirection = null,
+        $filter = null
+    ) {
+        // Tạo một đối tượng GetAllStudentCommand để lấy tất cả sinh viên
+        $command = new GetAllStudentCommand();
 
+        // Nếu có bộ lọc, tạo đối tượng FilterCommand với bộ lọc đã cung cấp
+        if ($filter != null) {
+            $command = new FilterCommand($command, $filter);
+        }
+
+        // Định nghĩa builder, bao gồm 'UserItemView' và 'VluCreate'
+        $builder = ['UserItemView', 'VluCreate'];
+
+        // Gọi phương thức GetList của PageableDataStore để lấy danh sách sinh viên
+        // với các tham số: $command, $builder, $pageNumber, $pageSize, $sortField, $sortDirection
+        return PageableDataStore::GetList($command, $builder, $pageNumber, $pageSize, $sortField, $sortDirection);
+    }
+
+    
+    public function GetDepartmentList(
+        $pageNumber,
+        $pageSize,
+        $sortField = null,
+        $sortDirection = null,
+        $filter = null
+    ) {
+        $command = new GetAllDepartmentCommand();
+
+        if ($filter != null) {
+            $command = new FilterCommand($command, $filter);
+        }
+
+        $builder = ['UserItemView', 'DepartmentCreate'];
+        return PageableDataStore::GetList($command, $builder, $pageNumber, $pageSize, $sortField, $sortDirection);
+    }
+    
+    public function GetLecturerList(
+        $pageNumber,
+        $pageSize,
+        $sortField = null,
+        $sortDirection = null,
+        $filter = null
+    ) {
+        $command = new GetAllLecturerCommand();
+
+        if ($filter != null) {
+            $command = new FilterCommand($command, $filter);
+        }
+
+        $builder = ['UserItemView', 'LecturerCreate'];
+        return PageableDataStore::GetList($command, $builder, $pageNumber, $pageSize, $sortField, $sortDirection);
+    }
+    //-----------------------END Source VLU----------------
     /**
      * @param $command SqlCommand
      * @return User
@@ -395,6 +683,288 @@ class UserRepository implements IUserRepository, IAccountActivationRepository
         $command = new LoginCommand(strtolower($userName));
         return $this->Load($command);
     }
+
+    //-----------------------Source VLU--------------------
+    /**
+     * @param $command SqlCommand
+     * @return User
+     */
+    private function StudentLoad($command)
+    {
+        $reader = ServiceLocator::GetDatabase()->Query($command);
+
+        if ($row = $reader->GetRow()) {
+            $userId = $row[ColumnNames::STUDENT_ID];
+            $emailPreferences = $this->LoadEmailPreferences($userId);
+            $permissions = $this->LoadPermissions($userId);
+            $groups = $this->LoadGroups($userId);
+
+            $user = User::StudentFromRow($row);
+            $user->WithEmailPreferences($emailPreferences);
+            $user->WithAllowedPermissions($permissions['full']);
+            $user->WithViewablePermission($permissions['view']);
+            $user->WithGroups($groups);
+            // $user->WithCredits($row[ColumnNames::CREDIT_COUNT]);
+            $this->LoadAttributes($userId, $user);
+
+            if ($user->IsGroupAdmin()) {
+                $ownedGroups = $this->LoadOwnedGroups($userId);
+                $user->WithOwnedGroups($ownedGroups);
+            }
+
+            $preferences = $this->LoadPreferences($userId);
+            $user->WithPreferences($preferences);
+
+            // $user->WithDefaultSchedule($row[ColumnNames::DEFAULT_SCHEDULE_ID]);
+
+            $this->_cache->Add($userId, $user);
+
+            $reader->Free();
+            return $user;
+        } else {
+            $reader->Free();
+            return User::Null();
+        }
+    }
+
+    /**
+     * @param $command SqlCommand
+     * @return User
+     */
+    private function DepartmentLoad($command)
+    {
+        $reader = ServiceLocator::GetDatabase()->Query($command);
+
+        if ($row = $reader->GetRow()) {
+            $userId = $row[ColumnNames::DEPARTMENT_ID];
+            $emailPreferences = $this->LoadEmailPreferences($userId);
+            $permissions = $this->LoadPermissions($userId);
+            $groups = $this->LoadGroups($userId);
+
+            $user = User::DepartmentFromRow($row);
+            $user->WithEmailPreferences($emailPreferences);
+            $user->WithAllowedPermissions($permissions['full']);
+            $user->WithViewablePermission($permissions['view']);
+            $user->WithGroups($groups);
+            // $user->WithCredits($row[ColumnNames::CREDIT_COUNT]);
+            $this->LoadAttributes($userId, $user);
+
+            if ($user->IsGroupAdmin()) {
+                $ownedGroups = $this->LoadOwnedGroups($userId);
+                $user->WithOwnedGroups($ownedGroups);
+            }
+
+            $preferences = $this->LoadPreferences($userId);
+            $user->WithPreferences($preferences);
+
+            // $user->WithDefaultSchedule($row[ColumnNames::DEFAULT_SCHEDULE_ID]);
+
+            $this->_cache->Add($userId, $user);
+
+            $reader->Free();
+            return $user;
+        } else {
+            $reader->Free();
+            return User::Null();
+        }
+    }
+
+    /**
+     * @param $command SqlCommand
+     * @return User
+     */
+    private function LecturerLoad($command)
+    {
+        $reader = ServiceLocator::GetDatabase()->Query($command);
+
+        if ($row = $reader->GetRow()) {
+            $userId = $row[ColumnNames::LECTURER_ID];
+            $emailPreferences = $this->LoadEmailPreferences($userId);
+            $permissions = $this->LoadPermissions($userId);
+            $groups = $this->LoadGroups($userId);
+
+            $user = User::LecturerFromRow($row);
+            $user->WithEmailPreferences($emailPreferences);
+            $user->WithAllowedPermissions($permissions['full']);
+            $user->WithViewablePermission($permissions['view']);
+            $user->WithGroups($groups);
+            // $user->WithCredits($row[ColumnNames::CREDIT_COUNT]);
+            $this->LoadAttributes($userId, $user);
+
+            if ($user->IsGroupAdmin()) {
+                $ownedGroups = $this->LoadOwnedGroups($userId);
+                $user->WithOwnedGroups($ownedGroups);
+            }
+
+            $preferences = $this->LoadPreferences($userId);
+            $user->WithPreferences($preferences);
+
+            // $user->WithDefaultSchedule($row[ColumnNames::DEFAULT_SCHEDULE_ID]);
+
+            $this->_cache->Add($userId, $user);
+
+            $reader->Free();
+            return $user;
+        } else {
+            $reader->Free();
+            return User::Null();
+        }
+    }
+
+    /**
+     * @param int $userId
+     * @return User
+     */
+    public function StudentLoadById($userId)
+    {
+        if (!$this->_cache->Exists($userId)) {
+            $command = new GetStudentByIdCommand($userId);
+            return $this->StudentLoad($command);
+        } else {
+            return $this->_cache->Get($userId);
+        }
+    }
+
+    /**
+     * @param int $userId
+     * @return User
+     */
+    public function DepartmentLoadById($userId)
+    {
+        if (!$this->_cache->Exists($userId)) {
+            $command = new GetDepartmentByIdCommand($userId);
+            return $this->DepartmentLoad($command);
+        } else {
+            return $this->_cache->Get($userId);
+        }
+    }
+
+    /**
+     * @param int $userId
+     * @return User
+     */
+    public function LecturerLoadById($userId)
+    {
+        if (!$this->_cache->Exists($userId)) {
+            $command = new GetLecturerByIdCommand($userId);
+            return $this->LecturerLoad($command);
+        } else {
+            return $this->_cache->Get($userId);
+        }
+    }
+
+    /**
+     * @param string $publicId
+     * @return User
+     */
+    public function StudentLoadByPublicId($publicId)
+    {
+        $command = new GetUserByPublicIdCommand($publicId);
+        return $this->StudentLoad($command);
+    }
+
+    /**
+     * @param string $fullname
+     * @return User
+     */
+    public function StudentLoadByUsername($fullname)
+    {
+        $command = new StudentLoginCommand(strtolower($fullname));
+        return $this->StudentLoad($command);
+    }
+
+    /**
+     * @param string $fullname
+     * @return User
+     */
+    public function LecturerLoadByUsername($fullname)
+    {
+        $command = new LecturerLoginCommand(strtolower($fullname));
+        return $this->LecturerLoad($command);
+    }
+
+    /**
+     * @param string $fullname
+     * @return User
+     */
+    public function DepartmentLoadByUsername($departmentname)
+    {
+        $command = new DepartmentLoginCommand(strtolower($departmentname));
+        return $this->DepartmentLoad($command);
+    }
+
+    /**
+     * @param User $user // Đối tượng User đại diện cho sinh viên cần thêm vào cơ sở dữ liệu
+     * @return int // Phương thức trả về ID của sinh viên mới được thêm
+     */
+    public function AddStudent(User $user)
+    {
+        // Lấy đối tượng cơ sở dữ liệu từ ServiceLocator
+        $db = ServiceLocator::GetDatabase();
+        
+        // Thực hiện lệnh chèn dữ liệu mới vào cơ sở dữ liệu với các thông tin của sinh viên
+        $id = $db->ExecuteInsert(new RegisterStudentCommand(
+            $user->StudentMSSV(),         // Lấy mã số sinh viên từ đối tượng User
+            $user->StudentFullName(),     // Lấy họ và tên đầy đủ từ đối tượng User
+            $user->StudentEmail(),        // Lấy email từ đối tượng User
+            $user->StudentClass(),        // Lấy lớp của sinh viên từ đối tượng User
+            $user->StudentType(),         // Lấy loại sinh viên từ đối tượng User
+            $user->StudentStatus(),       // Lấy trạng thái sinh viên từ đối tượng User
+            $user->EnrollmentDate(),      // Lấy ngày nhập học từ đối tượng User
+            $user->StudentMajorName(),    // Lấy tên ngành học từ đối tượng User
+            $user->TrainingProgram(),     // Lấy chương trình đào tạo từ đối tượng User
+            $user->DepartmentId()         // Lấy mã phòng ban từ đối tượng User
+        ));
+
+        // Gán ID mới được tạo từ cơ sở dữ liệu cho đối tượng User
+        $user->WithId($id);
+
+        // Trả về ID mới được tạo
+        return $id;
+    }
+
+
+    /**
+     * @param User $user
+     * @return int
+     */
+    public function AddDepartment(User $user)
+    {
+        $db = ServiceLocator::GetDatabase();
+        
+        $id = $db->ExecuteInsert(new RegisterDepartmentCommand(
+            $user->DepartmentId(),
+            $user->DepartmentCode(),
+            $user->DepartmentName(),
+            $user->GroupId()
+        ));
+
+        $user->WithId($id);
+
+        return $id;
+    }
+
+    /**
+     * @param User $user
+     * @return int
+     */
+    public function AddLecturer(User $user)
+    {
+        $db = ServiceLocator::GetDatabase();
+        $id = $db->ExecuteInsert(new RegisterLecturerCommand(
+            $user->LecturerId(),
+            $user->LecturerFullName(),
+            $user->HireDate(),
+            $user->PhoneNumber(),
+            $user->DepartmentId(),
+            $user->LecturerEmail()
+        ));
+
+        $user->WithId($id);
+
+        return $id;
+    }
+    //-----------------------END Source VLU----------------
 
     /**
      * @param User $user
@@ -550,6 +1120,155 @@ class UserRepository implements IUserRepository, IAccountActivationRepository
 
         $this->_cache->Remove($userId);
     }
+
+    //-----------------------Source VLU--------------------
+    /**
+     * @param User $user
+     * @return void
+     */
+    public function StudentUpdate(User $user)
+    {
+        $userId = $user->Id();
+        $db = ServiceLocator::GetDatabase();
+        $updateStudentCommand = new UpdateStudentCommand(
+            $user->Id(),
+            $user->StudentMSSV(),
+            $user->StudentFullName(),
+            $user->StudentEmail(),
+            $user->StudentMajorName(),
+            $user->StudentClass(),
+            $user->StudentType(),
+            $user->StudentStatus(),
+            $user->EnrollmentDate(),
+            $user->TrainingProgram(),
+            $user->DepartmentId()
+        );
+        $db->Execute($updateStudentCommand);
+
+        $this->_cache->Remove($userId);
+    }
+
+    /**
+     * @param User $user
+     * @return void
+     */
+    public function DepartmentUpdate(User $user)
+    {
+        $userId = $user->Id();
+        $db = ServiceLocator::GetDatabase();
+        $updateDepartmentCommand = new UpdateDepartmentCommand(
+            $user->Id(),
+            $user->DepartmentId(),
+            $user->DepartmentCode(),
+            $user->DepartmentName(),
+            $user->GroupId()
+        );
+        $db->Execute($updateDepartmentCommand);
+
+        $this->_cache->Remove($userId);
+    }
+
+    public function UpdateUserGroupsByDepartment($departmentid, $groupid)
+    {
+        $db = ServiceLocator::GetDatabase();
+        $updateUserGroupsCommand = new UpdateUserGroupsCommand($departmentid, $groupid);
+        $db->Execute($updateUserGroupsCommand);
+    }
+
+    /**
+     * @param User $user
+     * @return void
+     */
+    public function LecturerUpdate(User $user)
+    {
+        $userId = $user->Id();
+        $db = ServiceLocator::GetDatabase();
+        $updateLecturerCommand = new UpdateLecturerCommand(
+            $user->Id(),
+            $user->LecturerId(),
+            $user->LecturerFullName(),
+            $user->HireDate(),
+            $user->PhoneNumber(),
+            $user->DepartmentId(),
+            $user->LecturerEmail()
+        );
+        $db->Execute($updateLecturerCommand);
+
+        $this->_cache->Remove($userId);
+    }
+
+    public function DeleteByStudent($userId)
+    {
+        $deleteStudentCommand = new DeleteStudentCommand($userId);
+        ServiceLocator::GetDatabase()->Execute($deleteStudentCommand);
+        $this->_cache->Remove($userId);
+    }
+
+    public function DeleteByDepartment($userId)
+    {
+        $deleteDepartmentCommand = new DeleteDepartmentCommand($userId);
+        ServiceLocator::GetDatabase()->Execute($deleteDepartmentCommand);
+        $this->_cache->Remove($userId);
+    }
+
+    public function DeleteByLecturer($userId)
+    {
+        $deleteLecturerCommand = new DeleteLecturerCommand($userId);
+        ServiceLocator::GetDatabase()->Execute($deleteLecturerCommand);
+        $this->_cache->Remove($userId);
+    }
+
+    public function DepartmentExists($departmentid)
+    {
+        $db = ServiceLocator::GetDatabase();
+        $reader = $db->Query(new CheckDepartmentExistenceCommand($departmentid));
+
+        if ($row = $reader->GetRow()) {
+            $reader->Free();
+            return true;
+        }
+
+        $reader->Free();
+        return false;
+    }
+
+    public function InsertDepartment($departmentid, $departmentcode, $departmentname)
+    {
+        $db = ServiceLocator::GetDatabase();
+        // Create a new Group object
+        $group = new Group(null, $departmentname);
+
+        // Add the new group using GroupRepository
+        $groupRepository = new GroupRepository();
+        $newGroupId = $groupRepository->Add($group);
+
+        // Insert the department with the new group ID
+        $db->ExecuteInsert(new RegisterDepartmentCommand($departmentid, $departmentcode, $departmentname, $newGroupId));
+        
+    }
+
+    //Đồng bộ dữ liệu email với bảng student và user
+    public function syncUserIdWithStudent($email, $userId) {
+        // Tạo đối tượng cơ sở dữ liệu từ ServiceLocator
+
+        $db = ServiceLocator::GetDatabase();
+    
+        // Kiểm tra xem email có tồn tại trong bảng students không
+        $studentData = $this->GetStudent($email);
+
+        if ($studentData) {
+            // Cập nhật user_id trong bảng students
+            $updateCommand = new UpdateStudentUserIdCommand($email, $userId);
+            $db->Execute($updateCommand);
+        } else {
+            // Cập nhật user_id trong bảng lecturers
+            $updateCommand = new UpdateLecturerUserIdCommand($email, $userId);
+            $db->Execute($updateCommand);
+        }
+    }
+    
+
+    //-----------------------END Source VLU----------------
 
     public function DeleteById($userId)
     {
@@ -875,6 +1594,14 @@ class UserRepository implements IUserRepository, IAccountActivationRepository
         // Trả về dữ liệu department 
         return $departmentData;
     }
+    public function GetDepartmentGroupId($departmentId)
+    {
+        $command = new GetDepartmentGroupIdCommand($departmentId);
+        $departmentResult = ServiceLocator::GetDatabase()->Query($command);
+        $departmentData = $departmentResult->GetRow();
+        $departmentResult->Free();
+        return $departmentData;
+    }
     public function determineUserGroups($email) {
         $groups = [];
         
@@ -887,6 +1614,15 @@ class UserRepository implements IUserRepository, IAccountActivationRepository
         }
         
         return $groups;
+    }
+
+    private function addDepartmentGroups($departmentId, &$groups) {
+        $departmentResult = $this->GetDepartmentGroupId($departmentId);
+        if ($departmentResult) {
+            $groups[] = $departmentResult[ColumnNames::GROUP_ID];
+        } else {
+            echo "No department found for department ID: $departmentId"; 
+        }
     }
 
     private function getUserDepartmentId($email) {
@@ -907,16 +1643,22 @@ class UserRepository implements IUserRepository, IAccountActivationRepository
         // Không tìm thấy sinh viên hoặc giảng viên
         return null;
     }
+    //Kiểm tra user_id bảng users và so sánh email 2 bảng users và students
+    /**
+     * @param $email string
+     * @return User
+     */
+    public function GetUserIdByEmail($email)
+    {
+        $command = new CheckUserIdByEmailCommand($email);
+        $reader = ServiceLocator::GetDatabase()->Query($command);
 
-    private function addDepartmentGroups($departmentId, &$groups) {
-        $departmentResult = $this->GetDepartment($departmentId);
-        if ($departmentResult) {
-            $groups[] = $departmentResult[ColumnNames::DEPARTMENT_CODE];
-            $groups[] = $departmentResult[ColumnNames::DEPARTMENT_NAME];
-        } else {
-            echo "No department found for department ID: $departmentId"; 
-        }
+        $row = $reader->GetRow();
+
+        $reader->Free();
+        return $row ? $row['user_id'] : null;
     }
+
     //-------------------------------------------END Source VLU--------------------------------
 
 }
@@ -1036,6 +1778,24 @@ class UserItemView
     public $Position;
     public $Language;
     public $ReservationColor;
+    //-----------------------Source VLU--------------------
+    public $StudentClass;
+    public $TrainingProgram;
+    public $MajorName;
+    public $StudentStatus;
+    public $DepartmentId;
+    public $DepartmentCode;
+    public $DepartmentName;
+    public $GroupId;
+    public $StudentType;
+    public $EnrollmentDate;
+    public $FullName;
+    public $MSSV;
+    public $LecturerId;
+    public $HireDate;
+    public $PhoneNumber;
+    public $GroupName;
+    //-----------------------END Source VLU----------------
     /**
      * @var CustomAttributes
      */
@@ -1082,7 +1842,7 @@ class UserItemView
         $user->Organization = $row[ColumnNames::ORGANIZATION];
         $user->Position = $row[ColumnNames::POSITION];
         $user->Language = $row[ColumnNames::LANGUAGE_CODE];
-
+        
         if (isset($row[ColumnNames::ATTRIBUTE_LIST])) {
             $user->Attributes = CustomAttributes::Parse($row[ColumnNames::ATTRIBUTE_LIST]);
         } else {
@@ -1107,7 +1867,78 @@ class UserItemView
 
         return $user;
     }
+//-----------------------Source VLU--------------------
+    //Hiển thị giao diện các cột dữ liệu
+    public static function VluCreate($row)
+    {
+        $user = new UserItemView();
 
+        $user->Id = $row[ColumnNames::STUDENT_ID];
+        //-----------------------Source VLU--------------------
+        $user->Email = $row[ColumnNames::EMAIL];
+        $user->EnrollmentDate = $row[ColumnNames::STUDENT_CLASS];
+        $user->StudentClass = $row[ColumnNames::STUDENT_CLASS];
+        $user->TrainingProgram = $row[ColumnNames::STUDENT_TRAINING_PROGRAM];
+        $user->MajorName = $row[ColumnNames::STUDENT_MAJOR_NAME];
+        $user->StudentStatus = $row[ColumnNames::STUDENT_STATUS];
+        $user->DepartmentName = $row[ColumnNames::DEPARTMENT_NAME];
+        $user->StudentType = $row[ColumnNames::STUDENT_TYPE];
+        $user->EnrollmentDate = $row[ColumnNames::STUDENT_ENROLLMENT_DATE];
+        $user->FullName = $row[ColumnNames::FULL_NAME];
+        $user->MSSV = $row[ColumnNames::STUDENT_ID];
+        //-----------------------END Source VLU----------------
+
+        if (isset($row[ColumnNames::USER_PREFERENCES])) {
+            $preferences = UserPreferences::Parse($row[ColumnNames::USER_PREFERENCES]);
+            if (!empty($preferences)) {
+                $user->ReservationColor = $preferences->Get(UserPreferences::RESERVATION_COLOR);
+            }
+            $user->Preferences = $preferences;
+        } else {
+            $user->Preferences = new UserPreferences();
+        }
+
+        $user->CurrentCreditCount = isset($row[ColumnNames::CREDIT_COUNT]) ? $row[ColumnNames::CREDIT_COUNT] : '';
+
+        if (isset($row[ColumnNames::GROUP_IDS])) {
+            $user->GroupIds = explode('!sep!', $row[ColumnNames::GROUP_IDS]);
+        }
+
+        return $user;
+    }
+
+    public static function DepartmentCreate($row)
+    {
+        $user = new UserItemView();
+
+        $user->Id = $row[ColumnNames::DEPARTMENT_ID];
+        //-----------------------Source VLU--------------------
+        $user->DepartmentId = $row[ColumnNames::DEPARTMENT_ID];
+        $user->DepartmentCode = $row[ColumnNames::DEPARTMENT_CODE];
+        $user->DepartmentName = $row[ColumnNames::DEPARTMENT_NAME];
+        $user->GroupName = $row[ColumnNames::GROUP_NAME];
+        //-----------------------END Source VLU----------------
+
+        return $user;
+    }
+
+    public static function LecturerCreate($row)
+    {
+        $user = new UserItemView();
+
+        $user->Id = $row[ColumnNames::LECTURER_ID];
+        //-----------------------Source VLU--------------------
+        $user->LecturerId = $row[ColumnNames::LECTURER_ID];
+        $user->FullName = $row[ColumnNames::FULL_NAME];
+        $user->HireDate = $row[ColumnNames::LECTURER_HIRE_DATE];
+        $user->PhoneNumber = $row[ColumnNames::LECTURER_PHONE_NUMBER];
+        $user->DepartmentName = $row[ColumnNames::DEPARTMENT_NAME];
+        $user->Email = $row[ColumnNames::EMAIL];
+        //-----------------------END Source VLU----------------
+
+        return $user;
+    }
+//-----------------------END Source VLU----------------
     /**
      * @param $attributeId int
      * @return null|string
@@ -1146,4 +1977,5 @@ class UserPermissionItemView extends UserItemView
 
         return $me;
     }
+    
 }

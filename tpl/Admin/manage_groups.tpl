@@ -24,10 +24,17 @@
                 </li>
                 <li role="presentation" class="divider"></li>
                 <li role="presentation">
+                    <a role="menuitem" href="#" class="import-from-department" id="import-from-department">
+                    {translate key="ImportFromDepartment"}
+                        <span class="fa fa-plus-circle icon add"></span>
+                    </a>
+                </li>
+                <li role="presentation">
                     <a role="menuitem" href="#" class="add-group" id="add-group">{translate key="AddGroup"}
                         <span class="fa fa-plus-circle icon add"></span>
                     </a>
                 </li>
+                
             </ul>
         </div>
 
@@ -205,6 +212,29 @@
     <form id="addUserForm" method="post">
         <input type="hidden" id="addUserId" {formname key=USER_ID} />
     </form>
+
+    <div class="modal fade" id="importGroupFromDepartmentDialog" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form id="addFromDepartmentForm" action="" method="post">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Import From Department</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Các trường form cần thiết -->
+                    </div>
+                    <div class="modal-footer">
+                        {cancel_button}
+                        {add_button}
+                        {indicator}
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    
 
     <div class="modal fade" id="addGroupDialog" tabindex="-1" role="dialog" aria-labelledby="addDialogLabel"
          aria-hidden="true">
@@ -532,7 +562,8 @@
                 adminGroups: '{ManageGroupsActions::AdminGroups}',
                 resourceGroups: '{ManageGroupsActions::ResourceGroups}',
                 scheduleGroups: '{ManageGroupsActions::ScheduleGroups}',
-                importGroups: '{ManageGroupsActions::Import}'
+                importGroups: '{ManageGroupsActions::Import}',
+                importFromDepartment: '{ManageGroupsActions::ImportFromDepartment}'
             };
 
             var dataRequests = {
@@ -562,6 +593,7 @@
 
             $('#add-group-panel').showHidePanel();
         });
+        
     </script>
 </div>
 {include file='globalfooter.tpl'}

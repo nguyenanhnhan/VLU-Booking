@@ -131,6 +131,18 @@ interface IManageGroupsPage extends IActionPage
      * @return bool
      */
     public function GetUpdateOnImport();
+
+    //--------------Source VLU--------------------//
+    /**
+     * @return string
+     */
+    public function GetDepartmentId();
+
+    /**
+     * @return string
+     */
+    public function GetDepartmentName();
+	//--------------End Source--------------------//
 }
 
 class ManageGroupsPage extends ActionPage implements IManageGroupsPage
@@ -310,4 +322,16 @@ class ManageGroupsPage extends ActionPage implements IManageGroupsPage
     {
         return $this->GetCheckbox(FormKeys::UPDATE_ON_IMPORT);
     }
+
+    //--------------Source VLU--------------------//
+    public function GetDepartmentId()
+    {
+        return $this->GetForm(FormKeys::DEPARTMENT_ID);
+    }
+
+    public function GetDepartmentName()
+    {
+        return $this->GetForm(FormKeys::DEPARTMENT_NAME);
+    }
+	//--------------End Source--------------------//
 }

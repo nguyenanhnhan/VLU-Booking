@@ -27,6 +27,14 @@ interface IGroupRepository
      * @return void
      */
     public function Remove(Group $group);
+
+    //--------------Source VLU--------------------//
+    /**
+     * @param Group $group
+     * @return int newly inserted group id
+     */
+    public function AddDepartmentToGroup(Group $group);
+	//--------------End Source--------------------//
 }
 
 interface IGroupViewRepository
@@ -46,6 +54,40 @@ interface IGroupViewRepository
         $sortDirection = null,
         $filter = null
     );
+
+    //-----------------------Source VLU--------------------
+    /**
+     * @param int $pageNumber
+     * @param int $pageSize
+     * @param string $sortField
+     * @param string $sortDirection
+     * @param ISqlFilter $filter
+     * @return PageableData|GroupItemView[]
+     */
+    public function GetDepartmentList(
+        $pageNumber = null,
+        $pageSize = null,
+        $sortField = null,
+        $sortDirection = null,
+        $filter = null
+    );
+
+    /**
+     * @param int $pageNumber
+     * @param int $pageSize
+     * @param string $sortField
+     * @param string $sortDirection
+     * @param ISqlFilter $filter
+     * @return PageableData|GroupItemView[]
+     */
+    public function GetGroupList(
+        $pageNumber = null,
+        $pageSize = null,
+        $sortField = null,
+        $sortDirection = null,
+        $filter = null
+    );
+    //-----------------------END Source VLU----------------
 
     /**
      * @param int|array|int[] $groupIds
@@ -111,6 +153,58 @@ class GroupRepository implements IGroupRepository, IGroupViewRepository
         $builder = ['GroupItemView', 'Create'];
         return PageableDataStore::GetList($command, $builder, $pageNumber, $pageSize, $sortField, $sortDirection);
     }
+
+    //-----------------------Source VLU--------------------
+    /**
+     * @param int $pageNumber
+     * @param int $pageSize
+     * @param string $sortField
+     * @param string $sortDirection
+     * @param ISqlFilter $filter
+     * @return PageableData|GroupItemView[]
+     */
+    public function GetDepartmentList(
+        $pageNumber = null,
+        $pageSize = null,
+        $sortField = null,
+        $sortDirection = null,
+        $filter = null
+    ) {
+        $command = new GetAllDepartmentCommand();
+
+        if ($filter != null) {
+            $command = new FilterCommand($command, $filter);
+        }
+
+        $builder = ['GroupItemView', 'DepartmentCreate'];
+        return PageableDataStore::GetList($command, $builder, $pageNumber, $pageSize, $sortField, $sortDirection);
+    }
+
+    /**
+     * @param int $pageNumber
+     * @param int $pageSize
+     * @param string $sortField
+     * @param string $sortDirection
+     * @param ISqlFilter $filter
+     * @return PageableData|GroupItemView[]
+     */
+    public function GetGroupList(
+        $pageNumber = null,
+        $pageSize = null,
+        $sortField = null,
+        $sortDirection = null,
+        $filter = null
+    ) {
+        $command = new GetAllGroupCommand();
+
+        if ($filter != null) {
+            $command = new FilterCommand($command, $filter);
+        }
+
+        $builder = ['GroupItemView', 'GroupCreate'];
+        return PageableDataStore::GetList($command, $builder, $pageNumber, $pageSize, $sortField, $sortDirection);
+    }
+    //-----------------------END Source VLU----------------
 
     /**
      * @param array|int|int[] $groupIds
@@ -236,6 +330,16 @@ class GroupRepository implements IGroupRepository, IGroupViewRepository
         return $groupId;
     }
 
+    //--------------Source VLU--------------------//
+    public function AddDepartmentToGroup(Group $group)
+    {
+        $groupId = ServiceLocator::GetDatabase()->ExecuteInsert(new AddDepartmentToGroupCommand($group->Name(), $group->IsDefault()));
+        $group->WithId($groupId);
+
+        return $groupId;
+    }
+	//--------------End Source--------------------//
+
     /**
      * @param $roleLevel int|RoleLevel
      * @return GroupItemView[]|array
@@ -299,6 +403,17 @@ class GroupItemView
         $roles = explode(',', $row[ColumnNames::GROUP_ROLE_LIST] ?? '');
         return new GroupItemView($row[ColumnNames::GROUP_ID], $row[ColumnNames::GROUP_NAME], $adminName, $isDefault, $roles);
     }
+    //-----------------------Source VLU--------------------
+    public static function DepartmentCreate($row)
+    {
+        return new GroupItemView($row[ColumnNames::DEPARTMENT_ID], $row[ColumnNames::DEPARTMENT_NAME]);
+    }
+    public static function GroupCreate($row)
+    {
+        return new GroupItemView($row[ColumnNames::GROUP_ID], $row[ColumnNames::GROUP_NAME]);
+    }
+    //-----------------------END Source VLU----------------
+    
 
     /**
      * @var int
@@ -401,6 +516,11 @@ class GroupItemView
         $this->AdminGroupName = $adminGroupName;
         $this->IsDefault = $isDefault;
         $this->Roles = $roles;
+    }
+    // Thêm phương thức __toString()
+    public function __toString()
+    {
+        return $this->Name;
     }
 }
 

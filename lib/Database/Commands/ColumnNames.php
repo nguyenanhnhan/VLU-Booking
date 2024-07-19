@@ -358,6 +358,7 @@ class ColumnNames
     public const FULL_NAME = 'full_name';
     // Students
     public const STUDENT_ID = 'student_id';
+    public const STUDENT_MSSV = 'studentid';
     public const STUDENT_ENROLLMENT_DATE = 'enrollment_date';
     public const STUDENT_TYPE = 'student_type';
     public const STUDENT_STATUS = 'status';

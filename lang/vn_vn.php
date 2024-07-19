@@ -1,5 +1,6 @@
 <?php
 
+require_once('Language.php');
 require_once('en_gb.php');
 
 class vn_vn extends en_gb
@@ -28,8 +29,8 @@ class vn_vn extends en_gb
         $strings['Cancel'] = 'Hủy';
         $strings['Add'] = 'Thêm';
         $strings['Name'] = 'Tên';
-        $strings['Yes'] = 'Yes';
-        $strings['No'] = 'No';
+        $strings['Yes'] = 'Có';
+        $strings['No'] = 'Không';
         $strings['FirstNameRequired'] = 'Yêu cầu phải có Họ.';
         $strings['LastNameRequired'] = 'Yêu cầu phải có Tên.';
         $strings['PwMustMatch'] = 'Mật khẩu xác nhận phải trùng với mật khẩu vừa đánh.';
@@ -105,14 +106,14 @@ class vn_vn extends en_gb
         $strings['BringOnline'] = 'Kích hoạt lại';
         $strings['AddImage'] = 'Thêm Ảnh';
         $strings['NoImage'] = 'Không có ảnh';
-        $strings['Move'] = 'Di Chuyển';
+        $strings['Move'] = 'Thay đổi';
         $strings['AppearsOn'] = 'Xuất hiện vào %s';
         $strings['Location'] = 'Vị trí';
         $strings['NoLocationLabel'] = '(Vị trí chưa được cài đặt)';
         $strings['Contact'] = 'Liên Hệ';
         $strings['NoContactLabel'] = '(Không có thông tin liên hệ)';
-        $strings['Description'] = 'Miêu tả ngắn';
-        $strings['NoDescriptionLabel'] = '(Không có miêu tả ngắn)';
+        $strings['Description'] = 'Mô tả ngắn';
+        $strings['NoDescriptionLabel'] = '(Mô tả ngắn)';
         $strings['Notes'] = 'Ghi Chú';
         $strings['NoNotesLabel'] = '(Không có ghi chú nào)';
         $strings['NoTitleLabel'] = '(Không có tiêu đề)';
@@ -190,7 +191,7 @@ class vn_vn extends en_gb
         $strings['InvitationList'] = 'Danh sách khách mời';
         $strings['AccessoryName'] = 'Thiết bị/Phụ kiện';
         $strings['QuantityAvailable'] = 'Số lượng hiện có: ';
-        $strings['Resources'] = 'Phòng họp';
+        $strings['Resources'] = 'Phòng chức năng';
         $strings['Participants'] = 'Người tham dự';
         $strings['User'] = 'Người dùng';
         $strings['Resource'] = 'Phòng chức năng';
@@ -244,12 +245,12 @@ class vn_vn extends en_gb
         $strings['ReservationRequiresApproval'] = 'Một hoặc nhiều phòng chức năng được đặt cần được phê duyệt trước khi sử dụng. Đặt phòng này sẽ ở trạng thái chờ cho đến khi được phê duyệt.';
         $strings['YourReferenceNumber'] = 'Mã tham chiếu của bạn là %s';
         $strings['ChangeUser'] = 'Đổi Người dùng';
-        $strings['MoreResources'] = 'Xem thêm phòng họp';
+        $strings['MoreResources'] = 'Xem thêm phòng chức năng';
         $strings['ReservationLength'] = 'Thời gian họp là: ';
         $strings['ParticipantList'] = 'Danh sách người tham dự họp:';
         $strings['AddParticipants'] = 'Thêm người tham dự';
         $strings['InviteOthers'] = 'Thêm người họp khác:';
-        $strings['AddResources'] = 'Tất cả các phòng họp:';
+        $strings['AddResources'] = 'Tất cả các phòng chức năng:';
         $strings['AddAccessories'] = 'Thêm trang thiết bị:';
         $strings['Accessory'] = 'Trang thiết bị';
         $strings['QuantityRequested'] = 'Số lượng yêu cầu';
@@ -259,7 +260,7 @@ class vn_vn extends en_gb
         $strings['DeleteAccessoryWarning'] = 'Xóa trang thiết bị này sẽ xóa nó khỏi tất cả các đặt phòng.';
         $strings['AddAccessory'] = 'Thêm Trang thiết bị';
         $strings['AddBlackout'] = 'Tạo lịch trùng giờ';
-        $strings['AllResourcesOn'] = 'Tất cả các phòng họp';
+        $strings['AllResourcesOn'] = 'Tất cả các phòng chức năng';
         $strings['Reason'] = 'Lý do';
         $strings['BlackoutShowMe'] = 'Hiện phòng chức năng bị trùng giờ';
         $strings['BlackoutDeleteConflicts'] = 'Xóa phòng chức năng bị trùng giờ';
@@ -317,7 +318,7 @@ class vn_vn extends en_gb
         $strings['Past'] = 'TG đã qua';
         $strings['Restricted'] = 'Cấm';
         $strings['ViewAll'] = 'Xem tất cả';
-        $strings['MoveResourcesAndReservations'] = 'Di chuyển phòng chức năng và đặt phòng đến';
+        $strings['MoveResourcesAndReservations'] = 'Thay đổi phòng chức năng và đặt phòng đến';
         $strings['TurnOffSubscription'] = 'Tắt tính năng đăng ký lịch';
         $strings['TurnOnSubscription'] = 'Cho phép đăng ký vào lịch này';
         $strings['SubscribeToCalendar'] = 'Đăng ký lịch này';
@@ -424,8 +425,8 @@ class vn_vn extends en_gb
         $strings['Next'] = 'Tiếp theo';
         $strings['Success'] = 'Thành công';
         $strings['Participant'] = 'Người tham dự';
-        $strings['ResourceFilter'] = 'Lọc phòng họp';
-        $strings['ResourceGroups'] = 'Nhóm phòng họp';
+        $strings['ResourceFilter'] = 'Lọc phòng chức năng';
+        $strings['ResourceGroups'] = 'Nhóm phòng chức năng';
         $strings['AddNewGroup'] = 'Tạo nhóm mới';
         $strings['Quit'] = 'Thoát';
         $strings['AddGroup'] = 'Thêm Nhóm';
@@ -446,7 +447,7 @@ class vn_vn extends en_gb
         $strings['MinimumCapacity'] = 'Sức chứa tối thiểu';
         $strings['Color'] = 'Màu';
         $strings['Available'] = 'Sẵn sàng';
-        $strings['Unavailable'] = 'Phòng họp đang bận:';
+        $strings['Unavailable'] = 'Không có sẵn';
         $strings['Hidden'] = 'Ẩn';
         $strings['ResourceStatus'] = 'Trạng thái phòng chức năng';
         $strings['CurrentStatus'] = 'Trạng thái hiện tại';
@@ -472,9 +473,9 @@ class vn_vn extends en_gb
         $strings['RegisterANewAccount'] = 'Đăng ký tài khoản mới';
         $strings['Dates'] = 'Ngày';
         $strings['More'] = 'Xem thêm';
-        $strings['ResourceAvailability'] = 'Tính trạng phòng họp';
-        $strings['UnavailableAllDay'] = 'Phòng họp bận cả ngày:';
-        $strings['AvailableUntil'] = 'Phòng họp bận đến..';
+        $strings['ResourceAvailability'] = 'Tính trạng phòng chức năng';
+        $strings['UnavailableAllDay'] = 'Phòng chức năng bận cả ngày:';
+        $strings['AvailableUntil'] = 'Có sẵn đến';
         $strings['AvailableBeginningAt'] = 'Bắt đầu từ';
         $strings['AvailableAt'] = 'Có sẵn tại';
         $strings['AllResourceTypes'] = 'Tất cả loại phòng chức năng';
@@ -490,7 +491,7 @@ class vn_vn extends en_gb
         $strings['RowsImported'] = 'Số dòng được nhập';
         $strings['RowsSkipped'] = 'Số dòng bị bỏ qua';
         $strings['Columns'] = 'Các cột';
-        $strings['Reserve'] = 'Đặt phòng họp';
+        $strings['Reserve'] = 'Đặt phòng';
         $strings['AllDay'] = 'Cả Ngày';
         $strings['Everyday'] = 'Hàng ngày';
         $strings['IncludingCompletedReservations'] = 'Bao gồm các cuộc họp đã hoàn thành';
@@ -500,7 +501,7 @@ class vn_vn extends en_gb
         $strings['RemoveExistingPermissions'] = 'Xóa quyền hiện có?';
         $strings['Continue'] = 'Tiếp tục';
         $strings['WeNeedYourEmailAddress'] = 'Chúng tôi cần địa chỉ email của bạn để đặt phòng';
-        $strings['ResourceColor'] = 'Màu sắc phòng họp';
+        $strings['ResourceColor'] = 'Màu sắc phòng';
         $strings['DateTime'] = 'Ngày giờ';
         $strings['AutoReleaseNotification'] = 'Tự động giải phóng nếu không xác nhận trong vòng %s phút';
         $strings['RequiresCheckInNotification'] = 'Yêu cầu nhận/trả phòng';
@@ -552,7 +553,7 @@ class vn_vn extends en_gb
         $strings['IcsMissingOrganizer'] = 'Bất kỳ sự kiện nào thiếu người tổ chức sẽ được gán chủ sở hữu cho người dùng hiện tại.';
         $strings['IcsWarning'] = 'Quy tắc đặt phòng sẽ không được áp dụng - có thể xảy ra xung đột, trùng lặp, v.v.';
         $strings['BlackoutAroundConflicts'] = 'Chặn xung quanh các cuộc họp xung đột';
-        $strings['DuplicateReservation'] = 'Trùng lặp';
+        $strings['DuplicateReservation'] = 'Tạo bản sao tương tự';
         $strings['UnavailableNow'] = 'Không có sẵn';
         $strings['ReserveLater'] = 'Đặt sau';
         $strings['CollectedFor'] = 'Thu thập cho';
@@ -584,14 +585,14 @@ class vn_vn extends en_gb
         $strings['Export'] = 'Xuất';
         $strings['DeleteMultipleUserWarning'] = 'Xóa những người dùng này sẽ xóa tất cả các đặt phòng hiện tại, tương lai và lịch sử của họ. Không có email nào được gửi.';
         $strings['DeleteMultipleReservationsWarning'] = 'Không có email nào được gửi.';
-        $strings['ErrorMovingReservation'] = 'Lỗi khi di chuyển đặt phòng';
+        $strings['ErrorMovingReservation'] = 'Lỗi khi thay đổi đặt phòng';
         $strings['SelectUser'] = 'Chọn người dùng';
         $strings['InviteUsers'] = 'Mời người dùng';
         $strings['InviteUsersLabel'] = 'Nhập địa chỉ email của những người cần mời';
         $strings['ApplyToCurrentUsers'] = 'Áp dụng cho người dùng hiện tại';
         $strings['ReasonText'] = 'Lý do';
         $strings['NoAvailableMatchingTimes'] = 'Không tìm thấy thời gian phù hợp với tìm kiếm của bạn';
-        $strings['Schedules'] = 'Lịch biểu';
+        $strings['Schedules'] = 'Lịch trình';
         $strings['NotifyUser'] = 'Thông báo cho người dùng';
         $strings['UpdateUsersOnImport'] = 'Cập nhật người dùng hiện có nếu email đã tồn tại';
         $strings['UpdateResourcesOnImport'] = 'Cập nhật phòng chức năng hiện có nếu tên đã tồn tại';
@@ -806,12 +807,15 @@ class vn_vn extends en_gb
         $strings['LoginError'] = 'Hệ thống không tìm thấy tên đăng nhập hoặc mật khẩu mà bạn vừa gõ';
         $strings['ReservationFailed'] = 'Đặt chỗ của bạn không thể thực hiện';
         $strings['MinNoticeError'] = 'Đặt chỗ này yêu cầu thông báo trước. Ngày và giờ sớm nhất có thể đặt là %s.';
+        $strings['MinNoticeErrorUpdate'] = 'Việc thay đổi đặt chỗ này yêu cầu thông báo trước. Không được phép thay đổi đặt chỗ trước %s.';
+        $strings['MinNoticeErrorDelete'] = 'Việc xóa đặt chỗ này yêu cầu thông báo trước. Không được phép xóa đặt chỗ trước %s.';
         $strings['MaxNoticeError'] = 'Đặt chỗ này không thể được thực hiện quá xa trong tương lai. Ngày và giờ muộn nhất có thể đặt là %s.';
         $strings['MinDurationError'] = 'Đặt chỗ này phải kéo dài ít nhất %s.';
         $strings['MaxDurationError'] = 'Đặt chỗ này không thể kéo dài hơn %s.';
         $strings['ConflictingAccessoryDates'] = 'Không đủ các phụ kiện sau:';
         $strings['NoResourcePermission'] = 'Bạn không có quyền truy cập vào một hoặc nhiều phòng chức năng yêu cầu.';
         $strings['ConflictingReservationDates'] = 'Có những đặt chỗ trùng lặp vào các ngày sau:';
+        $strings['InstancesOverlapRule'] = 'Một số phiên bản trong chuỗi đặt chỗ này trùng lặp nhau:';
         $strings['StartDateBeforeEndDateRule'] = 'Ngày và giờ bắt đầu phải trước ngày và giờ kết thúc.';
         $strings['StartIsInPast'] = 'Ngày và giờ bắt đầu không thể là trong quá khứ.';
         $strings['EmailDisabled'] = 'Quản trị viên đã tắt thông báo email.';
@@ -843,6 +847,18 @@ class vn_vn extends en_gb
         $strings['ReservationCannotBeCheckedInTo'] = 'Đặt chỗ này không thể được đăng ký.';
         $strings['ReservationCannotBeCheckedOutFrom'] = 'Đặt chỗ này không thể được thanh toán.';
         $strings['InvalidEmailDomain'] = 'Địa chỉ email đó không thuộc miền được phép';
+        $strings['TermsOfServiceError'] = 'Bạn cần phải chấp nhận Điều khoản dịch vụ';
+        $strings['UserNotFound'] = 'Không tìm thấy người dùng';
+        $strings['ScheduleAvailabilityError'] = 'Lịch đặt chỗ này chỉ khả dụng từ %s đến %s';
+        $strings['ReservationNotFoundError'] = 'Không tìm thấy đặt chỗ';
+        $strings['ReservationNotAvailable'] = 'Đặt chỗ không khả dụng';
+        $strings['TitleRequiredRule'] = 'Tiêu đề đặt chỗ là bắt buộc';
+        $strings['DescriptionRequiredRule'] = 'Mô tả đặt chỗ là bắt buộc';
+        $strings['WhatCanThisGroupManage'] = 'Nhóm này có thể quản lý những gì?';
+        $strings['ReservationParticipationActivityPreference'] = 'Khi ai đó tham gia hoặc rời khỏi đặt chỗ của tôi';
+        $strings['RegisteredAccountRequired'] = 'Chỉ người dùng đã đăng ký mới có thể đặt chỗ';
+        $strings['InvalidNumberOfResourcesError'] = 'Số lượng phòng chức năng tối đa có thể đặt trong một lần đặt chỗ là %s';
+        $strings['ScheduleTotalReservationsError'] = 'Lịch đặt chỗ này chỉ cho phép đặt tối đa %s phòng chức năng cùng một lúc. Đặt chỗ này sẽ vượt quá giới hạn đó vào các ngày sau:';
         // End Errors
 
 
@@ -850,7 +866,7 @@ class vn_vn extends en_gb
         $strings['CreateReservation'] = 'Tạo đặt phòng';
         $strings['EditReservation'] = 'Chỉnh sửa đặt phòng';
         $strings['LogIn'] = 'Đăng nhập';
-        $strings['ManageReservations'] = 'Đặt phòng';
+        $strings['ManageReservations'] = 'Duyệt thông tin tất cả phòng';
         $strings['AwaitingActivation'] = 'Chờ kích hoạt';
         $strings['PendingApproval'] = 'Chờ duyệt';
         $strings['ManageSchedules'] = 'Lịch trình';
@@ -872,7 +888,7 @@ class vn_vn extends en_gb
         $strings['EditProfile'] = 'Chỉnh sửa hồ sơ';
         $strings['FindAnOpening'] = 'Tìm lịch trống';
         $strings['OpenInvitations'] = 'Lời mời tham gia';
-        $strings['ResourceCalendar'] = 'Lịch phòng chức năng';
+        $strings['ResourceCalendar'] = 'Lịch các phòng chức năng';
         $strings['Reservation'] = 'Đặt phòng mới';
         $strings['Install'] = 'Cài đặt';
         $strings['ChangePassword'] = 'Đổi mật khẩu';
@@ -881,14 +897,14 @@ class vn_vn extends en_gb
         $strings['ApplicationManagement'] = 'Quản lý ứng dụng';
         $strings['ForgotPassword'] = 'Quên mật khẩu';
         $strings['NotificationPreferences'] = 'Cài đặt thông báo';
-        $strings['ManageAnnouncements'] = 'Quản lý thông báo';
-        $strings['Responsibilities'] = 'Trách nhiệm';
-        $strings['GroupReservations'] = 'Đặt phòng theo nhóm';
-        $strings['ResourceReservations'] = 'Đặt phòng theo phòng chức năng';
+        $strings['ManageAnnouncements'] = 'Thông báo ứng dụng';
+        $strings['Responsibilities'] = 'Quản lý';
+        $strings['GroupReservations'] = 'Duyệt thông tin phòng theo nhóm';
+        $strings['ResourceReservations'] = 'Duyệt thông tin phòng';
         $strings['Customization'] = 'Tùy chỉnh';
         $strings['Attributes'] = 'Thuộc tính';
         $strings['AccountActivation'] = 'Kích hoạt tài khoản';
-        $strings['ScheduleReservations'] = 'Lịch trình đặt phòng';
+        $strings['ScheduleReservations'] = 'Duyệt thông tin phòng theo lịch trình';
         $strings['Reports'] = 'Báo cáo';
         $strings['GenerateReport'] = 'Tạo báo cáo mới';
         $strings['MySavedReports'] = 'Báo cáo đã lưu của tôi';
@@ -938,7 +954,7 @@ class vn_vn extends en_gb
         $strings['ReservationCreatedAdminSubject'] = 'Thông báo: phòng chức năng đã được tạo';
         $strings['ReservationUpdatedAdminSubject'] = 'Thông báo: phòng chức năng đã được cập nhật';
         $strings['ReservationDeleteAdminSubject'] = 'Thông báo: phòng chức năng đã bị xóa';
-        $strings['ReservationApprovalAdminSubject'] = 'Thông báo: Yêu cầu đặt phòng họp của bạn phải được phê duyệt';
+        $strings['ReservationApprovalAdminSubject'] = 'Thông báo: Yêu cầu đặt phòng chức năng của bạn phải được phê duyệt';
         $strings['ParticipantAddedSubject'] = 'Thông báo tham dự họp';
         $strings['ParticipantDeletedSubject'] = 'phòng chức năng đã hủy';
         $strings['InviteeAddedSubject'] = 'Mời người tham dự họp';
@@ -1043,7 +1059,7 @@ class vn_vn extends en_gb
          * and go through the twelve months of the year, ending on December
          ***/
         // The full month name
-        $months['full'] = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+        $months['full'] = ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'];
         // The three letter month name
         $months['abbr'] = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
@@ -1064,6 +1080,7 @@ class vn_vn extends en_gb
 
     protected function _GetHtmlLangCode()
     {
-        return 'en';
+        return 'vn_vn';
     }
 }
+

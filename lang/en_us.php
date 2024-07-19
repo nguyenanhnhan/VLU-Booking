@@ -520,7 +520,7 @@ class en_us extends Language
         $strings['YouCanJoinThisReservation'] = 'You can join this reservation';
         $strings['Import'] = 'Import';
         $strings['GetTemplate'] = 'Get Template';
-        $strings['UserImportInstructions'] = '<ul><li>File must be in CSV format.</li><li>Username and email are required fields.</li><li>Attribute validity will not be enforced.</li><li>Leaving other fields blank will set default values and \'password\' as the user\'s password.</li><li>Use the supplied template as an example.</li></ul>';
+        $strings['UserImportInstructions'] = '<ul><li>File must be in CSV, XLSX, XLS format.</li><li>Username and email are required fields.</li><li>Attribute validity will not be enforced.</li><li>Leaving other fields blank will set default values and \'password\' as the user\'s password.</li><li>Use the supplied template as an example.</li></ul>';
         $strings['RowsImported'] = 'Rows Imported';
         $strings['RowsSkipped'] = 'Rows Skipped';
         $strings['Columns'] = 'Columns';
@@ -1060,6 +1060,52 @@ class en_us extends Language
         $strings['PermissionType'] = 'Permission Type';
         $strings['NoResourcesToView'] = 'No available resources';
         //End View Resource
+
+        //-----------------------Source VLU--------------------
+        $strings['Lecturer'] = 'Lecturer';
+        $strings['ManageLecturers'] = 'Lecturers';
+        $strings['Department'] = 'Department';
+        $strings['ManageDepartments'] = 'Departments';
+        $strings['ManageStudents'] = 'Students';
+        $strings['StudentStatus'] = 'Student Status';
+        $strings['StudentClass'] = 'Student Class';
+        $strings['TrainingProgram'] = 'Training Program';
+        $strings['MajorName'] = 'Major Name';
+        $strings['StudentType'] = 'Student Type';
+        $strings['EnrollmentDate'] = 'Enrollment Date';
+        $strings['FullName'] = 'Full Name';
+        $strings['MSSV'] = 'Studen ID';
+        $strings['AddStudent'] = 'Add Student';
+        $strings['AddDepartment'] = 'Add Department';
+        $strings['AddLecturer'] = 'Add Lecturer';
+        $strings['ImportFromDepartment'] = 'Import From Department';
+        $strings['DepartmentId'] = 'Department ID';
+        $strings['DepartmentCode'] = 'Department Code';
+        $strings['DepartmentName'] = 'Department Name';
+        $strings['LecturerId'] = 'Lecturer ID';
+        $strings['PhoneNumber'] = 'Phone Number';
+        $strings['HireDate'] = 'Hire Date';
+        $strings['NoDepartmentsAvailable'] = 'NoDepartmentsAvailable';
+        $strings['FindStudent'] = 'Find Student';
+        $strings['AllStudents'] = 'All Students';
+        $strings['FindDepartment'] = 'Find Department';
+        $strings['AllDepartments'] = 'All Department';
+        $strings['FindLecturer'] = 'Find Lecturer';
+        $strings['AllLecturers'] = 'All Lecturer';
+        $strings['StudentImportInstructions'] = '<ul><li>File must be in XLSX, CSV format.</li><li>Student ID, Full Name and Email are required fields.</li><li>Use the supplied template Excel as an example.</li></ul>';
+        $strings['DepartmentImportInstructions'] = '<ul><li>File must be in XLSX, CSV format.</li><li>Department ID, Department Name are required fields.</li><li>Use the supplied template Excel as an example.</li></ul>';
+        $strings['LecturerImportInstructions'] = '<ul><li>File must be in XLSX, CSV format.</li><li>Lecturer ID, Full Name and Email are required fields.</li><li>Use the supplied template Excel as an example.</li></ul>';
+        $strings['DeleteStudentWarning'] = 'Deleting this student will remove all of their current, future, and authenication information.';
+        $strings['DeleteDepartmentWarning'] = 'Deleting this department will remove all of their current and future.';
+        $strings['DeleteLecturerWarning'] = 'Deleting this lecturer will remove all of their current, future, and authenication information.';
+        $strings['UpdateStudentsOnImport'] = 'Update existing student if student already exists';
+        $strings['UpdateDepartmentsOnImport'] = 'Update existing department if department already exists';
+        $strings['UpdateLecturersOnImport'] = 'Update existing lecturer if lecturer already exists';
+        $strings['UpdateConfirmation'] = 'Update';
+        $strings['UpdateWarning'] = 'Updating the group for this department will synchronize all users belonging to this department into the new group.';
+
+        //-----------------------END Source VLU----------------
+        
 
         $this->Strings = $strings;
 

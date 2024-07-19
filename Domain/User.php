@@ -77,6 +77,141 @@ class User
         return $this->homepageId;
     }
 
+    //-----------------------Source VLU--------------------
+    protected $studentid;
+
+    public function StudentMSSV()
+    {
+        return $this->studentid;
+    }
+
+    protected $fullname;
+
+    public function StudentFullName()
+    {
+        return $this->fullname;
+    }
+
+    protected $email;
+
+    public function StudentEmail()
+    {
+        return $this->email;
+    }
+
+    protected $majorname;
+
+    public function StudentMajorName()
+    {
+        return $this->majorname;
+    }
+
+    protected $studentclass;
+
+    public function StudentClass()
+    {
+        return $this->studentclass;
+    }
+
+    protected $studenttype;
+
+    public function StudentType()
+    {
+        return $this->studenttype;
+    }
+
+    protected $studentstatus;
+
+    public function StudentStatus()
+    {
+        return $this->studentstatus;
+    }
+
+    protected $departmentid;
+
+    public function DepartmentId()
+    {
+        return $this->departmentid;
+    }
+
+    protected $departmentcode;
+
+    public function DepartmentCode()
+    {
+        return $this->departmentcode;
+    }
+
+    protected $departmentname;
+
+    public function DepartmentName()
+    {
+        return $this->departmentname;
+    }
+
+    protected $groupid;
+
+    public function GroupId()
+    {
+        return $this->groupid;
+    }
+
+    protected $groupname;
+
+    public function GroupName()
+    {
+        return $this->groupname;
+    }
+
+    protected $enrollmentdate;
+
+    public function EnrollmentDate()
+    {
+        return $this->enrollmentdate;
+    }
+
+    protected $trainingprogram;
+
+    public function TrainingProgram()
+    {
+        return $this->trainingprogram;
+    }
+
+    protected $lecturerid;
+
+    public function LecturerId()
+    {
+        return $this->lecturerid;
+    }
+
+
+    public function LecturerFullName()
+    {
+        return $this->fullname;
+    }
+
+    protected $hiredate;
+
+    public function HireDate()
+    {
+        return $this->hiredate;
+    }
+
+    protected $phonenumber;
+
+    public function PhoneNumber()
+    {
+        return $this->phonenumber;
+    }
+
+    protected $emaillecturer;
+
+    public function LecturerEmail()
+    {
+        return $this->emaillecturer;
+    }
+
+    //-----------------------END Source VLU----------------
+
     protected $statusId;
 
     /**
@@ -519,10 +654,53 @@ class User
         $user->attributes[UserAttribute::Organization] = $row[ColumnNames::ORGANIZATION];
 
         $user->isApplicationAdmin = Configuration::Instance()->IsAdminEmail($row[ColumnNames::EMAIL]);
-
+        return $user;
+    }
+//-----------------------Source VLU--------------------
+    public static function StudentFromRow($row)
+    {
+        $user = new User();
+        $user->id = $row[ColumnNames::STUDENT_ID];
+        $user->studentid = $row[ColumnNames::STUDENT_ID];
+        $user->fullname = $row[ColumnNames::FULL_NAME];
+        $user->email = $row[ColumnNames::EMAIL];
+        $user->majorname = $row[ColumnNames::STUDENT_MAJOR_NAME];
+        $user->studentclass = $row[ColumnNames::STUDENT_CLASS];
+        $user->studenttype = $row[ColumnNames::STUDENT_TYPE];
+        $user->studentstatus = $row[ColumnNames::STUDENT_STATUS];
+        $user->departmentid = $row[ColumnNames::DEPARTMENT_ID];
+        $user->enrollmentdate = $row[ColumnNames::STUDENT_ENROLLMENT_DATE];
+        $user->trainingprogram = $row[ColumnNames::STUDENT_TRAINING_PROGRAM];
+        // $user->isApplicationAdmin = Configuration::Instance()->IsAdminEmail($row[ColumnNames::EMAIL]);
         return $user;
     }
 
+    public static function DepartmentFromRow($row)
+    {
+        $user = new User();
+        $user->id = $row[ColumnNames::DEPARTMENT_ID];
+        $user->departmentid = $row[ColumnNames::DEPARTMENT_ID];
+        $user->departmentcode = $row[ColumnNames::DEPARTMENT_CODE];
+        $user->departmentname = $row[ColumnNames::DEPARTMENT_NAME];
+        $user->groupid = $row[ColumnNames::GROUP_ID];
+        // $user->isApplicationAdmin = Configuration::Instance()->IsAdminEmail($row[ColumnNames::EMAIL]);
+        return $user;
+    }
+
+    public static function LecturerFromRow($row)
+    {
+        $user = new User();
+        $user->id = $row[ColumnNames::LECTURER_ID];
+        $user->lecturerid = $row[ColumnNames::LECTURER_ID];
+        $user->fullname = $row[ColumnNames::FULL_NAME];
+        $user->hiredate = $row[ColumnNames::LECTURER_HIRE_DATE];
+        $user->phonenumber = $row[ColumnNames::LECTURER_PHONE_NUMBER];
+        $user->departmentid = $row[ColumnNames::DEPARTMENT_ID];
+        $user->emaillecturer = $row[ColumnNames::EMAIL];
+        // $user->isApplicationAdmin = Configuration::Instance()->IsAdminEmail($row[ColumnNames::EMAIL]);
+        return $user;
+    }
+//-----------------------END Source VLU----------------
     /**
      * @static
      * @return User
@@ -581,6 +759,169 @@ class User
         $user->statusId = AccountStatus::AWAITING_ACTIVATION;
         return $user;
     }
+
+    //-----------------------Source VLU--------------------
+
+    /**
+     * @static
+     * @return User
+     */
+    public static function StudentCreate(
+        $studentid,
+        $fullname,
+        $email,
+        $majorname,
+        $studentclass,
+        $studenttype,
+        $studentstatus,
+        $enrollmentdate,
+        $trainingprogram,
+        $departmentid
+    ) {
+        // Tạo một đối tượng User mới
+        $user = new User();
+        
+        // Gán các giá trị tham số cho các thuộc tính của đối tượng User
+        $user->studentid = $studentid;
+        $user->fullname = $fullname;
+        $user->email = $email;
+        $user->majorname = $majorname;
+        $user->studentclass = $studentclass;
+        $user->studenttype = $studenttype;
+        $user->studentstatus = $studentstatus;
+        $user->enrollmentdate = $enrollmentdate;
+        $user->trainingprogram = $trainingprogram;
+        $user->departmentid = $departmentid;
+        
+        // Trả về đối tượng User đã được tạo và gán giá trị
+        return $user;
+    }
+
+    /**
+     * @static
+     * @return User
+     */
+    public static function StudentCreatePending(
+        $studentid,
+        $fullname,
+        $email,
+        $majorname,
+        $studentclass,
+        $studenttype,
+        $studentstatus,
+        $enrollmentdate,
+        $trainingprogram,
+        $departmentid
+    ) {
+        // Gọi phương thức StudentCreate để tạo một đối tượng User với các tham số được truyền vào
+        $user = self::StudentCreate(
+            $studentid,
+            $fullname,
+            $email,
+            $majorname,
+            $studentclass,
+            $studenttype,
+            $studentstatus,
+            $enrollmentdate,
+            $trainingprogram,
+            $departmentid
+        );
+        
+        // Gán giá trị trạng thái chờ kích hoạt cho thuộc tính statusId của đối tượng User
+        $user->statusId = AccountStatus::AWAITING_ACTIVATION;
+        
+        // Trả về đối tượng User đã được tạo và gán giá trị
+        return $user;
+    }
+
+
+    /**
+     * @static
+     * @return User
+     */
+    public static function DepartmentCreate(
+        $departmentid,
+        $departmentcode,
+        $departmentname,
+        $groupid
+        
+    ) {
+        $user = new User();
+        $user->departmentid = $departmentid;
+        $user->departmentcode = $departmentcode;
+        $user->departmentname = $departmentname;
+        $user->groupid = $groupid;
+        return $user;
+    }
+
+    /**
+     * @static
+     * @return User
+     */
+    public static function DepartmentCreatePending(
+        $departmentid,
+        $departmentcode,
+        $departmentname,
+        $groupid
+        
+    ) {
+        $user = self::DepartmentCreate(
+            $departmentid,
+            $departmentcode,
+            $departmentname,
+            $groupid
+            
+        );
+        $user->statusId = AccountStatus::AWAITING_ACTIVATION;
+        return $user;
+    }
+
+    /**
+     * @static
+     * @return User
+     */
+    public static function LecturerCreate(
+        $lecturerid,
+        $fullname,
+        $hiredate,
+        $phonenumber,
+        $departmentid,
+        $emaillecturer
+    ) {
+        $user = new User();
+        $user->lecturerid = $lecturerid;
+        $user->fullname = $fullname;
+        $user->hiredate = $hiredate;
+        $user->phonenumber = $phonenumber;
+        $user->departmentid = $departmentid;
+        $user->emaillecturer = $emaillecturer;
+        return $user;
+    }
+
+    /**
+     * @static
+     * @return User
+     */
+    public static function LecturerCreatePending(
+        $lecturerid,
+        $fullname,
+        $hiredate,
+        $phonenumber,
+        $departmentid,
+        $emaillecturer
+    ) {
+        $user = self::LecturerCreate(
+            $lecturerid,
+            $fullname,
+            $hiredate,
+            $phonenumber,
+            $departmentid,
+            $emaillecturer
+        );
+        $user->statusId = AccountStatus::AWAITING_ACTIVATION;
+        return $user;
+    }
+    //-----------------------END Source VLU----------------
 
     /**
      * @param int $userId
@@ -652,6 +993,81 @@ class User
     {
         return $this->attributesChanged;
     }
+
+    //-----------------------Source VLU--------------------
+    public function ChangeMSSV($studentid)
+    {
+        $this->studentid = $studentid;
+    }
+    public function ChangeFullName($fullname)
+    {
+        $this->fullname = $fullname;
+    }
+    public function ChangeEmailStudent($email)
+    {
+        $this->email = $email;
+    }
+    public function ChangeMajorName($majorname)
+    {
+        $this->majorname = $majorname;
+    }
+    public function ChangeStudentClass($studentclass)
+    {
+        $this->studentclass = $studentclass;
+    }
+    public function ChangeStudentType($studenttype)
+    {
+        $this->studenttype = $studenttype;
+    }
+    public function ChangeStudentStatus($studentstatus)
+    {
+        $this->studentstatus = $studentstatus;
+    }
+    public function ChangeEnrollmentDate($enrollmentdate)
+    {
+        $this->enrollmentdate = $enrollmentdate;
+    }
+    public function ChangeTrainingProgram($trainingprogram)
+    {
+        $this->trainingprogram = $trainingprogram;
+    }
+    public function ChangeDepartmentId($departmentid)
+    {
+        $this->departmentid = $departmentid;
+    }
+    public function ChangeDepartmentCode($departmentcode)
+    {
+        $this->departmentcode = $departmentcode;
+    }
+    public function ChangeDepartmentName($departmentname)
+    {
+        $this->departmentname = $departmentname;
+    }
+    public function ChangeGroupId($groupid)
+    {
+        $this->groupid = $groupid;
+    }
+    public function ChangeGroupName($groupname)
+    {
+        $this->groupname = $groupname;
+    }
+    public function ChangeLecturerId($lecturerid)
+    {
+        $this->lecturerid = $lecturerid;
+    }
+    public function ChangeHireDate($hiredate)
+    {
+        $this->hiredate = $hiredate;
+    }
+    public function ChangeEmailLecturer($emaillecturer)
+    {
+        $this->emaillecturer = $emaillecturer;
+    }
+    public function ChangePhoneNumber($phonenumber)
+    {
+        $this->phonenumber = $phonenumber;
+    }
+    //-----------------------END Source VLU----------------
 
     /**
      * @param UserAttribute|string $attributeName

@@ -2989,6 +2989,34 @@ class UpdateUserSessionCommand extends SqlCommand
 }
 
 //-------------------------------------------Source VLU--------------------------------
+class GetStudentByIdCommand extends SqlCommand
+{
+    public function __construct($userId)
+    {
+        parent::__construct(Queries::GET_STUDENT_BY_ID);
+        $this->AddParameter(new Parameter(ParameterNames::STUDENT_ID, $userId));
+    }
+}
+
+class GetDepartmentByIdCommand extends SqlCommand
+{
+    public function __construct($userId)
+    {
+        parent::__construct(Queries::GET_DEPARTMENT_BY_ID);
+        $this->AddParameter(new Parameter(ParameterNames::DEPARTMENT_ID, $userId));
+    }
+}
+
+class GetLecturerByIdCommand extends SqlCommand
+{
+    public function __construct($userId)
+    {
+        parent::__construct(Queries::GET_LECTURER_BY_ID);
+        $this->AddParameter(new Parameter(ParameterNames::LECTURER_ID, $userId));
+    }
+}
+
+
 class GetStudentCommand extends SqlCommand
 {
     public function __construct($email)
@@ -3014,6 +3042,345 @@ class GetDepartmentCommand extends SqlCommand
         parent::__construct(Queries::GET_DEPARTMENT_INFO);
 
         $this->AddParameter(new Parameter(ParameterNames::DEPARTMENT_ID, $departmentId));
+    }
+}
+class GetDepartmentGroupIdCommand extends SqlCommand
+{
+    public function __construct($departmentId)
+    {
+        parent::__construct(Queries::GET_DEPARTMENT_GROUP_ID);
+
+        $this->AddParameter(new Parameter(ParameterNames::DEPARTMENT_ID, $departmentId));
+    }
+}
+class GetAllStudentCommand extends SqlCommand
+{
+    public function __construct()
+    {
+        parent::__construct(Queries::GET_ALL_STUDENT);
+    }
+}
+class GetAllDepartmentCommand extends SqlCommand
+{
+    public function __construct()
+    {
+        parent::__construct(Queries::GET_ALL_DEPARTMENT);
+    }
+}
+class GetAllLecturerCommand extends SqlCommand
+{
+    public function __construct()
+    {
+        parent::__construct(Queries::GET_ALL_LECTURER);
+    }
+}
+class GetAllGroupCommand extends SqlCommand
+{
+    public function __construct()
+    {
+        parent::__construct(Queries::GET_ALL_GROUP);
+    }
+}
+class GetStudentEmailPreferencesCommand extends SqlCommand
+{
+    public function __construct($userId)
+    {
+        parent::__construct(Queries::GET_STUDENT_EMAIL_PREFERENCES);
+        $this->AddParameter(new Parameter(ParameterNames::STUDENT_ID, $userId));
+    }
+}
+
+class RegisterStudentCommand extends SqlCommand
+{
+    // Phương thức khởi tạo của lớp RegisterStudentCommand nhận vào các tham số:
+    // $studentid: Mã số sinh viên
+    // $fullname: Họ và tên đầy đủ của sinh viên
+    // $email: Email của sinh viên
+    // $studentclass: Lớp của sinh viên
+    // $studenttype: Loại sinh viên (ví dụ: chính quy, tại chức, ...)
+    // $studentstatus: Trạng thái của sinh viên (ví dụ: đang học, bảo lưu, ...)
+    // $enrollmentdate: Ngày nhập học của sinh viên
+    // $majorname: Ngành học của sinh viên
+    // $trainingprogram: Chương trình đào tạo của sinh viên
+    // $departmentid: Mã phòng ban của sinh viên
+    public function __construct(
+        $studentid,
+        $fullname,
+        $email,
+        $studentclass,
+        $studenttype,
+        $studentstatus,
+        $enrollmentdate,
+        $majorname,
+        $trainingprogram,
+        $departmentid
+    ) {
+        // Gọi phương thức khởi tạo của lớp cha SqlCommand với câu truy vấn REGISTER_STUDENT
+        parent::__construct(Queries::REGISTER_STUDENT);
+        
+        // Thêm các tham số vào lệnh SQL bằng cách sử dụng phương thức AddParameter
+        // Thêm tham số mã số sinh viên
+        $this->AddParameter(new Parameter(ParameterNames::STUDENT_ID, $studentid));
+        // Thêm tham số họ và tên đầy đủ
+        $this->AddParameter(new Parameter(ParameterNames::FULL_NAME, $fullname));
+        // Thêm tham số email
+        $this->AddParameter(new Parameter(ParameterNames::EMAIL, $email));
+        // Thêm tham số lớp sinh viên
+        $this->AddParameter(new Parameter(ParameterNames::STUDENT_CLASS, $studentclass));
+        // Thêm tham số loại sinh viên
+        $this->AddParameter(new Parameter(ParameterNames::STUDENT_TYPE, $studenttype));
+        // Thêm tham số trạng thái sinh viên
+        $this->AddParameter(new Parameter(ParameterNames::STUDENT_STATUS, $studentstatus));
+        // Thêm tham số ngày nhập học
+        $this->AddParameter(new Parameter(ParameterNames::ENROLLMENT_DATE, $enrollmentdate));
+        // Thêm tham số ngành học
+        $this->AddParameter(new Parameter(ParameterNames::MAJOR_NAME, $majorname));
+        // Thêm tham số chương trình đào tạo
+        $this->AddParameter(new Parameter(ParameterNames::TRAINING_PROGRAM, $trainingprogram));
+        // Thêm tham số mã phòng ban
+        $this->AddParameter(new Parameter(ParameterNames::DEPARTMENT_ID, $departmentid));
+    }
+}
+
+
+class RegisterLecturerCommand extends SqlCommand
+{
+    public function __construct(
+        $lecturerid,
+        $fullname,
+        $hiredate,
+        $phonenumber,
+        $departmentid,
+        $emaillecturer
+    ) {
+        parent::__construct(Queries::REGISTER_LECTURER);
+        $this->AddParameter(new Parameter(ParameterNames::LECTURER_ID, $lecturerid));
+        $this->AddParameter(new Parameter(ParameterNames::FULL_NAME, $fullname));
+        $this->AddParameter(new Parameter(ParameterNames::HIRE_DATE, $hiredate));
+        $this->AddParameter(new Parameter(ParameterNames::PHONE_NUMBER, $phonenumber));
+        $this->AddParameter(new Parameter(ParameterNames::DEPARTMENT_ID, $departmentid));
+        $this->AddParameter(new Parameter(ParameterNames::EMAIL, $emaillecturer));
+        
+    }
+}
+
+class RegisterDepartmentCommand extends SqlCommand
+{
+    public function __construct(
+        $departmentid,
+        $departmentcode,
+        $departmentname,
+        $groupid
+    ) {
+        parent::__construct(Queries::REGISTER_DEPARTMENT);
+        $this->AddParameter(new Parameter(ParameterNames::DEPARTMENT_ID, $departmentid));
+        $this->AddParameter(new Parameter(ParameterNames::DEPARTMENT_CODE, $departmentcode));
+        $this->AddParameter(new Parameter(ParameterNames::DEPARTMENT_NAME, $departmentname));
+        $this->AddParameter(new Parameter(ParameterNames::GROUP_ID, $groupid));
+    }
+}
+
+class UpdateStudentUserIdCommand extends SqlCommand
+{
+    public function __construct($email, $userId)
+    {
+        parent::__construct(Queries::UPDATE_STUDENT_USER);
+
+        $this->AddParameter(new Parameter(ParameterNames::EMAIL, $email));
+        $this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
+    }
+}
+
+class UpdateLecturerUserIdCommand extends SqlCommand
+{
+    public function __construct($email, $userId)
+    {
+        parent::__construct(Queries::UPDATE_LECTURER_USER);
+
+        $this->AddParameter(new Parameter(ParameterNames::EMAIL, $email));
+        $this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
+    }
+}
+
+class UpdateStudentCommand extends SqlCommand
+{
+    public function __construct(
+        $userId,
+        $studentid,
+        $fullname,
+        $email,
+        $majorname,
+        $studentclass,
+        $studenttype,
+        $studentstatus,
+        $enrollmentdate,
+        $trainingprogram,
+        $departmentid
+    ) {
+        parent::__construct(Queries::UPDATE_STUDENT);
+        $this->AddParameter(new Parameter(ParameterNames::STUDENT_ID, $userId));
+        $this->AddParameter(new Parameter(ParameterNames::STUDENT_ID, $studentid));
+        $this->AddParameter(new Parameter(ParameterNames::FULL_NAME, $fullname));
+        $this->AddParameter(new Parameter(ParameterNames::EMAIL, $email));
+        $this->AddParameter(new Parameter(ParameterNames::MAJOR_NAME, $majorname));
+        $this->AddParameter(new Parameter(ParameterNames::STUDENT_CLASS, $studentclass));
+        $this->AddParameter(new Parameter(ParameterNames::STUDENT_TYPE, $studenttype));
+        $this->AddParameter(new Parameter(ParameterNames::STUDENT_STATUS, $studentstatus));
+        $this->AddParameter(new Parameter(ParameterNames::ENROLLMENT_DATE, $enrollmentdate));
+        $this->AddParameter(new Parameter(ParameterNames::TRAINING_PROGRAM, $trainingprogram));
+        $this->AddParameter(new Parameter(ParameterNames::DEPARTMENT_ID, $departmentid));
+    }
+}
+class UpdateDepartmentCommand extends SqlCommand
+{
+    public function __construct(
+        $userId,
+        $departmentid,
+        $departmentcode,
+        $departmentname,
+        $groupid
+    ) {
+        parent::__construct(Queries::UPDATE_DEPARTMENT);
+        $this->AddParameter(new Parameter(ParameterNames::DEPARTMENT_ID, $userId));
+        $this->AddParameter(new Parameter(ParameterNames::DEPARTMENT_ID, $departmentid));
+        $this->AddParameter(new Parameter(ParameterNames::DEPARTMENT_CODE, $departmentcode));
+        $this->AddParameter(new Parameter(ParameterNames::DEPARTMENT_NAME, $departmentname));
+        $this->AddParameter(new Parameter(ParameterNames::GROUP_ID, $groupid));
+    }
+}
+//Update UserGroups From Departments
+class UpdateUserGroupsCommand extends SqlCommand
+{
+    public function __construct($departmentid,$groupid)
+    {
+        parent::__construct(Queries::UPDATE_USER_GROUPS);
+        $this->AddParameter(new Parameter(ParameterNames::DEPARTMENT_ID, $departmentid));
+        $this->AddParameter(new Parameter(ParameterNames::GROUP_ID, $groupid));
+    }
+}
+class GetStudentInfoByEmailCommand extends SqlCommand
+{
+    public function __construct($email)
+    {
+        parent::__construct(Queries::GET_STUDENT_INFO_BY_EMAIL);
+        $this->AddParameter(new Parameter(ParameterNames::EMAIL, $email));
+    }
+}
+
+class UpdateLecturerCommand extends SqlCommand
+{
+    public function __construct(
+        $userId,
+        $lecturerid, 
+        $fullname, 
+        $hiredate, 
+        $phonenumber, 
+        $departmentid, 
+        $emaillecturer
+    ) {
+        parent::__construct(Queries::UPDATE_LECTURER);
+        $this->AddParameter(new Parameter(ParameterNames::LECTURER_ID, $userId));
+        $this->AddParameter(new Parameter(ParameterNames::LECTURER_ID, $lecturerid));
+        $this->AddParameter(new Parameter(ParameterNames::FULL_NAME, $fullname));
+        $this->AddParameter(new Parameter(ParameterNames::HIRE_DATE, $hiredate));
+        $this->AddParameter(new Parameter(ParameterNames::PHONE_NUMBER, $phonenumber));
+        $this->AddParameter(new Parameter(ParameterNames::DEPARTMENT_ID, $departmentid));
+        $this->AddParameter(new Parameter(ParameterNames::EMAIL, $emaillecturer));
+
+    }
+}
+class DeleteStudentCommand extends SqlCommand
+{
+    public function __construct($userId)
+    {
+        parent::__construct(Queries::DELETE_STUDENT);
+        $this->AddParameter(new Parameter(ParameterNames::STUDENT_ID, $userId));
+    }
+}
+class DeleteDepartmentCommand extends SqlCommand
+{
+    public function __construct($userId)
+    {
+        parent::__construct(Queries::DELETE_DEPARTMENT);
+        $this->AddParameter(new Parameter(ParameterNames::DEPARTMENT_ID, $userId));
+    }
+}
+class DeleteLecturerCommand extends SqlCommand
+{
+    public function __construct($userId)
+    {
+        parent::__construct(Queries::DELETE_LECTURER);
+        $this->AddParameter(new Parameter(ParameterNames::LECTURER_ID, $userId));
+    }
+}
+class StudentLoginCommand extends SqlCommand
+{
+    public function __construct($fullname)
+    {
+        parent::__construct(Queries::LOGIN_STUDENT);
+        $this->AddParameter(new Parameter(ParameterNames::FULL_NAME, strtolower($fullname)));
+    }
+}
+class DepartmentLoginCommand extends SqlCommand
+{
+    public function __construct($departmentname)
+    {
+        parent::__construct(Queries::LOGIN_DEPARTMENT);
+        $this->AddParameter(new Parameter(ParameterNames::DEPARTMENT_NAME, strtolower($departmentname)));
+    }
+}
+class LecturerLoginCommand extends SqlCommand
+{
+    public function __construct($fullname)
+    {
+        parent::__construct(Queries::LOGIN_LECTURER);
+        $this->AddParameter(new Parameter(ParameterNames::FULL_NAME, strtolower($fullname)));
+    }
+}
+class GetAllDepartmentsCommand extends SqlCommand
+{
+    public function __construct()
+    {
+        parent::__construct(Queries::GET_ALL_DEPARTMENT);
+    }
+}
+class CheckDepartmentExistenceCommand extends SqlCommand
+{
+    public function __construct($departmentId)
+    {
+        parent::__construct(Queries::CHECK_DEPARTMENT_EXISTENCE);
+        $this->AddParameter(new Parameter(ParameterNames::DEPARTMENT_ID, $departmentId));
+    }
+}
+class AddDepartmentToGroupCommand extends SqlCommand
+{
+    public function __construct($groupName, $isDefault)
+    {
+        parent::__construct(Queries::ADD_GROUP);
+        $this->AddParameter(new Parameter(ParameterNames::GROUP_NAME, $groupName));
+        $this->AddParameter(new Parameter(ParameterNames::GROUP_ISDEFAULT, intval($isDefault)));
+    }
+}
+class InsertDepartmentCommand extends SqlCommand
+{
+    public function __construct(
+        $departmentid,
+        $departmentcode,
+        $departmentname
+    ) {
+        parent::__construct(Queries::REGISTER_DEPARTMENT);
+        $this->AddParameter(new Parameter(ParameterNames::DEPARTMENT_ID, $departmentid));
+        $this->AddParameter(new Parameter(ParameterNames::DEPARTMENT_CODE, $departmentcode));
+        $this->AddParameter(new Parameter(ParameterNames::DEPARTMENT_NAME, $departmentname));
+
+    }
+}
+class CheckUserIdByEmailCommand extends SqlCommand
+{
+    public function __construct($email)
+    {
+        parent::__construct(Queries::CHECK_EMAIL);
+        $this->AddParameter(new Parameter(ParameterNames::EMAIL_ADDRESS, strtolower($email)));
     }
 }
 //-------------------------------------------END Source VLU--------------------------------

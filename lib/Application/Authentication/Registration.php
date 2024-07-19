@@ -195,11 +195,12 @@ class Registration implements IRegistration
             $groups = $this->groupRepository->GetList()->Results();
             /** @var GroupItemView $group */
             foreach ($groups as $group) {
-                if (in_array(strtolower($group->Name()), $lowercaseGroups)) {
+                //Thay đổi $group->Name() thành Id() để nhận được group_id truyền vào
+                if (in_array(strtolower($group->Id()), $lowercaseGroups)) {
                     Log::Debug('Syncing group %s for user %s', $group->Name(), $user->Username());
                     $groupsToSync[] = new UserGroup($group->Id(), $group->Name());
                 } else {
-                    if (in_array(strtolower($group->Name()), $altGroups)) {
+                    if (in_array(strtolower($group->Id()), $altGroups)) {
                       Log::Debug('Syncing group %s for user %s', $group->Name(), $user->Username());
                       $groupsToSync[] = new UserGroup($group->Id(), $group->Name());
                     } else {

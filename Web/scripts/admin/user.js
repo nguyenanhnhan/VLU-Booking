@@ -192,6 +192,12 @@ function UserManagement(opts) {
 			elements.importUsersDialog.modal('show');
 		});
 
+		// Sự kiện click cho nút Show Confirmation
+		$('#showConfirmationButton').click(function() {
+			$(this).hide();
+			$('#confirmationForm').removeClass('no-show');
+		});
+
 		elements.deleteMultiplePrompt.click(function(e){
 			e.preventDefault();
 			var checked = elements.userList.find('.delete-multiple:checked');

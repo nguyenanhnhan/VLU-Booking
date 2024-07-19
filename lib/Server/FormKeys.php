@@ -290,4 +290,25 @@ class FormKeys
         $key = strtoupper($formKey);
         return eval("return FormKeys::$key;");
     }
+
+    //-----------------------Source VLU--------------------
+    public const STUDENT_ID = 'student_id';
+    public const MSSV = 'studentid';
+    public const FULLNAME = 'full_name';
+    public const ENROLLMENT_DATE = 'enrollment_date';
+    public const STUDENT_TYPE = 'student_type';
+    public const STUDENT_STATUS = 'status';
+    public const MAJOR_NAME = 'major_name';
+    public const TRAINING_PROGRAM = 'training_program';
+    public const STUDENT_CLASS = 'student_class';
+
+    public const DEPARTMENT_ID = 'department_id';
+    public const DEPARTMENT_CODE = 'department_code';
+    public const DEPARTMENT_NAME = 'department_name';   
+
+    public const LECTURER_ID = 'lecturer_id';
+    public const LECTURER_HIRE_DATE = 'hire_date';
+    public const LECTURER_PHONE_NUMBER = 'phone_number';
+    
+    //-----------------------END Source VLU----------------
 }

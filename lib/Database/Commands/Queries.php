@@ -1257,9 +1257,86 @@ class Queries
 		WHERE (`username` = @username OR `email` = @username) AND `status_id` = 1';
 
 	//-------------------------------------------Source VLU--------------------------------
+	const GET_ALL_STUDENT = "SELECT students.*, departments.department_name FROM students LEFT JOIN departments ON students.department_id = departments.department_id";
+	const GET_ALL_DEPARTMENT = "SELECT departments.*, `groups`.name FROM departments LEFT JOIN `groups` ON departments.group_id = `groups`.group_id";
+	const GET_ALL_LECTURER = "SELECT lecturers.*, departments.department_name FROM lecturers LEFT JOIN departments ON lecturers.department_id = departments.department_id";
+	const GET_ALL_GROUP = "SELECT * FROM `groups`";
 	const GET_STUDENT_DEPARTMENT = "SELECT department_id FROM students WHERE email = :email";
     const GET_LECTURER_DEPARTMENT = "SELECT department_id FROM lecturers WHERE email = :email";
-    const GET_DEPARTMENT_INFO = "SELECT department_code, department_name FROM departments WHERE department_id = :department_id";
+    const GET_DEPARTMENT_INFO = "SELECT * FROM departments WHERE department_id = :department_id";
+	const GET_DEPARTMENT_GROUP_ID = "SELECT group_id FROM departments WHERE department_id = :department_id";
+	public const GET_STUDENT_BY_ID = "SELECT * FROM students WHERE student_id = :student_id";
+	public const GET_STUDENT_EMAIL_PREFERENCES = "SELECT * FROM students WHERE student_id = :student_id";
+	public const REGISTER_STUDENT = "INSERT INTO students (student_id, full_name, enrollment_date, student_type, status, major_name, training_program, student_class, email, department_id
+		) VALUES (:student_id, :full_name, NULLIF(:enrollment_date, ''), :student_type, :status, :major_name, :training_program, :student_class, :email, NULLIF(:department_id, ''))";
+	public const REGISTER_LECTURER = "INSERT INTO lecturers (lecturer_id, full_name, hire_date, phone_number, department_id, email
+		) VALUES (:lecturer_id, :full_name, NULLIF(:hire_date, ''), :phone_number, NULLIF(:department_id, ''), :email)";
+	public const GET_DEPARTMENT_BY_ID = "SELECT * FROM departments WHERE department_id = :department_id";
+	public const GET_LECTURER_BY_ID = "SELECT * FROM lecturers WHERE lecturer_id = :lecturer_id";
+	public const REGISTER_DEPARTMENT = "INSERT INTO departments (department_id, department_code, department_name, group_id)
+    VALUES (:department_id, :department_code, :department_name, NULLIF(@groupid, ''))";
+	public const UPDATE_STUDENT_USER = "UPDATE students SET user_id = @userid WHERE email = :email";
+	public const UPDATE_LECTURER_USER = "UPDATE lecturers SET user_id = @userid WHERE email = :email";
+	public const UPDATE_STUDENT = "UPDATE students SET
+    student_id = :student_id,
+    full_name = :full_name,
+    email = :email,
+    major_name = :major_name,
+    student_class = :student_class,
+    student_type = :student_type,
+    status = :status,
+    enrollment_date = NULLIF(:enrollment_date, ''),
+    training_program = :training_program,
+	department_id = NULLIF(:department_id, '')
+	WHERE
+		student_id = :student_id;
+	";
+
+	public const UPDATE_DEPARTMENT = "UPDATE departments SET
+	department_id = :department_id,
+	department_code = :department_code,
+	department_name = :department_name,
+	group_id = NULLIF(@groupid, '')
+	WHERE
+		department_id = :department_id;
+	";
+
+	public const UPDATE_USER_GROUPS = "UPDATE user_groups ug
+	INNER JOIN students s ON ug.user_id = s.user_id
+	SET ug.group_id = @groupid
+	WHERE 
+		s.department_id = :department_id
+	";
+
+
+	public const UPDATE_LECTURER = "UPDATE lecturers SET
+	lecturer_id = :lecturer_id,
+	full_name = :full_name,
+	hire_date = NULLIF(:hire_date, ''),
+	phone_number = :phone_number,
+	department_id = NULLIF(:department_id, ''),
+	email = :email
+	WHERE
+		lecturer_id = :lecturer_id;
+	";
+
+	public const DELETE_STUDENT = 'DELETE FROM `students` WHERE `student_id` = :student_id';
+
+	public const DELETE_DEPARTMENT = 'DELETE FROM `departments` WHERE `department_id` = :department_id';
+	public const DELETE_LECTURER = 'DELETE FROM `lecturers` WHERE `lecturer_id` = :lecturer_id';
+
+	public const LOGIN_STUDENT =
+        'SELECT * FROM `students` WHERE (`full_name` = :full_name OR `email` = :full_name)';
+	public const LOGIN_DEPARTMENT =
+		'SELECT * FROM `departments` WHERE (`department_name` = :department_name)';
+	public const LOGIN_LECTURER =
+		'SELECT * FROM `lecturers` WHERE (`full_name` = :full_name OR `email` = :full_name)';
+	public const CHECK_DEPARTMENT_EXISTENCE = 'SELECT department_id FROM departments WHERE department_id = :department_id';
+
+	// cập nhật group_id trong bảng user_groups khi người dùng cập nhật groups cho khoa
+	public const GET_STUDENT_INFO_BY_EMAIL = "SELECT department_id, user_id FROM students WHERE email = :email";
+	public const GET_GROUP_ID_BY_DEPARTMENT_ID = "SELECT group_id FROM departments WHERE department_id = :department_id";
+	public const UPDATE_USER_GROUP = "UPDATE user_groups SET group_id = @groupid WHERE user_id = @userid";
 	//-------------------------------------------END Source VLU--------------------------------
 }
 

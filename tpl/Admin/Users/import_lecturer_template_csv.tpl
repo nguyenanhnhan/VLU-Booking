@@ -1,0 +1,1 @@
+lecturerid,fullname,hiredate,phonenumber,departmentid,email,departmentname

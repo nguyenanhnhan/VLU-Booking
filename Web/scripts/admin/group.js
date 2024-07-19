@@ -30,6 +30,11 @@ function GroupManagement(opts) {
 		addForm: $('#addGroupForm'),
 		addDialog: $('#addGroupDialog'),
 
+		//--------------Source VLU--------------------//
+		importFromDepartmentForm: $('#addFromDepartmentForm'),
+		importFromDepartmentDialog: $('#importGroupFromDepartmentDialog'),
+		//--------------End Source--------------------//
+
         checkAllResourcesFull: $('#checkAllResourcesFull'),
         checkAllResourcesView: $('#checkAllResourcesView'),
         checkNoResources: $('#checkNoResources'),
@@ -188,6 +193,14 @@ function GroupManagement(opts) {
             elements.addDialog.find(':text').first().focus();
         });
 
+		//--------------Source VLU--------------------//
+		$('#import-from-department').click(e => {
+		    e.preventDefault();
+            elements.importFromDepartmentDialog.modal('show');
+            elements.importFromDepartmentDialog.find(':text').first().focus();
+        });
+		//--------------End Source--------------------//
+
 		elements.importGroupsTrigger.click(e => {
             e.preventDefault();
             elements.importGroupsDialog.modal('show');
@@ -224,6 +237,9 @@ function GroupManagement(opts) {
 		ConfigureAsyncForm(elements.changeAdminResourcesForm, getSubmitCallback(options.actions.resourceGroups), function() {elements.resourceAdminDialog.modal('hide');}, error);
 		ConfigureAsyncForm(elements.changeAdminSchedulesForm, getSubmitCallback(options.actions.scheduleGroups), function() {elements.scheduleAdminDialog.modal('hide');}, error);
         ConfigureAsyncForm(elements.importGroupsForm, getSubmitCallback(options.actions.importGroups), importHandler);
+		//--------------Source VLU--------------------//
+		ConfigureAsyncForm(elements.importFromDepartmentForm, getSubmitCallback(options.actions.importFromDepartment), null, error);
+		//--------------End Source--------------------//
 
     };
 

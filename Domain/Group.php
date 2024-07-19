@@ -6,6 +6,7 @@ class Group
     private $name;
     private $adminGroupId;
     private $isDefault = 0;
+    private $departmentId;
 
     private $addedUsers = [];
     private $removedUsers = [];
@@ -181,6 +182,26 @@ class Group
     public function WithId($groupId)
     {
         $this->id = $groupId;
+    }
+
+    /**
+     * @internal
+     * @param $name
+     * @return void
+     */
+    public function WithName($name)
+    {
+        $this->name = $name;
+    }
+
+    /**
+     * @internal
+     * @param $departmentId 
+     * @return void
+     */
+    public function WithDepartmentId($departmentId)
+    {
+        $this->departmentId  = $departmentId ;
     }
 
     /**

@@ -11,6 +11,14 @@ require_once(ROOT_DIR . 'lib/Application/Authentication/Password.php');
 require_once(ROOT_DIR . 'lib/Application/Authentication/LoginCookie.php');
 require_once(ROOT_DIR . 'lib/Application/Authentication/IRegistration.php');
 require_once(ROOT_DIR . 'lib/Application/Authentication/Registration.php');
+//-----------------------Source VLU--------------------
+require_once(ROOT_DIR . 'lib/Application/Authentication/IStudentRegistration.php');
+require_once(ROOT_DIR . 'lib/Application/Authentication/StudentRegistration.php');
+require_once(ROOT_DIR . 'lib/Application/Authentication/IDepartmentRegistration.php');
+require_once(ROOT_DIR . 'lib/Application/Authentication/DepartmentRegistration.php');
+require_once(ROOT_DIR . 'lib/Application/Authentication/ILecturerRegistration.php');
+require_once(ROOT_DIR . 'lib/Application/Authentication/LecturerRegistration.php');
+//-----------------------Source VLU--------------------
 require_once(ROOT_DIR . 'lib/Application/Authentication/AuthenticatedUser.php');
 require_once(ROOT_DIR . 'lib/Application/Authentication/CaptchaService.php');
 require_once(ROOT_DIR . 'lib/Application/Authentication/IAccountActivation.php');

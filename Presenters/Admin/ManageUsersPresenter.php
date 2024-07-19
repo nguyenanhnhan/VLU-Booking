@@ -730,6 +730,7 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
     {
         $userId = $this->page->GetUserId();
         $user = $this->userRepository->LoadById($userId);
+        
         $attributes = $this->attributeService->GetAttributes(CustomAttributeCategory::USER, [$userId]);
 
         $this->page->ShowUserUpdate($user, $attributes->GetDefinitions());
