@@ -442,14 +442,14 @@ class ManageLecturersPresenter extends ActionPresenter implements IManageLecture
         }
 
         if ($action == ManageLecturersActions::AddLecturer) {
-            // $this->page->RegisterValidator('addUserEmailformat', new EmailValidator($this->page->GetEmail()));
-            // $this->page->RegisterValidator(
-            //     'addUserUniqueemail',
-            //     new UniqueEmailValidator($this->userRepository, $this->page->GetEmail())
-            // );
+            $this->page->RegisterValidator('addUserEmailformat', new EmailValidator($this->page->GetEmail()));
             $this->page->RegisterValidator(
-                'addUserUsername',
-                new UniqueUserNameValidator($this->userRepository, $this->page->GetDepartmentName())
+                'addUserUniqueemail',
+                new UniqueEmailLecturerValidator($this->userRepository, $this->page->GetEmail())
+            );
+            $this->page->RegisterValidator(
+                'addUserLecturerId',
+                new UniqueLecturerIdValidator($this->userRepository, $this->page->GetLecturerId())
             );
             // $this->page->RegisterValidator(
             //     'addAttributeValidator',
@@ -579,7 +579,8 @@ class ManageLecturersPresenter extends ActionPresenter implements IManageLecture
         // First pass: Collect departments to insert
         foreach ($rows as $row) {
             if (!$this->userRepository->DepartmentExists($row->departmentid)) {
-                if (!isset($departmentsToInsert[$row->departmentid])) {
+                //Kiểm tra departmentid và departmentname có tồn tại không trước khi insert
+                if (!isset($departmentsToInsert[$row->departmentid]) && !empty($row->departmentid) && !empty($row->departmentname)) {
                     $departmentsToInsert[$row->departmentid] = [
                         'department_code' => '',
                         'department_name' => $row->departmentname
@@ -587,11 +588,15 @@ class ManageLecturersPresenter extends ActionPresenter implements IManageLecture
                 }
             }
         }
-
-        // Insert departments
+    
+        // Auto Insert departments
         foreach ($departmentsToInsert as $departmentid => $departmentData) {
-            $this->userRepository->InsertDepartment($departmentid, $departmentData['department_code'], $departmentData['department_name']);
-            $messages[] = "Inserted new department with ID: $departmentid";
+            //Kiểm tra departmentid và departmentname có tồn tại không trước khi insert
+            if ($departmentid !== null && !empty($departmentid) && !empty($departmentData['department_name'])) {
+                $this->userRepository->InsertDepartment($departmentid, $departmentData['department_code'], $departmentData['department_name']);
+                $messages[] = "Inserted new department with ID: $departmentid, Name: " . $departmentData['department_name'];
+            }
+            
         }
 
         // Second pass: Process rows and insert lecturers
@@ -611,8 +616,8 @@ class ManageLecturersPresenter extends ActionPresenter implements IManageLecture
         $shouldUpdate = $this->page->GetUpdateOnImport();
 
         $emailValidator = new EmailValidator($row->emaillecturer);
-        $uniqueEmailValidator = new UniqueEmailValidator($this->userRepository, $row->emaillecturer);
-        $uniqueUsernameValidator = new UniqueUserNameValidator($this->userRepository, $row->fullname);
+        $uniqueEmailLecturerValidator = new UniqueEmailLecturerValidator($this->userRepository, $row->emaillecturer);
+        $uniqueLecturerIdValidator = new UniqueLecturerIdValidator($this->userRepository, $row->lecturerid);
 
         $emailValidator->Validate();
         if (!$emailValidator->IsValid()) {
@@ -622,17 +627,17 @@ class ManageLecturersPresenter extends ActionPresenter implements IManageLecture
         }
 
         if (!$shouldUpdate) {
-            $uniqueEmailValidator->Validate();
-            $uniqueUsernameValidator->Validate();
+            $uniqueEmailLecturerValidator->Validate();
+            $uniqueLecturerIdValidator->Validate();
 
-            if (!$uniqueEmailValidator->IsValid()) {
-                $uevMsgs = $uniqueEmailValidator->Messages();
+            if (!$uniqueEmailLecturerValidator->IsValid()) {
+                $uevMsgs = $uniqueEmailLecturerValidator->Messages();
                 $messages[] = $uevMsgs[0] . " ({$row->emaillecturer})";
                 return;
             }
-            if (!$uniqueUsernameValidator->IsValid()) {
-                $uuvMsgs = $uniqueUsernameValidator->Messages();
-                $messages[] = $uuvMsgs[0] . " ({$row->fullname})";
+            if (!$uniqueLecturerIdValidator->IsValid()) {
+                $uuvMsgs = $uniqueLecturerIdValidator->Messages();
+                $messages[] = $uuvMsgs[0] . " ({$row->lecturerid})";
                 return;
             }
         }

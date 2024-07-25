@@ -426,12 +426,12 @@ class ManageVluersPresenter extends ActionPresenter implements IManageVluersPres
             $this->page->RegisterValidator('emailformat', new EmailValidator($this->page->GetEmail()));
             $this->page->RegisterValidator(
                 'uniqueemail',
-                new UniqueEmailValidator($this->userRepository, $this->page->GetEmail(), $this->page->GetUserId())
+                new UniqueEmailStudentValidator($this->userRepository, $this->page->GetEmail(), $this->page->GetUserId())
             );
-            $this->page->RegisterValidator(
-                'uniqueusername',
-                new UniqueUserNameValidator($this->userRepository, $this->page->GetFullName(), $this->page->GetUserId())
-            );
+            // $this->page->RegisterValidator(
+            //     'uniqueusername',
+            //     new UniqueUserNameValidator($this->userRepository, $this->page->GetFullName(), $this->page->GetUserId())
+            // );
             
         }
 
@@ -439,22 +439,11 @@ class ManageVluersPresenter extends ActionPresenter implements IManageVluersPres
             $this->page->RegisterValidator('addUserEmailformat', new EmailValidator($this->page->GetEmail()));
             $this->page->RegisterValidator(
                 'addUserUniqueemail',
-                new UniqueEmailValidator($this->userRepository, $this->page->GetEmail())
+                new UniqueEmailStudentValidator($this->userRepository, $this->page->GetEmail())
             );
             $this->page->RegisterValidator(
-                'addUserUsername',
-                new UniqueUserNameValidator($this->userRepository, $this->page->GetFullName())
-            );
-            $this->page->RegisterValidator(
-                'addAttributeValidator',
-                new AttributeValidator(
-                    $this->attributeService,
-                    CustomAttributeCategory::USER,
-                    $this->GetAttributeValues(),
-                    null,
-                    true,
-                    true
-                )
+                'addUserStudentId',
+                new UniqueStudentIdValidator($this->userRepository, $this->page->GetMSSV())
             );
         }
 
@@ -569,11 +558,12 @@ class ManageVluersPresenter extends ActionPresenter implements IManageVluersPres
         }
     
         $departmentsToInsert = [];
-    
+        
         // First pass: Collect departments to insert
         foreach ($rows as $row) {
             if (!$this->userRepository->DepartmentExists($row->departmentid)) {
-                if (!isset($departmentsToInsert[$row->departmentid])) {
+                //Kiểm tra departmentid và departmentname có tồn tại không trước khi insert
+                if (!isset($departmentsToInsert[$row->departmentid]) && !empty($row->departmentid) && !empty($row->departmentname)) {
                     $departmentsToInsert[$row->departmentid] = [
                         'department_code' => '',
                         'department_name' => $row->departmentname
@@ -582,10 +572,14 @@ class ManageVluersPresenter extends ActionPresenter implements IManageVluersPres
             }
         }
     
-        // Insert departments
+        // Auto Insert departments
         foreach ($departmentsToInsert as $departmentid => $departmentData) {
-            $this->userRepository->InsertDepartment($departmentid, $departmentData['department_code'], $departmentData['department_name']);
-            $messages[] = "Inserted new department with ID: $departmentid";
+            //Kiểm tra departmentid và departmentname có tồn tại không trước khi insert
+            if ($departmentid !== null && !empty($departmentid) && !empty($departmentData['department_name'])) {
+                $this->userRepository->InsertDepartment($departmentid, $departmentData['department_code'], $departmentData['department_name']);
+                $messages[] = "Inserted new department with ID: $departmentid, Name: " . $departmentData['department_name'];
+            }
+            
         }
     
         // Second pass: Process rows and insert students
@@ -605,8 +599,8 @@ class ManageVluersPresenter extends ActionPresenter implements IManageVluersPres
         $shouldUpdate = $this->page->GetUpdateOnImport();
     
         $emailValidator = new EmailValidator($row->email);
-        $uniqueEmailValidator = new UniqueEmailValidator($this->userRepository, $row->email);
-        $uniqueUsernameValidator = new UniqueUserNameValidator($this->userRepository, $row->fullname);
+        $uniqueEmailValidator = new UniqueEmailStudentValidator($this->userRepository, $row->email);
+        $uniqueStudentIdValidator = new UniqueStudentIdValidator($this->userRepository, $row->studentid);
     
         $emailValidator->Validate();
         if (!$emailValidator->IsValid()) {
@@ -617,16 +611,16 @@ class ManageVluersPresenter extends ActionPresenter implements IManageVluersPres
     
         if (!$shouldUpdate) {
             $uniqueEmailValidator->Validate();
-            $uniqueUsernameValidator->Validate();
+            $uniqueStudentIdValidator->Validate();
     
             if (!$uniqueEmailValidator->IsValid()) {
                 $uevMsgs = $uniqueEmailValidator->Messages();
                 $messages[] = $uevMsgs[0] . " ({$row->email})";
                 return;
             }
-            if (!$uniqueUsernameValidator->IsValid()) {
-                $uuvMsgs = $uniqueUsernameValidator->Messages();
-                $messages[] = $uuvMsgs[0] . " ({$row->fullname})";
+            if (!$uniqueStudentIdValidator->IsValid()) {
+                $uuvMsgs = $uniqueStudentIdValidator->Messages();
+                $messages[] = $uuvMsgs[0] . " ({$row->studentid})";
                 return;
             }
         }

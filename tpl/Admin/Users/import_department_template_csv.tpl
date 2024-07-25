@@ -1,1 +1,1 @@
-departmentid,departmentcode,departmentname,groupid
+departmentid,departmentcode,departmentname

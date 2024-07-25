@@ -602,7 +602,7 @@ class ManageDepartmentsPresenter extends ActionPresenter implements IManageDepar
                         $user->ChangeDepartmentId($row->departmentid);
                         $user->ChangeDepartmentCode($row->departmentcode);
                         $user->ChangeDepartmentName($row->departmentname);
-                        $user->ChangeGroupId($row->groupid);
+                        
                     }
                 }
                 if (!$shouldUpdate) {
@@ -610,7 +610,7 @@ class ManageDepartmentsPresenter extends ActionPresenter implements IManageDepar
                         $row->departmentid,
                         $row->departmentcode,
                         $row->departmentname,
-                        $row->groupid
+                        null
                         
                     );
                 }

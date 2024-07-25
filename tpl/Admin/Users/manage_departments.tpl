@@ -15,13 +15,6 @@
                         <span class="glyphicon glyphicon-import"></span>
                     </a>
                 </li>
-                <li role="presentation">
-                    <a role="menuitem" href="{$ExportUrl}" download="{$ExportUrl}" id="export-users"
-                       class="add-link add-user"
-                       target="_blank">{translate key="Export"}
-                        <span class="glyphicon glyphicon-export"></span>
-                    </a>
-                </li>
                 <li role="presentation" class="divider"></li>
                 <li role="presentation">
                     <a role="menuitem" href="#" id="add-user" class="add-link add-user">{translate key="AddDepartment"}
@@ -40,12 +33,6 @@
                 | {html_link href=$smarty.server.SCRIPT_NAME key=AllDepartments}</label>
             <input type="text" id="userSearch"
                    class="form-control"/>
-        </div>
-        <div class="form-group col-xs-2">
-            <label for="filterStatusId">{translate key=Status}</label>
-            <select id="filterStatusId" class="form-control">
-                {html_options selected=$FilterStatusId options=$statusDescriptions}
-            </select>
         </div>
         <div class="col-xs-6">
             &nbsp;
@@ -195,10 +182,8 @@
                         <div class="col-sm-12 col-md-6">
                             <div class="form-group has-feedback">
                                 <label for="addDepartmentCode">{translate key="DepartmentCode"}</label>
-                                <input type="text" {formname key="DEPARTMENT_CODE"} class="required form-control" required
+                                <input type="text" {formname key="DEPARTMENT_CODE"} class="form-control"
                                        id="addDepartmentCode"/>
-                                <i class="glyphicon glyphicon-asterisk form-control-feedback"
-                                   data-bv-icon-for="addDepartmentCode"></i>
                             </div>
                         </div>
                         <div class="col-sm-12 col-md-6">
@@ -235,11 +220,7 @@
                         <div class="clearfix"></div>
                     </div>
                     <div class="modal-footer">
-                        <div class="checkbox inline">
-                            <input type="checkbox" id="sendAddEmail"
-                                   checked="checked" {formname key=SEND_AS_EMAIL} />
-                            <label for="sendAddEmail">{translate key=NotifyUser}</label>
-                        </div>
+                        
                         {cancel_button}
                         {add_button}
                         {indicator}
@@ -377,7 +358,7 @@
                         <div class="alert alert-warning">
                             <div>{translate key=DeleteWarning}</div>
 
-                            <div>{translate key=DeleteMultipleUserWarning}</div>
+                            <div>{translate key=DeleteMultipleDepartmentWarning}</div>
                         </div>
 
                     </div>

@@ -15,13 +15,6 @@
                         <span class="glyphicon glyphicon-import"></span>
                     </a>
                 </li>
-                <li role="presentation">
-                    <a role="menuitem" href="{$ExportUrl}" download="{$ExportUrl}" id="export-users"
-                       class="add-link add-user"
-                       target="_blank">{translate key="Export"}
-                        <span class="glyphicon glyphicon-export"></span>
-                    </a>
-                </li>
                 <li role="presentation" class="divider"></li>
                 <li role="presentation">
                     <a role="menuitem" href="#" id="add-user" class="add-link add-user">{translate key="AddLecturer"}
@@ -40,12 +33,6 @@
                 | {html_link href=$smarty.server.SCRIPT_NAME key=AllLecturers}</label>
             <input type="text" id="userSearch"
                    class="form-control"/>
-        </div>
-        <div class="form-group col-xs-2">
-            <label for="filterStatusId">{translate key=Status}</label>
-            <select id="filterStatusId" class="form-control">
-                {html_options selected=$FilterStatusId options=$statusDescriptions}
-            </select>
         </div>
         <div class="col-xs-6">
             &nbsp;
@@ -181,8 +168,8 @@
                         <div id="addUserResults" class="validationSummary alert alert-danger no-show">
                             <ul>
                                 {async_validator id="addUserEmailformat" key="ValidEmailRequired"}
-                                {async_validator id="addUserUniqueemail" key="UniqueEmailRequired"}
-                                {async_validator id="addUserUsername" key="UniqueUsernameRequired"}
+                                {async_validator id="addUserUniqueemail" key="UniqueEmailLecturerRequired"}
+                                {async_validator id="addUserLecturerId" key="UniqueLecturerIdRequired"}
                                 {async_validator id="addAttributeValidator" key=""}
                             </ul>
                         </div>
@@ -259,11 +246,6 @@
                         <div class="clearfix"></div>
                     </div>
                     <div class="modal-footer">
-                        <div class="checkbox inline">
-                            <input type="checkbox" id="sendAddEmail"
-                                   checked="checked" {formname key=SEND_AS_EMAIL} />
-                            <label for="sendAddEmail">{translate key=NotifyUser}</label>
-                        </div>
                         {cancel_button}
                         {add_button}
                         {indicator}
@@ -390,7 +372,7 @@
                         <div class="alert alert-warning">
                             <div>{translate key=DeleteWarning}</div>
 
-                            <div>{translate key=DeleteMultipleUserWarning}</div>
+                            <div>{translate key=DeleteMultipleLecturerWarning}</div>
                         </div>
 
                     </div>
