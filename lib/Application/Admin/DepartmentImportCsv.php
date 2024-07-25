@@ -5,7 +5,7 @@ class DepartmentImportCsvRow
     public $departmentid;
     public $departmentcode;
     public $departmentname;
-    public $groupid;
+    
 
 
     private $values = [];
@@ -24,7 +24,7 @@ class DepartmentImportCsvRow
         $this->departmentid = $this->valueOrDefault('departmentid');
         $this->departmentcode = $this->valueOrDefault('departmentcode');
         $this->departmentname = $this->valueOrDefault('departmentname');
-        $this->groupid = $this->valueOrDefault('groupid');
+        
        
     }
 
@@ -53,7 +53,7 @@ class DepartmentImportCsvRow
         $indexes['departmentid'] = self::indexOrFalse('departmentid', $values);
         $indexes['departmentcode'] = self::indexOrFalse('departmentcode', $values);
         $indexes['departmentname'] = self::indexOrFalse('departmentname', $values);
-        $indexes['groupid'] = self::indexOrFalse('groupid', $values);
+     
         return $indexes;
     }
 
