@@ -1092,17 +1092,28 @@ class en_us extends Language
         $strings['AllDepartments'] = 'All Department';
         $strings['FindLecturer'] = 'Find Lecturer';
         $strings['AllLecturers'] = 'All Lecturer';
-        $strings['StudentImportInstructions'] = '<ul><li>File must be in XLSX, CSV format.</li><li>Student ID, Full Name and Email are required fields.</li><li>Use the supplied template Excel as an example.</li></ul>';
-        $strings['DepartmentImportInstructions'] = '<ul><li>File must be in XLSX, CSV format.</li><li>Department ID, Department Name are required fields.</li><li>Use the supplied template Excel as an example.</li></ul>';
-        $strings['LecturerImportInstructions'] = '<ul><li>File must be in XLSX, CSV format.</li><li>Lecturer ID, Full Name and Email are required fields.</li><li>Use the supplied template Excel as an example.</li></ul>';
+        $strings['StudentImportInstructions'] = '<ul><li>File must be in XLSX, CSV format.</li><li>Student ID, Full Name and Email are required fields.</li><li>The system will automatically create additional Departments and Groups if the file contains Department ID and Department Name.</li><li>Student information can be overwritten if the student information already exists.</li><li>Use the sample Student Excel file for import.</li></ul>';
+        $strings['DepartmentImportInstructions'] = '<ul><li>File must be in XLSX, CSV format.</li><li>Department ID, Department Name are required fields.</li><li>Automatically create a Group based on the Department Name.</li><li>The department information can be overwritten if the department already exists.</li><li>Use the sample Department Excel file for import.</li></ul>';
+        $strings['LecturerImportInstructions'] = '<ul><li>File must be in XLSX, CSV format.</li><li>Lecturer ID, Full Name and Email are required fields.</li><li>The system will automatically create additional Departments and Groups if the file contains Department ID and Department Name.</li><li>Lecturer information can be overwritten if the lecturer information already exists.</li><li>Use the sample Lecturer Excel file for import.</li></ul>';
+
         $strings['DeleteStudentWarning'] = 'Deleting this student will remove all of their current, future, and authenication information.';
-        $strings['DeleteDepartmentWarning'] = 'Deleting this department will remove all of their current and future.';
         $strings['DeleteLecturerWarning'] = 'Deleting this lecturer will remove all of their current, future, and authenication information.';
+        $strings['DeleteDepartmentWarning'] = 'Deleting this department will cause the students/lecturers in this department to become unassigned.';
+
+        $strings['DeleteMultipleDepartmentWarning'] = 'Deleting all departments will cause all students/lecturers in the departments to become unassigned.';
+        $strings['DeleteMultipleStudentWarning'] = 'Deleting all students will remove all of their current, future, and authenication information.';
+        $strings['DeleteMultipleLecturerWarning'] = 'Deleting all lecturers will remove all of their current, future, and authenication information.';
+
         $strings['UpdateStudentsOnImport'] = 'Update existing student if student already exists';
         $strings['UpdateDepartmentsOnImport'] = 'Update existing department if department already exists';
         $strings['UpdateLecturersOnImport'] = 'Update existing lecturer if lecturer already exists';
-        $strings['UpdateConfirmation'] = 'Update';
+        $strings['UpdateConfirmation'] = 'Update';  
         $strings['UpdateWarning'] = 'Updating the group for this department will synchronize all users belonging to this department into the new group.';
+
+        $strings['UniqueEmailStudentRequired'] = 'Student email address already exists.';
+        $strings['UniqueStudentIdRequired'] = 'Student ID already exists.';
+        $strings['UniqueEmailLecturerRequired'] = 'Lecturer email address already exists.';
+        $strings['UniqueLecturerIdRequired'] = 'Lecturer ID already exists.';
 
         //-----------------------END Source VLU----------------
         
