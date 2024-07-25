@@ -197,7 +197,7 @@ class ManageVluersService implements IManageVluersService
     public function UpdateStudent($userId, $studentid, $fullname, $email, $majorname, $studentclass, $studenttype, $studentstatus, $enrollmentdate, $trainingprogram, $departmentid)
     {
         $user = $this->userRepository->StudentLoadById($userId);
-        $user->ChangeMSSV($studentid);
+    
         $user->ChangeFullName($fullname);
         $user->ChangeEmailStudent($email);
         $user->ChangeMajorName($majorname);
