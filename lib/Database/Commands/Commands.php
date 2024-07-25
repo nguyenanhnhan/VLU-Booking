@@ -3383,4 +3383,30 @@ class CheckUserIdByEmailCommand extends SqlCommand
         $this->AddParameter(new Parameter(ParameterNames::EMAIL_ADDRESS, strtolower($email)));
     }
 }
+class CheckUserGroupIdByEmailCommand extends SqlCommand
+{
+    public function __construct($email)
+    {
+        parent::__construct(Queries::CHECK_USER_GROUP_BY_EMAIL);
+        $this->AddParameter(new Parameter(ParameterNames::EMAIL_ADDRESS, strtolower($email)));
+    }
+}
+class CheckStudentExistenceCommand extends SqlCommand
+{
+    public function __construct($email, $studentid)
+    {
+        parent::__construct(Queries::CHECK_STUDENT_EXISTENCE);
+        $this->AddParameter(new Parameter(ParameterNames::EMAIL, $email));
+        $this->AddParameter(new Parameter(ParameterNames::STUDENT_ID, $studentid));
+    }
+}
+class CheckLecturerExistenceCommand extends SqlCommand
+{
+    public function __construct($email, $lecturerid)
+    {
+        parent::__construct(Queries::CHECK_LECTURER_EXISTENCE);
+        $this->AddParameter(new Parameter(ParameterNames::EMAIL, $email));
+        $this->AddParameter(new Parameter(ParameterNames::LECTURER_ID, $lecturerid));
+    }
+}
 //-------------------------------------------END Source VLU--------------------------------
