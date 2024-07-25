@@ -24,7 +24,7 @@ class ManageGroupsActions
     public const ResourceGroups = 'resourceGroups';
     public const ScheduleGroups = 'scheduleGroups';
     public const Import = 'import';
-    public const ImportFromDepartment = 'importFromDepartment'; // Bổ sung hằng số này
+
 }
 
 class ManageGroupsPresenter extends ActionPresenter
@@ -84,7 +84,7 @@ class ManageGroupsPresenter extends ActionPresenter
         $this->AddAction(ManageGroupsActions::ResourceGroups, 'ChangeResourceGroups');
         $this->AddAction(ManageGroupsActions::ScheduleGroups, 'ChangeScheduleGroups');
         $this->AddAction(ManageGroupsActions::Import, 'Import');
-        $this->AddAction(ManageGroupsActions::ImportFromDepartment, 'ImportFromDepartment');
+
 
     }
 
@@ -259,25 +259,6 @@ class ManageGroupsPresenter extends ActionPresenter
         $group = new Group(0, $groupName, $isDefault);
         return $this->groupRepository->Add($group);
     }
-
-    public function ImportFromDepartment()
-    {
-        // Lấy danh sách khoa từ UserRepository
-        $groupId = $this->page->GetDepartmentId();
-        var_dump($groupId);
-        $groupName = $this->page->GetDepartmentName();
-        $departments = $this->groupRepository->GetDepartmentList();
-        // var_dump($departments);
-        $isDefault = $this->page->AutomaticallyAddToGroup();
-        //Import từng khoa vào group
-        // foreach ($departments as $department) {
-        //     $group = new Group(0, $departments, $isDefault);
-        //     $group->WithName($department->$groupName);
-        //     $group->WithDepartmentId($department->$groupId);
-        //     $this->groupRepository->AddDepartmentToGroup($group);
-        // }
-    }
-    
 
     public function UpdateGroup()
     {
