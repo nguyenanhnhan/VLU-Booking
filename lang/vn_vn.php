@@ -210,7 +210,7 @@ class vn_vn extends en_gb
         $strings['Reset'] = 'Khôi phục';
         $strings['FindGroup'] = 'Tìm nhóm';
         $strings['Manage'] = 'Quản lý';
-        $strings['None'] = 'Không có';
+        $strings['None'] = 'Không';
         $strings['AddToOutlook'] = 'Thêm vào Lịch';
         $strings['Done'] = 'Xong';
         $strings['RememberMe'] = 'Ghi nhớ đăng nhập';
@@ -1013,6 +1013,62 @@ class vn_vn extends en_gb
         //Kết thúc Xem phòng chức năng
 
         //END NEEDS CHECKING
+
+        //-----------------------Source VLU--------------------
+        $strings['Lecturer'] = 'Giảng viên';
+        $strings['ManageLecturers'] = 'Quản lý giảng viên';
+        $strings['Department'] = 'Khoa';
+        $strings['ManageDepartments'] = 'Quản lý khoa';
+        $strings['ManageStudents'] = 'Quản lý sinh viên';
+        $strings['StudentStatus'] = 'Tình trạng sinh viên';
+        $strings['StudentClass'] = 'Lớp sinh viên';
+        $strings['TrainingProgram'] = 'Chương trình đào tạo';
+        $strings['MajorName'] = 'Tên chuyên ngành';
+        $strings['StudentType'] = 'Loại sinh viên';
+        $strings['EnrollmentDate'] = 'Ngày nhập học';
+        $strings['FullName'] = 'Họ và tên';
+        $strings['MSSV'] = 'Mã số sinh viên';
+        $strings['AddStudent'] = 'Thêm sinh viên';
+        $strings['AddDepartment'] = 'Thêm khoa';
+        $strings['AddLecturer'] = 'Thêm giảng viên';
+        $strings['ImportFromDepartment'] = 'Nhập từ khoa';
+        $strings['DepartmentId'] = 'Mã khoa';
+        $strings['DepartmentCode'] = 'Mã viết tắt khoa';
+        $strings['DepartmentName'] = 'Tên khoa';
+        $strings['LecturerId'] = 'Mã giảng viên';
+        $strings['PhoneNumber'] = 'Số điện thoại';
+        $strings['HireDate'] = 'Ngày tuyển dụng';
+        $strings['NoDepartmentsAvailable'] = 'Không có khoa nào có sẵn';
+        $strings['FindStudent'] = 'Tìm sinh viên';
+        $strings['AllStudents'] = 'Tất cả sinh viên';
+        $strings['FindDepartment'] = 'Tìm khoa';
+        $strings['AllDepartments'] = 'Tất cả khoa';
+        $strings['FindLecturer'] = 'Tìm giảng viên';
+        $strings['AllLecturers'] = 'Tất cả giảng viên';
+        $strings['StudentImportInstructions'] = '<ul><li>Tệp phải ở định dạng XLSX, CSV.</li><li>Mã số sinh viên, Họ và tên, và Email là các trường bắt buộc.</li><li>Hệ thống sẽ tự động tạo thêm Khoa và Nhóm nếu trong tệp chứa Mã khoa và Tên khoa.</li><li>Thông tin sinh viên có thể được tùy chọn ghi đè nếu thông tin sinh viên đã tồn tại.</li><li>Sử dụng tệp mẫu Excel Sinh viên để nhập.</li></ul>';
+        $strings['DepartmentImportInstructions'] = '<ul><li>Tệp phải ở định dạng XLSX, CSV.</li><li>Mã khoa, Tên khoa là các trường bắt buộc.</li><li>Tự động tạo Nhóm dựa trên Tên khoa.</li><li>Thông tin khoa có thể tùy chọn được ghi đè nếu khoa đã tồn tại.</li><li>Sử dụng tệp mẫu Excel Khoa để nhập.</li></ul>';
+        $strings['LecturerImportInstructions'] = '<ul><li>Tệp phải ở định dạng XLSX, CSV.</li><li>Mã giảng viên, Họ và tên, và Email là các trường bắt buộc.</li><li>Hệ thống sẽ tự động tạo thêm Khoa và Nhóm nếu trong tệp chứa Mã khoa và Tên khoa.</li><li>Thông tin giảng viên có thể được tùy chọn ghi đè nếu thông tin giảng viên đã tồn tại.</li><li>Sử dụng tệp mẫu Excel Giảng viên để nhập.</li></ul>';
+
+        $strings['DeleteStudentWarning'] = 'Xóa sinh viên này sẽ xóa tất cả thông tin hiện tại, tương lai, và thông tin phân quyền vào nhóm của họ.';
+        $strings['DeleteLecturerWarning'] = 'Xóa giảng viên này sẽ xóa tất cả thông tin hiện tại, tương lai, và thông tin phân quyền vào nhóm của họ.';
+        $strings['DeleteDepartmentWarning'] = 'Xóa khoa này sẽ khiến sinh viên/giảng viên thuộc khoa này trở nên không có khoa.';
+
+        $strings['DeleteMultipleDepartmentWarning'] = 'Xóa tất cả các khoa sẽ khiến tất cả sinh viên/giảng viên thuộc các khoa trở nên không có khoa.';
+        $strings['DeleteMultipleStudentWarning'] = 'Xóa tất cả sinh viên sẽ xóa tất cả thông tin hiện tại, tương lai, và thông tin xác thực của họ.';
+        $strings['DeleteMultipleLecturerWarning'] = 'Xóa tất cả giảng viên sẽ xóa tất cả thông tin hiện tại, tương lai, và thông tin xác thực của họ.';
+
+        $strings['UpdateStudentsOnImport'] = 'Cập nhật sinh viên hiện có nếu email sinh viên đã tồn tại';
+        $strings['UpdateDepartmentsOnImport'] = 'Cập nhật khoa hiện có nếu khoa đã tồn tại';
+        $strings['UpdateLecturersOnImport'] = 'Cập nhật giảng viên hiện có nếu email giảng viên đã tồn tại';
+        $strings['UpdateConfirmation'] = 'Cập nhật';
+        $strings['UpdateWarning'] = 'Cập nhật nhóm cho khoa này sẽ đồng bộ tất cả sinh viên/giảng viên thuộc khoa này vào nhóm mới.';
+
+        $strings['UniqueEmailStudentRequired'] = 'Địa chỉ E-mail của sinh viên đã tồn tại.';
+        $strings['UniqueStudentIdRequired'] = 'Mã số sinh viên đã tồn tại.';
+        $strings['UniqueEmailLecturerRequired'] = 'Địa chỉ E-mail của giảng viên đã tồn tại.';
+        $strings['UniqueLecturerIdRequired'] = 'Mã số giảng viên đã tồn tại.';
+
+        //-----------------------END Source VLU----------------
 
 
         $this->Strings = $strings;
