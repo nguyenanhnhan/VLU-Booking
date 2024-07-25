@@ -423,6 +423,20 @@ interface IUserViewRepository
      * @return int|null
      */
     public function UserExists($emailAddress, $userName);
+
+    /**
+     * @param string $email
+     * @param string $studentid
+     * @return int|null
+     */
+    public function StudentExists($email, $studentid);
+
+    /**
+     * @param string $email
+     * @param string $lecturerid
+     * @return int|null
+     */
+    public function LecturerExists($email, $lecturerid);
 }
 
 interface IAccountActivationRepository
@@ -1549,6 +1563,34 @@ class UserRepository implements IUserRepository, IAccountActivationRepository
     }
 
     //-------------------------------------------Source VLU--------------------------------
+    public function StudentExists($email, $studentid)
+    {
+        $reader = ServiceLocator::GetDatabase()->Query(new CheckStudentExistenceCommand($email, $studentid));
+
+        if ($row = $reader->GetRow()) {
+            $reader->Free();
+            return $row[ColumnNames::STUDENT_ID];
+        }
+
+        $reader->Free();
+
+        return null;
+    }
+
+    public function LecturerExists($email, $lecturerid)
+    {
+        $reader = ServiceLocator::GetDatabase()->Query(new CheckLecturerExistenceCommand($email, $lecturerid));
+
+        if ($row = $reader->GetRow()) {
+            $reader->Free();
+            return $row[ColumnNames::LECTURER_ID];
+        }
+
+        $reader->Free();
+
+        return null;
+    }
+
     public function GetStudent($email)
     {
         // Tạo đối tượng GetStudentCommand với email
@@ -1616,7 +1658,8 @@ class UserRepository implements IUserRepository, IAccountActivationRepository
         return $groups;
     }
 
-    private function addDepartmentGroups($departmentId, &$groups) {
+    public function addDepartmentGroups($departmentId, &$groups) {
+        //Lấy group_id
         $departmentResult = $this->GetDepartmentGroupId($departmentId);
         if ($departmentResult) {
             $groups[] = $departmentResult[ColumnNames::GROUP_ID];
@@ -1651,6 +1694,22 @@ class UserRepository implements IUserRepository, IAccountActivationRepository
     public function GetUserIdByEmail($email)
     {
         $command = new CheckUserIdByEmailCommand($email);
+        $reader = ServiceLocator::GetDatabase()->Query($command);
+
+        $row = $reader->GetRow();
+
+        $reader->Free();
+        return $row ? $row['user_id'] : null;
+    }
+
+    //Kiểm tra user_id có tồn tại bảng user_groups 
+    /**
+     * @param $email string
+     * @return User
+     */
+    public function GetUserGroupIdByEmail($email)
+    {
+        $command = new CheckUserGroupIdByEmailCommand($email);
         $reader = ServiceLocator::GetDatabase()->Query($command);
 
         $row = $reader->GetRow();
