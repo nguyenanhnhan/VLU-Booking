@@ -154,11 +154,15 @@ class ExternalAuthLoginPresenter
         $this->processUserData($email,$email,$firstName,$lastName);
         
     }
-
+     //-------------------------------------------Source VLU--------------------------------
     /**
      * Processes user given data, creates a user in database if it doesn't exist and logs it in
      */
     private function processUserData($username,$email,$firstName,$lastName){
+        // Lấy user_id của user mới thêm
+        $userRepository = new UserRepository();
+        $userId = $userRepository->GetUserIdByEmail($email);
+        
         $requiredDomainValidator = new RequiredEmailDomainValidator($email);
         $requiredDomainValidator->Validate();
         if (!$requiredDomainValidator->IsValid()) {
@@ -166,13 +170,37 @@ class ExternalAuthLoginPresenter
             return;
         }
         if($this->registration->UserExists($username,$email)){
+            //Lấy user_id ở trong bảng user_groups sau khi biết được email
+            $usergroupId = $userRepository->GetUserGroupIdByEmail($email);
+            // Cập nhật user_id trong bảng students/lecturers nếu email tồn tại
+            if ($userId !== null) {
+                $userRepository->syncUserIdWithStudent($email, $userId);
+            }
+            // Nếu users chưa có groups mà thuộc khoa có groups quản lý thì tự động đăng ký groups cho users
+            if ($usergroupId === null) {
+                $groups = $userRepository->determineUserGroups($email);
+                $this->registration->Synchronize(new AuthenticatedUser(
+                    $username,
+                    $email,
+                    $firstName, 
+                    $lastName,
+                    Password::GenerateRandom(),
+                    Resources::GetInstance()->CurrentLanguage,
+                    Configuration::Instance()->GetDefaultTimezone(),
+                    null,
+                    null,
+                    null,
+                $groups),
+                    false,
+                    false);
+            }
             $this->authentication->Login($email, new WebLoginContext(new LoginData()));
             LoginRedirector::Redirect($this->page);
         }
         else{
+            //Hệ thống phân quyền khi đăng nhập lần đầu tiên
             // Xác định nhóm của người dùng dựa trên dữ liệu đầu vào
-            //-------------------------------------------Source VLU--------------------------------
-            $userRepository = new UserRepository();
+
             $groups = $userRepository->determineUserGroups($email);
             // var_dump($groups);
             $this->registration->Synchronize(new AuthenticatedUser(
@@ -189,18 +217,15 @@ class ExternalAuthLoginPresenter
             $groups),
                 false,
                 false);
-
-            // Lấy user_id của user mới thêm
-            $userId = $userRepository->GetUserIdByEmail($email);
             
-            // Cập nhật user_id trong bảng students nếu email tồn tại
+            // Cập nhật user_id trong bảng students/lecturers nếu email tồn tại
             if ($userId !== null) {
                 $userRepository->syncUserIdWithStudent($email, $userId);
             }
             $this->authentication->Login($email, new WebLoginContext(new LoginData()));
             LoginRedirector::Redirect($this->page);
-            //-------------------------------------------END Source VLU--------------------------------
+            
         }
     }
-
+    //-------------------------------------------END Source VLU--------------------------------
 }
