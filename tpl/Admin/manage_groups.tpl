@@ -24,12 +24,6 @@
                 </li>
                 <li role="presentation" class="divider"></li>
                 <li role="presentation">
-                    <a role="menuitem" href="#" class="import-from-department" id="import-from-department">
-                    {translate key="ImportFromDepartment"}
-                        <span class="fa fa-plus-circle icon add"></span>
-                    </a>
-                </li>
-                <li role="presentation">
                     <a role="menuitem" href="#" class="add-group" id="add-group">{translate key="AddGroup"}
                         <span class="fa fa-plus-circle icon add"></span>
                     </a>
@@ -562,8 +556,7 @@
                 adminGroups: '{ManageGroupsActions::AdminGroups}',
                 resourceGroups: '{ManageGroupsActions::ResourceGroups}',
                 scheduleGroups: '{ManageGroupsActions::ScheduleGroups}',
-                importGroups: '{ManageGroupsActions::Import}',
-                importFromDepartment: '{ManageGroupsActions::ImportFromDepartment}'
+                importGroups: '{ManageGroupsActions::Import}'
             };
 
             var dataRequests = {
