@@ -198,6 +198,15 @@ class Queries
 
     public const CHECK_EMAIL =
         'SELECT `user_id` FROM `users` WHERE `email` = @email';
+	
+	public const CHECK_USER_GROUP_BY_EMAIL =
+		'SELECT ug.user_id
+		FROM user_groups ug
+		LEFT JOIN students s ON ug.user_id = s.user_id
+		LEFT JOIN departments d ON s.department_id = d.department_id
+		LEFT JOIN `groups` g ON ug.group_id = g.group_id
+		LEFT JOIN users u ON ug.user_id = u.user_id
+		WHERE u.email = @email';
 
     public const CHECK_USERNAME =
         'SELECT `user_id` FROM `users` WHERE `username` = @username';
@@ -1278,7 +1287,6 @@ class Queries
 	public const UPDATE_STUDENT_USER = "UPDATE students SET user_id = @userid WHERE email = :email";
 	public const UPDATE_LECTURER_USER = "UPDATE lecturers SET user_id = @userid WHERE email = :email";
 	public const UPDATE_STUDENT = "UPDATE students SET
-    student_id = :student_id,
     full_name = :full_name,
     email = :email,
     major_name = :major_name,
@@ -1293,7 +1301,6 @@ class Queries
 	";
 
 	public const UPDATE_DEPARTMENT = "UPDATE departments SET
-	department_id = :department_id,
 	department_code = :department_code,
 	department_name = :department_name,
 	group_id = NULLIF(@groupid, '')
@@ -1310,7 +1317,6 @@ class Queries
 
 
 	public const UPDATE_LECTURER = "UPDATE lecturers SET
-	lecturer_id = :lecturer_id,
 	full_name = :full_name,
 	hire_date = NULLIF(:hire_date, ''),
 	phone_number = :phone_number,
@@ -1337,6 +1343,16 @@ class Queries
 	public const GET_STUDENT_INFO_BY_EMAIL = "SELECT department_id, user_id FROM students WHERE email = :email";
 	public const GET_GROUP_ID_BY_DEPARTMENT_ID = "SELECT group_id FROM departments WHERE department_id = :department_id";
 	public const UPDATE_USER_GROUP = "UPDATE user_groups SET group_id = @groupid WHERE user_id = @userid";
+
+	public const CHECK_STUDENT_EXISTENCE =
+	'SELECT *
+	FROM `students`
+	WHERE ( (`student_id` IS NOT NULL AND `student_id` = :student_id) OR (`email` IS NOT NULL AND `email` = :email) )';
+	
+	public const CHECK_LECTURER_EXISTENCE =
+	'SELECT *
+	FROM `lecturers`
+	WHERE ( (`lecturer_id` IS NOT NULL AND `lecturer_id` = :lecturer_id) OR (`email` IS NOT NULL AND `email` = :email) )';
 	//-------------------------------------------END Source VLU--------------------------------
 }
 
