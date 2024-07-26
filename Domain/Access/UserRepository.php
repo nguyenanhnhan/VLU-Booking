@@ -429,14 +429,22 @@ interface IUserViewRepository
      * @param string $studentid
      * @return int|null
      */
-    public function StudentExists($email, $studentid);
+    public function StudentInfoExists($email, $studentid);
 
     /**
      * @param string $email
      * @param string $lecturerid
      * @return int|null
      */
-    public function LecturerExists($email, $lecturerid);
+    public function LecturerInfoExists($email, $lecturerid);
+    
+    /**
+     * @param string $departmentname
+     * @param string $departmentid
+     * @return int|null
+     */
+    public function DepartmentInfoExists($departmentname, $departmentid);
+    
 }
 
 interface IAccountActivationRepository
@@ -1563,9 +1571,9 @@ class UserRepository implements IUserRepository, IAccountActivationRepository
     }
 
     //-------------------------------------------Source VLU--------------------------------
-    public function StudentExists($email, $studentid)
+    public function StudentInfoExists($email, $studentid)
     {
-        $reader = ServiceLocator::GetDatabase()->Query(new CheckStudentExistenceCommand($email, $studentid));
+        $reader = ServiceLocator::GetDatabase()->Query(new CheckStudentInfoExistenceCommand($email, $studentid));
 
         if ($row = $reader->GetRow()) {
             $reader->Free();
@@ -1577,13 +1585,27 @@ class UserRepository implements IUserRepository, IAccountActivationRepository
         return null;
     }
 
-    public function LecturerExists($email, $lecturerid)
+    public function LecturerInfoExists($email, $lecturerid)
     {
-        $reader = ServiceLocator::GetDatabase()->Query(new CheckLecturerExistenceCommand($email, $lecturerid));
+        $reader = ServiceLocator::GetDatabase()->Query(new CheckLecturerInfoExistenceCommand($email, $lecturerid));
 
         if ($row = $reader->GetRow()) {
             $reader->Free();
             return $row[ColumnNames::LECTURER_ID];
+        }
+
+        $reader->Free();
+
+        return null;
+    }
+
+    public function DepartmentInfoExists($departmentname, $departmentid)
+    {
+        $reader = ServiceLocator::GetDatabase()->Query(new CheckDepartmentInfoExistenceCommand($departmentname, $departmentid));
+
+        if ($row = $reader->GetRow()) {
+            $reader->Free();
+            return $row[ColumnNames::DEPARTMENT_ID];
         }
 
         $reader->Free();

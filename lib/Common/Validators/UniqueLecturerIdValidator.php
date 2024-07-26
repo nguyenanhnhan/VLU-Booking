@@ -16,7 +16,7 @@ class UniqueLecturerIdValidator extends ValidatorBase implements IValidator
     public function Validate()
     {
         $this->isValid = true;
-        $userId = $this->userRepository->LecturerExists(null, $this->_lecturerid);
+        $userId = $this->userRepository->LecturerInfoExists(null, $this->_lecturerid);
 
         if (!empty($userId)) {
             $this->isValid = $userId == $this->_userid;

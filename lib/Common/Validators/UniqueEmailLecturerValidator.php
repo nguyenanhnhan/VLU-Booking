@@ -17,10 +17,10 @@ class UniqueEmailLecturerValidator extends ValidatorBase implements IValidator
     {
         $this->isValid = true;
 
-        $studentId = $this->userRepository->LecturerExists($this->_email, null);
+        $lecturerId = $this->userRepository->LecturerInfoExists($this->_email, null);
 
-        if (!empty($studentId)) {
-            $this->isValid = $studentId == $this->_lecturerid;
+        if (!empty($lecturerId)) {
+            $this->isValid = $lecturerId == $this->_lecturerid;
         }
 
         if (!$this->isValid) {

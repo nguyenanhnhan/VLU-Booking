@@ -382,7 +382,7 @@ class vn_vn extends en_gb
         $strings['AggregateBy'] = 'Tổng hợp theo';
         $strings['Range'] = 'Khoảng thời gian';
         $strings['Choose'] = 'Chọn';
-        $strings['All'] = 'Tất cả các phòng';
+        $strings['All'] = 'Tất cả';
         $strings['ViewAsChart'] = 'Xem Biểu đồ';
         $strings['ReservedResources'] = 'phòng chức năng đã đặt';
         $strings['ReservedAccessories'] = 'Trang thiết bị đã đặt';
@@ -1046,7 +1046,7 @@ class vn_vn extends en_gb
         $strings['FindLecturer'] = 'Tìm giảng viên';
         $strings['AllLecturers'] = 'Tất cả giảng viên';
         $strings['StudentImportInstructions'] = '<ul><li>Tệp phải ở định dạng XLSX, CSV.</li><li>Mã số sinh viên, Họ và tên, và Email là các trường bắt buộc.</li><li>Hệ thống sẽ tự động tạo thêm Khoa và Nhóm nếu trong tệp chứa Mã khoa và Tên khoa.</li><li>Thông tin sinh viên có thể được tùy chọn ghi đè nếu thông tin sinh viên đã tồn tại.</li><li>Sử dụng tệp mẫu Excel Sinh viên để nhập.</li></ul>';
-        $strings['DepartmentImportInstructions'] = '<ul><li>Tệp phải ở định dạng XLSX, CSV.</li><li>Mã khoa, Tên khoa là các trường bắt buộc.</li><li>Tự động tạo Nhóm dựa trên Tên khoa.</li><li>Thông tin khoa có thể tùy chọn được ghi đè nếu khoa đã tồn tại.</li><li>Sử dụng tệp mẫu Excel Khoa để nhập.</li></ul>';
+        $strings['DepartmentImportInstructions'] = '<ul><li>Tệp phải ở định dạng XLSX, CSV.</li><li>Mã khoa, Tên khoa là các trường bắt buộc.</li><li>Tự động tạo Nhóm dựa trên Tên khoa.</li><li>Tên khoa và Mã viết tắt khoa có thể tùy chọn được ghi đè nếu Mã khoa đã tồn tại.</li><li>Sử dụng tệp mẫu Excel Khoa để nhập.</li></ul>';
         $strings['LecturerImportInstructions'] = '<ul><li>Tệp phải ở định dạng XLSX, CSV.</li><li>Mã giảng viên, Họ và tên, và Email là các trường bắt buộc.</li><li>Hệ thống sẽ tự động tạo thêm Khoa và Nhóm nếu trong tệp chứa Mã khoa và Tên khoa.</li><li>Thông tin giảng viên có thể được tùy chọn ghi đè nếu thông tin giảng viên đã tồn tại.</li><li>Sử dụng tệp mẫu Excel Giảng viên để nhập.</li></ul>';
 
         $strings['DeleteStudentWarning'] = 'Xóa sinh viên này sẽ xóa tất cả thông tin hiện tại, tương lai, và thông tin phân quyền vào nhóm của họ.';
@@ -1067,6 +1067,8 @@ class vn_vn extends en_gb
         $strings['UniqueStudentIdRequired'] = 'Mã số sinh viên đã tồn tại.';
         $strings['UniqueEmailLecturerRequired'] = 'Địa chỉ E-mail của giảng viên đã tồn tại.';
         $strings['UniqueLecturerIdRequired'] = 'Mã số giảng viên đã tồn tại.';
+        $strings['UniqueDepartmentIdRequired'] = 'Mã số khoa đã tồn tại.';
+        $strings['UniqueDepartmentNameRequired'] = 'Tên khoa đã tồn tại.';
 
         //-----------------------END Source VLU----------------
 

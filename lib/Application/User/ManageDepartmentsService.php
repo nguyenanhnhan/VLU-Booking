@@ -60,10 +60,10 @@ interface IManageDepartmentsService
     public function UpdatePassword($userId, $password);
 
     /**
-     * @param string $departmentname
+     * @param string $departmentid
      * @return User
      */
-    public function LoadDepartment($departmentname);
+    public function LoadDepartment($departmentid);
 }
 
 class ManageDepartmentsService implements IManageDepartmentsService
@@ -221,8 +221,8 @@ class ManageDepartmentsService implements IManageDepartmentsService
         $this->userRepository->Update($user);
     }
 
-    public function LoadDepartment($departmentname)
+    public function LoadDepartment($departmentid)
     {
-        return $this->userRepository->DepartmentLoadByUsername($departmentname);
+        return $this->userRepository->DepartmentLoadById($departmentid);
     }
 }

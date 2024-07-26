@@ -16,7 +16,7 @@ class UniqueStudentIdValidator extends ValidatorBase implements IValidator
     public function Validate()
     {
         $this->isValid = true;
-        $userId = $this->userRepository->StudentExists(null, $this->_studentid);
+        $userId = $this->userRepository->StudentInfoExists(null, $this->_studentid);
 
         if (!empty($userId)) {
             $this->isValid = $userId == $this->_userid;

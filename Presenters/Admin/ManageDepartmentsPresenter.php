@@ -431,21 +431,21 @@ class ManageDepartmentsPresenter extends ActionPresenter implements IManageDepar
             //     new UniqueEmailValidator($this->userRepository, $this->page->GetEmail(), $this->page->GetUserId())
             // );
             $this->page->RegisterValidator(
-                'uniqueusername',
-                new UniqueUserNameValidator($this->userRepository, $this->page->GetFullName(), $this->page->GetUserId())
+                'uniquedepartmentname',
+                new UniqueDepartmentNameValidator($this->userRepository, $this->page->GetDepartmentName(), $this->page->GetUserId())
             );
             
         }
 
         if ($action == ManageDepartmentsActions::AddDepartment) {
             // $this->page->RegisterValidator('addUserEmailformat', new EmailValidator($this->page->GetEmail()));
-            // $this->page->RegisterValidator(
-            //     'addUserUniqueemail',
-            //     new UniqueEmailValidator($this->userRepository, $this->page->GetEmail())
-            // );
             $this->page->RegisterValidator(
-                'addUserUsername',
-                new UniqueUserNameValidator($this->userRepository, $this->page->GetDepartmentName())
+                'addUserDepartmentId',
+                new UniqueDepartmentIdValidator($this->userRepository, $this->page->GetDepartmentId())
+            );
+            $this->page->RegisterValidator(
+                'addUserDepartmentName',
+                new UniqueDepartmentNameValidator($this->userRepository, $this->page->GetDepartmentName())
             );
             // $this->page->RegisterValidator(
             //     'addAttributeValidator',
@@ -474,7 +474,7 @@ class ManageDepartmentsPresenter extends ActionPresenter implements IManageDepar
             );
         }
         $validator = ['csv','xlsx'];
-        if ($action == ManageUsersActions::ImportUsers) {
+        if ($action == ManageDepartmentsActions::ImportUsers) {
             $this->page->RegisterValidator('fileExtensionValidator', new FileExtensionValidator($validator, $this->page->GetImportFile()));
         }
     }
@@ -550,12 +550,9 @@ class ManageDepartmentsPresenter extends ActionPresenter implements IManageDepar
 
         $importFile = $this->page->GetImportFile();
         $fileExtension = pathinfo($importFile->OriginalName(), PATHINFO_EXTENSION);
-        // $csv = new VluerImportCsv($importFile, $attributesIndexed);
 
         $importCount = 0;
         $messages = [];
-
-        // $rows = $csv->GetRows();
 
         if (strtolower($fileExtension) === 'csv') {
             $csv = new DepartmentImportCsv($importFile, $attributesIndexed);
@@ -573,54 +570,11 @@ class ManageDepartmentsPresenter extends ActionPresenter implements IManageDepar
             return;
         }
 
-        
 
-        for ($i = 0; $i < count($rows); $i++) {
-            $shouldUpdate = $this->page->GetUpdateOnImport();
-
-            $row = $rows[$i];
+        // Second pass: Process rows and insert lecturers
+        foreach ($rows as $row) {
             try {
-                
-                $uniqueUsernameValidator = new UniqueUserNameValidator($this->userRepository, $row->departmentname);
-
-                
-
-                if (!$shouldUpdate) {
-                    $uniqueUsernameValidator->Validate();
-                    if (!$uniqueUsernameValidator->IsValid()) {
-                        $uuvMsgs = $uniqueUsernameValidator->Messages();
-                        $messages[] = $uuvMsgs[0] . " ({$row->departmentname})";
-                        continue;
-                    }
-                }
-
-                if ($shouldUpdate) {
-                    $user = $this->manageDepartmentsService->LoadDepartment($row->departmentname);
-                    if ($user->Id() == null) {
-                        $shouldUpdate = false;
-                    } else {
-                        $user->ChangeDepartmentId($row->departmentid);
-                        $user->ChangeDepartmentCode($row->departmentcode);
-                        $user->ChangeDepartmentName($row->departmentname);
-                        
-                    }
-                }
-                if (!$shouldUpdate) {
-                    $user = $this->manageDepartmentsService->AddDepartment(
-                        $row->departmentid,
-                        $row->departmentcode,
-                        $row->departmentname,
-                        null
-                        
-                    );
-                }
-
-
-                if ($shouldUpdate) {
-                    $this->userRepository->DepartmentUpdate($user);
-                }
-
-                $importCount++;
+                $this->processRow($row, $messages, $importCount);
             } catch (Exception $ex) {
                 Log::Error('Error importing users. %s', $ex);
             }
@@ -628,6 +582,59 @@ class ManageDepartmentsPresenter extends ActionPresenter implements IManageDepar
 
         $this->page->SetImportResult(new CsvImportResult($importCount, $csv->GetSkippedRowNumbers(), $messages));
     }
+
+    private function processRow($row, &$messages, &$importCount)
+    {
+        $shouldUpdate = $this->page->GetUpdateOnImport();
+
+
+        $uniqueDepartmentIdValidator = new UniqueDepartmentIdValidator($this->userRepository, $row->departmentid);
+        $uniqueDepartmentNameValidator = new UniqueDepartmentNameValidator($this->userRepository, $row->departmentname);
+
+
+        if (!$shouldUpdate) {
+            $uniqueDepartmentIdValidator->Validate();
+            $uniqueDepartmentNameValidator->Validate();
+
+            if (!$uniqueDepartmentIdValidator->IsValid()) {
+                $uevMsgs = $uniqueDepartmentIdValidator->Messages();
+                $messages[] = $uevMsgs[0] . " ({$row->departmentid})";
+                return;
+            }
+            if (!$uniqueDepartmentNameValidator->IsValid()) {
+                $uuvMsgs = $uniqueDepartmentNameValidator->Messages();
+                $messages[] = $uuvMsgs[0] . " ({$row->departmentname})";
+                return;
+            }
+        }
+
+        if ($shouldUpdate) {
+            $user = $this->manageDepartmentsService->LoadDepartment($row->departmentid);
+            if ($user->Id() == null) {
+                $shouldUpdate = false;
+            } else {
+                $user->ChangeDepartmentId($row->departmentid);
+                $user->ChangeDepartmentCode($row->departmentcode);
+                $user->ChangeDepartmentName($row->departmentname);
+
+            }
+        }
+        if (!$shouldUpdate) {
+            $user = $this->manageDepartmentsService->AddDepartment(
+                $row->departmentid,
+                $row->departmentcode,
+                $row->departmentname,
+                null
+            );
+        }
+
+        if ($shouldUpdate) {
+            $this->userRepository->DepartmentUpdate($user);
+        }
+
+        $importCount++;
+    }
+
 
     public function InviteUsers()
     {

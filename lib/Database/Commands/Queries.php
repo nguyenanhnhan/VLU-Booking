@@ -1344,15 +1344,20 @@ class Queries
 	public const GET_GROUP_ID_BY_DEPARTMENT_ID = "SELECT group_id FROM departments WHERE department_id = :department_id";
 	public const UPDATE_USER_GROUP = "UPDATE user_groups SET group_id = @groupid WHERE user_id = @userid";
 
-	public const CHECK_STUDENT_EXISTENCE =
+	public const CHECK_STUDENT_INFO_EXISTENCE =
 	'SELECT *
 	FROM `students`
 	WHERE ( (`student_id` IS NOT NULL AND `student_id` = :student_id) OR (`email` IS NOT NULL AND `email` = :email) )';
 	
-	public const CHECK_LECTURER_EXISTENCE =
+	public const CHECK_LECTURER_INFO_EXISTENCE =
 	'SELECT *
 	FROM `lecturers`
 	WHERE ( (`lecturer_id` IS NOT NULL AND `lecturer_id` = :lecturer_id) OR (`email` IS NOT NULL AND `email` = :email) )';
+
+	public const CHECK_DEPARTMENT_INFO_EXISTENCE =
+	'SELECT *
+	FROM `departments`
+	WHERE ( (`department_id` IS NOT NULL AND `department_id` = :department_id) OR (`department_name` IS NOT NULL AND `department_name` = :department_name) )';
 	//-------------------------------------------END Source VLU--------------------------------
 }
 

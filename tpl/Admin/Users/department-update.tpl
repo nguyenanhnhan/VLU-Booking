@@ -3,7 +3,7 @@
 		<ul>
             {async_validator id="emailformat" key="ValidEmailRequired"}
             {async_validator id="uniqueemail" key="UniqueEmailRequired"}
-            {async_validator id="uniqueusername" key="UniqueUsernameRequired"}
+            {async_validator id="uniquedepartmentname" key="UniqueDepartmentNameRequired"}
             {async_validator id="updateAttributeValidator" key=""}
 		</ul>
 	</div>

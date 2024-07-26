@@ -17,7 +17,7 @@ class UniqueEmailStudentValidator extends ValidatorBase implements IValidator
     {
         $this->isValid = true;
 
-        $studentId = $this->userRepository->StudentExists($this->_email, null);
+        $studentId = $this->userRepository->StudentInfoExists($this->_email, null);
 
         if (!empty($studentId)) {
             $this->isValid = $studentId == $this->_studentid;

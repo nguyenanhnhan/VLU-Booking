@@ -166,7 +166,8 @@
                             <ul>
                                 {async_validator id="addUserEmailformat" key="ValidEmailRequired"}
                                 {async_validator id="addUserUniqueemail" key="UniqueEmailRequired"}
-                                {async_validator id="addUserUsername" key="UniqueUsernameRequired"}
+                                {async_validator id="addUserDepartmentId" key="UniqueDepartmentIdRequired"}
+                                {async_validator id="addUserDepartmentName" key="UniqueDepartmentNameRequired"}
                                 {async_validator id="addAttributeValidator" key=""}
                             </ul>
                         </div>
