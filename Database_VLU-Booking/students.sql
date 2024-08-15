@@ -26,7 +26,7 @@ SET time_zone = "+00:00";
 --
 -- Table structure for table `students`
 --
-
+-- Tạo bảng students với các cột và kiểu dữ liệu cụ thể, thiết lập các chỉ mục và ràng buộc khóa ngoại
 CREATE TABLE `students` (
   `student_id` varchar(50) NOT NULL COMMENT 'MSSV',
   `full_name` varchar(100) NOT NULL COMMENT 'Họ và tên',
@@ -35,7 +35,7 @@ CREATE TABLE `students` (
   `status` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT 'Tình trạng sinh viên',
   `major_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT 'Tên chuyên ngành',
   `training_program` varchar(100) DEFAULT NULL COMMENT 'Chương trình đào tạo',
-  `student_class` varchar(50) DEFAULT NULL COMMENT 'Lớp sinh viên',
+  `student_class` varchar(100) DEFAULT NULL COMMENT 'Lớp sinh viên',
   `email` varchar(100) NOT NULL COMMENT 'Email',
   `department_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   `user_id` mediumint UNSIGNED DEFAULT NULL
