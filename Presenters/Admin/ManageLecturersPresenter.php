@@ -429,15 +429,15 @@ class ManageLecturersPresenter extends ActionPresenter implements IManageLecture
         Log::Debug('Loading validators for %s', $action);
 
         if ($action == ManageLecturersActions::UpdateLecturer) {
-            // $this->page->RegisterValidator('emailformat', new EmailValidator($this->page->GetEmail()));
-            // $this->page->RegisterValidator(
-            //     'uniqueemail',
-            //     new UniqueEmailValidator($this->userRepository, $this->page->GetEmail(), $this->page->GetUserId())
-            // );
+            $this->page->RegisterValidator('emailformat', new EmailValidator($this->page->GetEmail()));
             $this->page->RegisterValidator(
-                'uniqueusername',
-                new UniqueUserNameValidator($this->userRepository, $this->page->GetFullName(), $this->page->GetUserId())
+                'uniqueemail',
+                new UniqueEmailLecturerValidator($this->userRepository, $this->page->GetEmail(), $this->page->GetUserId())
             );
+            // $this->page->RegisterValidator(
+            //     'uniqueusername',
+            //     new UniqueUserNameValidator($this->userRepository, $this->page->GetFullName(), $this->page->GetLecturerId())
+            // );
             
         }
 

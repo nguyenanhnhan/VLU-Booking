@@ -6,10 +6,11 @@ require_once(ROOT_DIR . 'lib/Application/Authentication/namespace.php');
 require_once(ROOT_DIR . 'lib/Application/User/namespace.php');
 require_once(ROOT_DIR . 'lib/Application/Admin/VluerImportCsv.php');
 require_once(ROOT_DIR . 'lib/Application/Admin/VluerImportExcel.php');
+require_once(ROOT_DIR . 'lib/Application/Admin/VluerImport.php');
 require_once(ROOT_DIR . 'lib/Application/Admin/CsvImportResult.php');
 require_once(ROOT_DIR . 'lib/Email/Messages/InviteUserEmail.php');
 require_once(ROOT_DIR . 'lib/Email/Messages/AccountCreationForUserEmail.php');
-
+//Quản lý các chức năng sinh viên của hệ thống
 class ManageUsersActions
 {
     public const Activate = 'activate';
@@ -527,92 +528,287 @@ class ManageVluersPresenter extends ActionPresenter implements IManageVluersPres
         return $resources;
     }
 
+    // public function ImportUsers()
+    // {
+    //     ini_set('max_execution_time', 600);
+
+    //     $startTime = microtime(true); // Bắt đầu ghi thời gian
+
+    //     /** @var CustomAttribute[] $attributesIndexed */
+    //     $attributesIndexed = [];
+    //     /** @var CustomAttribute $attribute */
+
+    //     $importFile = $this->page->GetImportFile();
+    //     $fileExtension = pathinfo($importFile->OriginalName(), PATHINFO_EXTENSION);
+
+    //     $importCount = 0;
+    //     $messages = [];
+
+    //     // Thời gian mở file
+    //     $fileOpenStartTime = microtime(true);
+
+    //     if (strtolower($fileExtension) === 'csv') {
+    //         $csv = new VluerImport($importFile, $attributesIndexed);
+    //         $rows = $csv->GetRows();
+    //     } else if (in_array(strtolower($fileExtension), ['xls', 'xlsx'])) {
+    //         $csv = new VluerImport($importFile, $attributesIndexed);
+    //         $rows = $csv->GetRows();
+    //     } else {
+    //         $this->page->SetImportResult(new CsvImportResult(0, [], 'Unsupported file type'));
+    //         return;
+    //     }
+        
+    //     $fileOpenEndTime = microtime(true);
+    //     Log::Debug('Thời gian mở file: %f giây', $fileOpenEndTime - $fileOpenStartTime);
+
+    //     if (count($rows) == 0) {
+    //         $this->page->SetImportResult(new CsvImportResult(0, [], 'Empty file or missing header row'));
+    //         return;
+    //     }
+
+    //     $departmentsToInsert = [];
+
+    //     // First pass: Collect departments to insert
+    //     $firstPassStartTime = microtime(true);
+        
+    //     foreach ($rows as $row) {
+    //         if (!$this->userRepository->DepartmentExists($row->departmentid)) {
+    //             if (!isset($departmentsToInsert[$row->departmentid]) && !empty($row->departmentid) && !empty($row->departmentname)) {
+    //                 $departmentsToInsert[$row->departmentid] = [
+    //                     'department_code' => '',
+    //                     'department_name' => $row->departmentname
+    //                 ];
+    //             }
+    //         }
+    //     }
+        
+    //     $firstPassEndTime = microtime(true);
+    //     Log::Debug('Thời gian cho vòng lặp đầu tiên (thu thập departments): %f giây', $firstPassEndTime - $firstPassStartTime);
+
+    //     // Auto Insert departments
+    //     $autoInsertStartTime = microtime(true);
+        
+    //     foreach ($departmentsToInsert as $departmentid => $departmentData) {
+    //         if ($departmentid !== null && !empty($departmentid) && !empty($departmentData['department_name'])) {
+    //             $this->userRepository->InsertDepartment($departmentid, $departmentData['department_code'], $departmentData['department_name']);
+    //             $messages[] = "Inserted new department with ID: $departmentid, Name: " . $departmentData['department_name'];
+    //         }
+    //     }
+        
+    //     $autoInsertEndTime = microtime(true);
+    //     Log::Debug('Thời gian chèn departments: %f giây', $autoInsertEndTime - $autoInsertStartTime);
+
+    //     // Second pass: Process rows and insert students
+    //     $secondPassStartTime = microtime(true);
+        
+    //     foreach ($rows as $row) {
+    //         try {
+    //             $this->processRow($row, $messages, $importCount);
+    //         } catch (Exception $ex) {
+    //             Log::Error('Error importing users. %s', $ex);
+    //         }
+    //     }
+        
+    //     $secondPassEndTime = microtime(true);
+    //     Log::Debug('Thời gian xử lý các dòng và chèn học sinh: %f giây', $secondPassEndTime - $secondPassStartTime);
+
+    //     $totalEndTime = microtime(true);
+    //     Log::Debug('Tổng thời gian thực thi ImportUsers: %f giây', $totalEndTime - $startTime);
+
+    //     $this->page->SetImportResult(new CsvImportResult($importCount, $csv->GetSkippedRowNumbers(), $messages));
+    // }
+
+    
+    // private function processRow($row, &$messages, &$importCount)
+    // {
+    //     $shouldUpdate = $this->page->GetUpdateOnImport();
+    
+    //     $emailValidator = new EmailValidator($row->email);
+    //     $uniqueEmailValidator = new UniqueEmailStudentValidator($this->userRepository, $row->email);
+    //     $uniqueStudentIdValidator = new UniqueStudentIdValidator($this->userRepository, $row->studentid);
+    
+    //     $emailValidator->Validate();
+    //     if (!$emailValidator->IsValid()) {
+    //         $evMsgs = $emailValidator->Messages();
+    //         $messages[] = $evMsgs[0] . " ({$row->email})";
+    //         return;
+    //     }
+    
+    //     if (!$shouldUpdate) {
+    //         $uniqueEmailValidator->Validate();
+    //         $uniqueStudentIdValidator->Validate();
+    
+    //         if (!$uniqueEmailValidator->IsValid()) {
+    //             $uevMsgs = $uniqueEmailValidator->Messages();
+    //             $messages[] = $uevMsgs[0] . " ({$row->email})";
+    //             return;
+    //         }
+    //         if (!$uniqueStudentIdValidator->IsValid()) {
+    //             $uuvMsgs = $uniqueStudentIdValidator->Messages();
+    //             $messages[] = $uuvMsgs[0] . " ({$row->studentid})";
+    //             return;
+    //         }
+    //     }
+    
+    //     if ($shouldUpdate) {
+    //         $user = $this->manageVluersService->LoadStudent($row->email);
+    //         if ($user->Id() == null) {
+    //             $shouldUpdate = false;
+    //         } else {
+    //             $user->ChangeMSSV($row->studentid);
+    //             $user->ChangeFullName($row->fullname);
+    //             $user->ChangeEmailStudent($row->email);
+    //             $user->ChangeStudentClass($row->studentclass);
+    //             $user->ChangeStudentType($row->studenttype);
+    //             $user->ChangeStudentStatus($row->studentstatus);
+    //             $user->ChangeEnrollmentDate($row->enrollmentdate);
+    //             $user->ChangeTrainingProgram($row->trainingprogram);
+    //             $user->ChangeDepartmentId($row->departmentid);
+    //         }
+    //     }
+    //     if (!$shouldUpdate) {
+    //         $user = $this->manageVluersService->AddStudent(
+    //             $row->studentid,
+    //             $row->fullname,
+    //             $row->email,
+    //             $row->majorname,
+    //             $row->studentclass,
+    //             $row->studenttype,
+    //             $row->studentstatus,
+    //             $row->enrollmentdate,
+    //             $row->trainingprogram,
+    //             $row->departmentid
+    //         );
+    //     }
+    
+    //     if ($shouldUpdate) {
+    //         $this->userRepository->StudentUpdate($user);
+    //     }
+    
+    //     $importCount++;
+    // }
+    
     public function ImportUsers()
     {
-        ini_set('max_execution_time', 600);
-    
-        /** @var CustomAttribute[] $attributesIndexed */
+        ini_set('max_execution_time', 1800);
+
+        // Ghi lại thời gian bắt đầu
+        $startTime = microtime(true);
+        Log::Debug('ImportUsers started at ' . date('Y-m-d H:i:s'));
+
         $attributesIndexed = [];
-        /** @var CustomAttribute $attribute */
-    
         $importFile = $this->page->GetImportFile();
         $fileExtension = pathinfo($importFile->OriginalName(), PATHINFO_EXTENSION);
-    
+
         $importCount = 0;
         $messages = [];
-    
-        if (strtolower($fileExtension) === 'csv') {
-            $csv = new VluerImportCsv($importFile, $attributesIndexed);
-            $rows = $csv->GetRows();
-        } else if (in_array(strtolower($fileExtension), ['xls', 'xlsx'])) {
-            $csv = new VluerImportExcel($importFile, $attributesIndexed);
+
+        // Ghi thời gian đọc file
+        $fileReadStartTime = microtime(true);
+        if (in_array(strtolower($fileExtension), ['xls', 'xlsx'])) {
+            $csv = new VluerImport($importFile, $attributesIndexed);
             $rows = $csv->GetRows();
         } else {
             $this->page->SetImportResult(new CsvImportResult(0, [], 'Unsupported file type'));
+            Log::Debug('Unsupported file type encountered.');
             return;
         }
-    
+        $fileReadEndTime = microtime(true);
+        Log::Debug('File read completed in ' . number_format($fileReadEndTime - $fileReadStartTime, 2) . ' seconds.');
+
         if (count($rows) == 0) {
             $this->page->SetImportResult(new CsvImportResult(0, [], 'Empty file or missing header row'));
+            Log::Debug('Empty file or missing header row.');
             return;
         }
-    
+
+        // Get existing departments
+        $existingDepartments = $this->userRepository->GetExistingDepartments();
+        // Get existing student emails and IDs
+        $existingStudentInfo = $this->userRepository->GetExistingStudentInfo();
+
         $departmentsToInsert = [];
-        
+
         // First pass: Collect departments to insert
+        $departmentProcessingStartTime = microtime(true);
+
         foreach ($rows as $row) {
-            if (!$this->userRepository->DepartmentExists($row->departmentid)) {
-                //Kiểm tra departmentid và departmentname có tồn tại không trước khi insert
-                if (!isset($departmentsToInsert[$row->departmentid]) && !empty($row->departmentid) && !empty($row->departmentname)) {
-                    $departmentsToInsert[$row->departmentid] = [
-                        'department_code' => '',
-                        'department_name' => $row->departmentname
-                    ];
-                }
+            if (!isset($existingDepartments[$row->departmentid]) && !isset($departmentsToInsert[$row->departmentid]) && !empty($row->departmentid) && !empty($row->departmentname)) {
+                $departmentsToInsert[$row->departmentid] = [
+                    'department_code' => '',
+                    'department_name' => $row->departmentname
+                ];
             }
         }
-    
+        $departmentProcessingEndTime = microtime(true);
+        Log::Debug('Department processing completed in ' . number_format($departmentProcessingEndTime - $departmentProcessingStartTime, 2) . ' seconds.');
+
         // Auto Insert departments
+        $departmentInsertStartTime = microtime(true);
         foreach ($departmentsToInsert as $departmentid => $departmentData) {
-            //Kiểm tra departmentid và departmentname có tồn tại không trước khi insert
             if ($departmentid !== null && !empty($departmentid) && !empty($departmentData['department_name'])) {
                 $this->userRepository->InsertDepartment($departmentid, $departmentData['department_code'], $departmentData['department_name']);
                 $messages[] = "Inserted new department with ID: $departmentid, Name: " . $departmentData['department_name'];
             }
-            
         }
-    
-        // Second pass: Process rows and insert students
+        $departmentInsertEndTime = microtime(true);
+        Log::Debug('Department insertion completed in ' . number_format($departmentInsertEndTime - $departmentInsertStartTime, 2) . ' seconds.');
+
+        // Process rows and prepare data for batch insert or update
+        $studentsToInsert = [];
+        $studentsToUpdate = [];
+        $rowProcessingStartTime = microtime(true);
         foreach ($rows as $row) {
             try {
-                $this->processRow($row, $messages, $importCount);
+                $this->prepareStudentRow($row, $studentsToInsert, $studentsToUpdate, $messages, $importCount, $existingStudentInfo);
             } catch (Exception $ex) {
                 Log::Error('Error importing users. %s', $ex);
             }
         }
-    
+        $rowProcessingEndTime = microtime(true);
+        Log::Debug('Row processing completed in ' . number_format($rowProcessingEndTime - $rowProcessingStartTime, 2) . ' seconds.');
+
+        // Batch insert students
+        $batchInsertStartTime = microtime(true);
+        $this->userRepository->BatchInsertStudents($studentsToInsert);
+        $batchInsertEndTime = microtime(true);
+        Log::Debug('Batch insert completed in ' . number_format($batchInsertEndTime - $batchInsertStartTime, 2) . ' seconds.');
+
+        // Batch update students
+        if (!empty($studentsToUpdate)) {
+            $batchUpdateStartTime = microtime(true);
+            $this->userRepository->BatchUpdateStudents($studentsToUpdate);
+            $batchUpdateEndTime = microtime(true);
+            Log::Debug('Batch update completed in ' . number_format($batchUpdateEndTime - $batchUpdateStartTime, 2) . ' seconds.');
+        }
+        
+
+        $totalTime = microtime(true) - $startTime;
         $this->page->SetImportResult(new CsvImportResult($importCount, $csv->GetSkippedRowNumbers(), $messages));
+
+        // Ghi lại thời gian tổng thể
+        Log::Debug('ImportUsers completed in ' . number_format($totalTime, 2) . ' seconds.');
     }
-    
-    private function processRow($row, &$messages, &$importCount)
+
+    private function prepareStudentRow($row, &$studentsToInsert, &$studentsToUpdate, &$messages, &$importCount, $existingStudentInfo)
     {
         $shouldUpdate = $this->page->GetUpdateOnImport();
-    
+
         $emailValidator = new EmailValidator($row->email);
-        $uniqueEmailValidator = new UniqueEmailStudentValidator($this->userRepository, $row->email);
-        $uniqueStudentIdValidator = new UniqueStudentIdValidator($this->userRepository, $row->studentid);
-    
+        $uniqueEmailValidator = new ExistEmailStudentValidator($existingStudentInfo, $row->email);
+        $uniqueStudentIdValidator = new ExistStudentIdValidator($existingStudentInfo, $row->studentid);
+
         $emailValidator->Validate();
         if (!$emailValidator->IsValid()) {
             $evMsgs = $emailValidator->Messages();
             $messages[] = $evMsgs[0] . " ({$row->email})";
             return;
         }
-    
+
         if (!$shouldUpdate) {
             $uniqueEmailValidator->Validate();
             $uniqueStudentIdValidator->Validate();
-    
+
             if (!$uniqueEmailValidator->IsValid()) {
                 $uevMsgs = $uniqueEmailValidator->Messages();
                 $messages[] = $uevMsgs[0] . " ({$row->email})";
@@ -624,45 +820,29 @@ class ManageVluersPresenter extends ActionPresenter implements IManageVluersPres
                 return;
             }
         }
-    
-        if ($shouldUpdate) {
-            $user = $this->manageVluersService->LoadStudent($row->email);
-            if ($user->Id() == null) {
-                $shouldUpdate = false;
-            } else {
-                $user->ChangeMSSV($row->studentid);
-                $user->ChangeFullName($row->fullname);
-                $user->ChangeEmailStudent($row->email);
-                $user->ChangeStudentClass($row->studentclass);
-                $user->ChangeStudentType($row->studenttype);
-                $user->ChangeStudentStatus($row->studentstatus);
-                $user->ChangeEnrollmentDate($row->enrollmentdate);
-                $user->ChangeTrainingProgram($row->trainingprogram);
-                $user->ChangeDepartmentId($row->departmentid);
-            }
+
+        $studentData = [
+            'studentid' => $row->studentid,
+            'fullname' => $row->fullname,
+            'email' => $row->email,
+            'majorname' => $row->majorname,
+            'studentclass' => $row->studentclass,
+            'studenttype' => $row->studenttype,
+            'studentstatus' => $row->studentstatus,
+            'enrollmentdate' => $row->enrollmentdate,
+            'trainingprogram' => $row->trainingprogram,
+            'departmentid' => !empty($row->departmentid) ? $row->departmentid : null // set null if departmentid is empty
+        ];
+
+        if ($shouldUpdate && isset($existingStudentInfo)) {
+            $studentsToUpdate[] = $studentData;
+            
+        } else {
+            $studentsToInsert[] = $studentData;
         }
-        if (!$shouldUpdate) {
-            $user = $this->manageVluersService->AddStudent(
-                $row->studentid,
-                $row->fullname,
-                $row->email,
-                $row->majorname,
-                $row->studentclass,
-                $row->studenttype,
-                $row->studentstatus,
-                $row->enrollmentdate,
-                $row->trainingprogram,
-                $row->departmentid
-            );
-        }
-    
-        if ($shouldUpdate) {
-            $this->userRepository->StudentUpdate($user);
-        }
-    
         $importCount++;
     }
-    
+
 
     public function InviteUsers()
     {

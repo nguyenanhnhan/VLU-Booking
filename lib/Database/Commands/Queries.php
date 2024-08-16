@@ -1266,6 +1266,7 @@ class Queries
 		WHERE (`username` = @username OR `email` = @username) AND `status_id` = 1';
 
 	//-------------------------------------------Source VLU--------------------------------
+	//định nghĩa các câu lệnh SQL dùng để thực hiện các thao tác cơ bản như truy xuất, thêm, sửa, xóa dữ liệu liên quan đến sinh viên, giảng viên, khoa, và nhóm trong cơ sở dữ liệu, cũng như các câu lệnh kiểm tra sự tồn tại và đăng nhập.
 	const GET_ALL_STUDENT = "SELECT students.*, departments.department_name FROM students LEFT JOIN departments ON students.department_id = departments.department_id";
 	const GET_ALL_DEPARTMENT = "SELECT departments.*, `groups`.name FROM departments LEFT JOIN `groups` ON departments.group_id = `groups`.group_id";
 	const GET_ALL_LECTURER = "SELECT lecturers.*, departments.department_name FROM lecturers LEFT JOIN departments ON lecturers.department_id = departments.department_id";
@@ -1309,11 +1310,15 @@ class Queries
 	";
 
 	public const UPDATE_USER_GROUPS = "UPDATE user_groups ug
-	INNER JOIN students s ON ug.user_id = s.user_id
+	INNER JOIN (
+		SELECT user_id, department_id FROM students
+		UNION
+		SELECT user_id, department_id FROM lecturers
+	) AS combined ON ug.user_id = combined.user_id
 	SET ug.group_id = @groupid
-	WHERE 
-		s.department_id = :department_id
+	WHERE combined.department_id = :department_id
 	";
+
 
 
 	public const UPDATE_LECTURER = "UPDATE lecturers SET
@@ -1337,7 +1342,12 @@ class Queries
 		'SELECT * FROM `departments` WHERE (`department_name` = :department_name)';
 	public const LOGIN_LECTURER =
 		'SELECT * FROM `lecturers` WHERE (`full_name` = :full_name OR `email` = :full_name)';
+
 	public const CHECK_DEPARTMENT_EXISTENCE = 'SELECT department_id FROM departments WHERE department_id = :department_id';
+	public const GET_EXISTING_DEPARTMENTS = 'SELECT department_id FROM departments';
+	public const GET_ALL_STUDENT_EMAILS_AND_IDS = 'SELECT student_id, email FROM students';
+	public const GET_ALL_STUDENTS = 'SELECT full_name, major_name, student_class, student_type, status, enrollment_date, training_program, department_id FROM students';
+
 
 	// cập nhật group_id trong bảng user_groups khi người dùng cập nhật groups cho khoa
 	public const GET_STUDENT_INFO_BY_EMAIL = "SELECT department_id, user_id FROM students WHERE email = :email";

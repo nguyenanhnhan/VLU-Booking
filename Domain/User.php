@@ -761,7 +761,7 @@ class User
     }
 
     //-----------------------Source VLU--------------------
-
+    //Định nghĩa các phương thức tĩnh để tạo các đối tượng người dùng (User) cho sinh viên, giảng viên, và phòng ban
     /**
      * @static
      * @return User

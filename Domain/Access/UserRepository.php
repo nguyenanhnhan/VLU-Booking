@@ -35,6 +35,7 @@ interface IUserRepository extends IUserViewRepository
     public function Update(User $user);
 
     //-------------------------Source VLU----------------------
+    //Định nghĩa các phương thức để tải, thêm, cập nhật và xóa thông tin sinh viên, giảng viên, và phòng ban từ cơ sở dữ liệu
     /**
      * @param int $userId
      * @return User
@@ -46,6 +47,21 @@ interface IUserRepository extends IUserViewRepository
      * @return int
      */
     public function AddStudent(User $user);
+
+    /**
+     * @return array
+     */
+    public function GetExistingDepartments();
+
+    /**
+     * @return array
+     */
+    public function GetExistingStudentInfo();
+
+    /**
+     * @return array
+     */
+    public function GetAllExistingStudentInfo();
 
     /**
      * @param int $userId
@@ -163,7 +179,18 @@ interface IUserRepository extends IUserViewRepository
      * @return int
      */
     public function AddLecturer(User $user);
+
+    /**
+     * @param array $students
+     * @return void
+     */
+    public function BatchInsertStudents($students);
     
+    /**
+     * @param array $students
+     * @return void
+     */
+    public function BatchUpdateStudents($students);
     //--------------------------END Source VLU------------------
     
     /**
@@ -366,6 +393,15 @@ interface IUserViewRepository
         $accountStatus = AccountStatus::ALL
     );
 //-----------------------Source VLU--------------------
+    /**
+     * @param int $pageNumber
+     * @param int $pageSize
+     * @param null|string $sortField
+     * @param null|string $sortDirection
+     * @param null|ISqlFilter $filter
+     * @param AccountStatus|int $accountStatus
+     * @return PageableData|UserItemView[]
+     */
     public function GetStudentList(
         $pageNumber,
         $pageSize,
@@ -375,6 +411,15 @@ interface IUserViewRepository
         
     );
 
+    /**
+     * @param int $pageNumber
+     * @param int $pageSize
+     * @param null|string $sortField
+     * @param null|string $sortDirection
+     * @param null|ISqlFilter $filter
+     * @param AccountStatus|int $accountStatus
+     * @return PageableData|UserItemView[]
+     */
     public function GetDepartmentList(
         $pageNumber,
         $pageSize,
@@ -384,6 +429,15 @@ interface IUserViewRepository
         
     );
 
+    /**
+     * @param int $pageNumber
+     * @param int $pageSize
+     * @param null|string $sortField
+     * @param null|string $sortDirection
+     * @param null|ISqlFilter $filter
+     * @param AccountStatus|int $accountStatus
+     * @return PageableData|UserItemView[]
+     */
     public function GetLecturerList(
         $pageNumber,
         $pageSize,
@@ -986,6 +1040,205 @@ class UserRepository implements IUserRepository, IAccountActivationRepository
 
         return $id;
     }
+
+    // public function BatchInsertStudents($students)
+    // {
+    //     $db = ServiceLocator::GetDatabase();
+
+    //     $values = [];
+    //     foreach ($students as $student) {
+    //         // Xử lý giá trị enrollmentdate
+    //         $enrollmentDate = !empty($student['enrollmentdate']) ? $db->Escape($student['enrollmentdate']) : 'NULL';
+        
+    //     // Xử lý giá trị departmentid
+    //         $departmentId = !empty($student['departmentid']) ? $db->Escape($student['departmentid']) : 'NULL';
+    //         $values[] = sprintf(
+    //             '("%s", "%s", "%s", "%s", "%s", "%s", "%s", "%s", "%s", "%s")',
+    //             $db->Escape($student['studentid']),
+    //             $db->Escape($student['fullname']),
+    //             $db->Escape($student['email']),
+    //             $db->Escape($student['majorname']),
+    //             $db->Escape($student['studentclass']),
+    //             $db->Escape($student['studenttype']),
+    //             $db->Escape($student['studentstatus']),
+    //             $enrollmentDate,  // Có thể là 'NULL' nếu giá trị rỗng
+    //             $db->Escape($student['trainingprogram']),
+    //             $departmentId  // Có thể là 'NULL' nếu giá trị rỗng
+    //         );
+    //        ;
+    //     }
+
+    //     if (!empty($values)) {
+    //         $query = "INSERT INTO students (student_id, full_name, email, major_name, student_class, student_type, status, enrollment_date, training_program, department_id) VALUES ";
+    //         $query .= implode(", ", $values);
+    //         $db->ExecuteQuery($query);
+    //     }
+    // }
+    
+    public function BatchInsertStudents($students)
+    {
+        $db = ServiceLocator::GetDatabase();
+
+        $batchSize = 10000; // Kích thước nhóm dữ liệu
+        $totalRows = count($students);
+        $values = [];
+        $batchCounter = 0;
+
+        // Bắt đầu đo thời gian tổng thể
+        $startTime = microtime(true);
+
+        // Đo thời gian bắt đầu việc đưa dữ liệu vào mảng
+        $valuesStartTime = microtime(true);
+
+        foreach ($students as $index => $student) {
+            // Truyền trực tiếp giá trị vào mảng, không cần định dạng chuỗi nhiều lần
+            $values[] = sprintf(
+                '("%s", "%s", "%s", "%s", "%s", "%s", "%s", %s, "%s", %s)',
+                $student['studentid'],
+                $student['fullname'],
+                $student['email'],
+                $student['majorname'],
+                $student['studentclass'],
+                $student['studenttype'],
+                $student['studentstatus'],
+                $this->formatNullableDate($student['enrollmentdate']),
+                $student['trainingprogram'],
+                $this->formatNullableInt($student['departmentid'])
+            );
+
+            $batchCounter++;
+
+            // Khi số hàng trong nhóm đạt kích thước nhóm hoặc đã xử lý hết dữ liệu
+            if ($batchCounter >= $batchSize || $index === $totalRows - 1) {
+                $query = "INSERT INTO students (student_id, full_name, email, major_name, student_class, student_type, status, enrollment_date, training_program, department_id) VALUES ";
+                $query .= implode(", ", $values);
+
+                // Đo thời gian trước khi thực thi lệnh SQL
+                $queryStartTime = microtime(true);
+
+                $db->ExecuteQuery($query);
+
+                // Đo thời gian sau khi thực thi lệnh SQL
+                $queryEndTime = microtime(true);
+
+                // Ghi lại thời gian thực thi từng nhóm
+                Log::Debug("Batch insert query executed in " . number_format($queryEndTime - $queryStartTime, 2) . " seconds.");
+
+                // Reset lại giá trị và bộ đếm
+                $values = [];
+                $batchCounter = 0;
+            }
+        }
+
+        // Đo thời gian kết thúc việc đưa dữ liệu vào mảng
+        $valuesEndTime = microtime(true);
+
+        // Đo thời gian tổng thể
+        $endTime = microtime(true);
+        $totalTime = $endTime - $startTime;
+
+        Log::Debug("Total batch insert time: " . number_format($totalTime, 2) . " seconds.");
+        Log::Debug("Time spent on value preparation: " . number_format($valuesEndTime - $valuesStartTime, 2) . " seconds.");
+    }
+
+    public function BatchUpdateStudents($students)
+    {
+        $db = ServiceLocator::GetDatabase();
+
+        // Bắt đầu đo thời gian tổng thể
+        $startTime = microtime(true);
+        Log::Debug("BatchUpdateStudents started at " . date('Y-m-d H:i:s'));
+
+        // Khởi tạo các mảng để chứa các phần của câu lệnh CASE
+        $emailCaseStatements = [];
+        $majorNameCaseStatements = [];
+        $studentClassCaseStatements = [];
+        $studentTypeCaseStatements = [];
+        $statusCaseStatements = [];
+        $enrollmentDateCaseStatements = [];
+        $trainingProgramCaseStatements = [];
+        $departmentIdCaseStatements = [];
+
+        // Mảng để chứa các email được sử dụng trong WHERE IN
+        $emails = [];
+
+        foreach ($students as $index => $student) {
+            $escapedEmail = addslashes($student['email']);
+            $escapedFullname = addslashes($student['fullname']);
+            $escapedMajorName = addslashes($student['majorname']);
+            $escapedStudentClass = addslashes($student['studentclass']);
+            $escapedStudentType = addslashes($student['studenttype']);
+            $escapedStatus = addslashes($student['studentstatus']);
+            $escapedTrainingProgram = addslashes($student['trainingprogram']);
+            
+            $emails[] = sprintf("'%s'", $escapedEmail);
+            $emailCaseStatements[] = sprintf("WHEN email = '%s' THEN '%s'", $escapedEmail, $escapedFullname);
+            $majorNameCaseStatements[] = sprintf("WHEN email = '%s' THEN '%s'", $escapedEmail, $escapedMajorName);
+            $studentClassCaseStatements[] = sprintf("WHEN email = '%s' THEN '%s'", $escapedEmail, $escapedStudentClass);
+            $studentTypeCaseStatements[] = sprintf("WHEN email = '%s' THEN '%s'", $escapedEmail, $escapedStudentType);
+            $statusCaseStatements[] = sprintf("WHEN email = '%s' THEN '%s'", $escapedEmail, $escapedStatus);
+            $enrollmentDateCaseStatements[] = sprintf("WHEN email = '%s' THEN %s", $escapedEmail, $this->formatNullableDate($student['enrollmentdate']));
+            $trainingProgramCaseStatements[] = sprintf("WHEN email = '%s' THEN '%s'", $escapedEmail, $escapedTrainingProgram);
+            $departmentIdCaseStatements[] = sprintf("WHEN email = '%s' THEN %s", $escapedEmail, $this->formatNullableInt($student['departmentid']));
+        }
+
+        // Xây dựng câu lệnh SQL với các CASE
+        $query = "
+            UPDATE students SET
+                full_name = CASE " . implode(' ', $emailCaseStatements) . " END,
+                major_name = CASE " . implode(' ', $majorNameCaseStatements) . " END,
+                student_class = CASE " . implode(' ', $studentClassCaseStatements) . " END,
+                student_type = CASE " . implode(' ', $studentTypeCaseStatements) . " END,
+                status = CASE " . implode(' ', $statusCaseStatements) . " END,
+                enrollment_date = CASE " . implode(' ', $enrollmentDateCaseStatements) . " END,
+                training_program = CASE " . implode(' ', $trainingProgramCaseStatements) . " END,
+                department_id = CASE " . implode(' ', $departmentIdCaseStatements) . " END
+            WHERE email IN (" . implode(', ', $emails) . ")
+        ";
+
+        // Đo thời gian trước khi thực thi lệnh SQL
+        $queryStartTime = microtime(true);
+
+        // Thực thi câu lệnh SQL
+        $db->ExecuteQuery($query);
+
+        // Đo thời gian sau khi thực thi lệnh SQL
+        $queryEndTime = microtime(true);
+        Log::Debug("Batch update query executed in " . number_format($queryEndTime - $queryStartTime, 2) . " seconds.");
+
+        // Đo thời gian tổng thể
+        $endTime = microtime(true);
+        $totalTime = $endTime - $startTime;
+        Log::Debug("Total batch update time: " . number_format($totalTime, 2) . " seconds.");
+    }
+
+
+
+
+    /**
+     * Format nullable date for SQL query
+     *
+     * @param mixed $date
+     * @return string|null
+     */
+    private function formatNullableDate($date)
+    {
+        return $date ? sprintf("'%s'", $date) : "NULL";
+    }
+
+    /**
+     * Format nullable integer for SQL query
+     *
+     * @param mixed $int
+     * @return string|null
+     */
+    private function formatNullableInt($int)
+    {
+        return $int !== null ? sprintf("%d", $int) : "NULL";
+    }
+
+
+
     //-----------------------END Source VLU----------------
 
     /**
@@ -1268,6 +1521,57 @@ class UserRepository implements IUserRepository, IAccountActivationRepository
         $db->ExecuteInsert(new RegisterDepartmentCommand($departmentid, $departmentcode, $departmentname, $newGroupId));
         
     }
+
+    public function GetExistingStudentInfo()
+    {
+        $reader = ServiceLocator::GetDatabase()->Query(new GetAllStudentEmailsAndIdsCommand());
+
+        $existingStudentInfo = ['email' => [], 'student_id' => []];
+        while ($row = $reader->GetRow()) {
+            $existingStudentInfo['email'][$row[ColumnNames::EMAIL]] = true;
+            $existingStudentInfo['student_id'][$row[ColumnNames::STUDENT_ID]] = true;
+        }
+
+        $reader->Free();
+        return $existingStudentInfo;
+    }
+
+    public function GetAllExistingStudentInfo()
+    {
+        $reader = ServiceLocator::GetDatabase()->Query(new GetAllStudentsCommand());
+
+        $existingStudentInfo = ['fullname' => [], 'majorname' => [],'studentclass' => [], 'studenttype' => [],'studentstatus' => [], 'enrollmentdate' => [],'trainingprogram' => [], 'departmentid' => []];
+        while ($row = $reader->GetRow()) {
+            $existingStudentInfo['fullname'][$row[ColumnNames::FULL_NAME]] = true;
+            $existingStudentInfo['majorname'][$row[ColumnNames::STUDENT_MAJOR_NAME]] = true;
+            $existingStudentInfo['studentclass'][$row[ColumnNames::STUDENT_CLASS]] = true;
+            $existingStudentInfo['studenttype'][$row[ColumnNames::STUDENT_TYPE]] = true;
+            $existingStudentInfo['studentstatus'][$row[ColumnNames::STUDENT_STATUS]] = true;
+            $existingStudentInfo['enrollmentdate'][$row[ColumnNames::STUDENT_ENROLLMENT_DATE]] = true;
+            $existingStudentInfo['trainingprogram'][$row[ColumnNames::STUDENT_TRAINING_PROGRAM]] = true;
+            $existingStudentInfo['departmentid'][$row[ColumnNames::DEPARTMENT_ID]] = true;
+        }
+
+        $reader->Free();
+        return $existingStudentInfo;
+    }
+
+
+
+    public function GetExistingDepartments()
+    {
+        $db = ServiceLocator::GetDatabase();
+        $reader = $db->Query(new GetExistingDepartmentsCommand());
+
+        $departments = [];
+        while ($row = $reader->GetRow()) {
+            $departments[$row['department_id']] = true;
+        }
+
+        $reader->Free();
+        return $departments;
+    }
+
 
     //Đồng bộ dữ liệu email với bảng student và user
     public function syncUserIdWithStudent($email, $userId) {

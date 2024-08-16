@@ -185,6 +185,7 @@ class ManageLecturersService implements IManageLecturersService
         $user->ChangeEmailLecturer($emaillecturer);
         
         $this->userRepository->LecturerUpdate($user);
+        
 
         return $user;
     }

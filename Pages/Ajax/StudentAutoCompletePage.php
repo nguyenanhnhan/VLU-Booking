@@ -76,7 +76,7 @@ class StudentAutoCompletePage extends Page
         if (!$onlyActive && ($currentUser->IsAdmin || $currentUser->IsGroupAdmin)) {
             $status = AccountStatus::ALL;
         }
-        $results = $r->GetStudentList(1, PageInfo::All, null, null, $filter)->Results();
+        $results = $r->GetStudentList(1, 1, null, null, $filter)->Results();
         
 
         $hideUserDetails = Configuration::Instance()->GetSectionKey(ConfigSection::PRIVACY, ConfigKeys::PRIVACY_HIDE_USER_DETAILS, new BooleanConverter());

@@ -3,7 +3,7 @@
 require_once(ROOT_DIR . 'Domain/namespace.php');
 require_once(ROOT_DIR . 'Domain/Access/namespace.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/ReservationEvents.php');
-
+//thực hiện việc đăng ký sinh viên, kiểm tra sự tồn tại của người dùng, và đồng bộ hóa thông tin người dùng đã xác thực.
 class StudentRegistration implements IStudentRegistration
 {
     /**

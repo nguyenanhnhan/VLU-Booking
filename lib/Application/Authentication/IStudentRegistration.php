@@ -1,5 +1,5 @@
 <?php
-
+// định nghĩa một giao diện IStudentRegistration trong PHP với ba phương thức: StudentRegister để đăng ký sinh viên mới, UserExists để kiểm tra sự tồn tại của người dùng, và Synchronize để thêm hoặc cập nhật thông tin người dùng đã được xác thực.
 interface IStudentRegistration
 {
     /**

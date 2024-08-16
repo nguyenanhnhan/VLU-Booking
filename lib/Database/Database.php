@@ -12,6 +12,13 @@ class Database
         $this->Connection = $dbConnection;
     }
 
+    public function ExecuteQuery($query)
+    {
+        $this->Connection->Connect();
+        $this->Connection->ExecuteRawQuery($query);
+        $this->Connection->Disconnect();
+    }
+
     /**
      * Queries the database and returns an IReader
      *

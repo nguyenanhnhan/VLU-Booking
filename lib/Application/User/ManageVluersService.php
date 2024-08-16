@@ -6,6 +6,7 @@ require_once(ROOT_DIR . 'lib/Email/Messages/AccountDeletedEmail.php');
 
 interface IManageVluersService
 {
+    //Tệp ManageVluersService.php định nghĩa một dịch vụ quản lý sinh viên trong hệ thống giúp quản lý toàn diện các hoạt động liên quan đến sinh viên trong hệ thống, từ việc thêm mới, cập nhật, thay đổi thuộc tính, nhóm đến việc xóa và tải thông tin sinh viên.
     /**
      * @param $studentid string
      * @param $fullname string

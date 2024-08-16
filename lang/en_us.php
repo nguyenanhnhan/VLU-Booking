@@ -1062,6 +1062,7 @@ class en_us extends Language
         //End View Resource
 
         //-----------------------Source VLU--------------------
+        //Định nghĩa các chuỗi văn bản (strings) dùng trong giao diện người dùng để hiển thị các thông báo, tiêu đề, hướng dẫn, và cảnh báo liên quan đến quản lý sinh viên, giảng viên, và phòng ban.
         $strings['Lecturer'] = 'Lecturer';
         $strings['ManageLecturers'] = 'Lecturers';
         $strings['Department'] = 'Department';

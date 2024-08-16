@@ -173,7 +173,7 @@ class vn_vn extends en_gb
         $strings['FindUser'] = 'Tìm người dùng';
         $strings['Created'] = 'Đã tạo';
         $strings['LastModified'] = 'Lần thay đổi gần đây';
-        $strings['GroupName'] = 'Tên Nhóm';
+        $strings['GroupName'] = 'Thiết lập Nhóm';
         $strings['GroupMembers'] = 'Thành Viên Nhóm';
         $strings['GroupRoles'] = 'Quyền hạn Nhóm';
         $strings['GroupAdmin'] = 'Quản trị viên Nhóm';
@@ -1015,6 +1015,7 @@ class vn_vn extends en_gb
         //END NEEDS CHECKING
 
         //-----------------------Source VLU--------------------
+        //Định nghĩa các chuỗi văn bản (strings) dùng trong giao diện người dùng để hiển thị các thông báo, tiêu đề, hướng dẫn, và cảnh báo liên quan đến quản lý sinh viên, giảng viên, và phòng ban.
         $strings['Lecturer'] = 'Giảng viên';
         $strings['ManageLecturers'] = 'Quản lý giảng viên';
         $strings['Department'] = 'Khoa';

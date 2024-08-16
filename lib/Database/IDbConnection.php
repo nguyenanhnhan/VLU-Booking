@@ -33,4 +33,12 @@ interface IDbConnection
      * @return int last auto-increment id inserted for this connection
      */
     public function GetLastInsertId();
+
+    /**
+     * Execute a raw query
+     *
+     * @param string $query
+     * @return void
+     */
+    public function ExecuteRawQuery($query);
 }

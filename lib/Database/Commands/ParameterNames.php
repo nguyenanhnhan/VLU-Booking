@@ -267,6 +267,7 @@ class ParameterNames
     public const TIMEZONE_SELECTION_SETTING = '@timezone_setting';
 
     //-------------------------------------------Source VLU--------------------------------
+    //định nghĩa các hằng số cho các tên tham số trong câu lệnh SQL và các biểu thức chính quy (regex) để kiểm tra định dạng email của sinh viên và giảng viên.
     public const EMAIL = ':email';
     public const DEPARTMENT_ID = ':department_id';
     public const DEPARTMENT_CODE = ':department_code';

@@ -26,4 +26,6 @@ require_once(ROOT_DIR . 'lib/Common/Validators/UniqueStudentIdValidator.php');
 require_once(ROOT_DIR . 'lib/Common/Validators/UniqueLecturerIdValidator.php');
 require_once(ROOT_DIR . 'lib/Common/Validators/UniqueDepartmentIdValidator.php');
 require_once(ROOT_DIR . 'lib/Common/Validators/UniqueDepartmentNameValidator.php');
+require_once(ROOT_DIR . 'lib/Common/Validators/ExistEmailStudentValidator.php');
+require_once(ROOT_DIR . 'lib/Common/Validators/ExistStudentIdValidator.php');
 //-----------------------------------------------------------------------

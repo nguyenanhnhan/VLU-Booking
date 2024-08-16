@@ -7,7 +7,7 @@ require_once(ROOT_DIR . 'Pages/Ajax/StudentAutoCompletePage.php');
 require_once(ROOT_DIR . 'Presenters/Admin/ManageVluersPresenter.php');
 require_once(ROOT_DIR . 'Domain/Access/namespace.php');
 require_once(ROOT_DIR . 'lib/Application/Attributes/namespace.php');
-
+//Cung cấp các chức năng và phương thức để quản lý và hiển thị thông tin của Vluers trên trang quản trị.
 interface IManageVluersPage extends IPageable, IActionPage
 {
     /**

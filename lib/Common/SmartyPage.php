@@ -540,6 +540,70 @@ class SmartyPage extends Smarty
         return $url;
     }
 
+    
+
+    // public function CreatePagination($params, $smarty)
+    // {
+    //     /** @var PageInfo $pageInfo */
+    //     $pageInfo = $params['pageInfo'];
+    //     $hideCount = isset($params['showCount']) && $params['showCount'] == false;
+
+    //     if (empty($pageInfo->Total)) {
+    //         return '';
+    //     }
+
+    //     $sb = new StringBuilder();
+
+    //     $viewAllText = $this->Resources->GetString('ViewAll');
+    //     if (!$hideCount) {
+    //         $sb->Append('<div class="pagination-rows">');
+    //         $sb->Append($this->Resources->GetString('Rows'));
+    //         $sb->Append(": {$pageInfo->ResultsStart} - {$pageInfo->ResultsEnd} ({$pageInfo->Total})");
+    //         $sb->Append('<span>&nbsp;</span>');
+    //         if ($pageInfo->TotalPages != 1) {
+    //             $sb->Append($this->CreatePageLink(['page' => 1, 'size' => '-1', 'text' => $viewAllText], $smarty));
+    //         }
+    //         $sb->Append('</div>');
+    //     }
+    //     $size = $pageInfo->PageSize;
+    //     $currentPage = $pageInfo->CurrentPage;
+
+    //     $sb->Append('<ul class="pagination">');
+    //     $sb->Append('<li>');
+    //     $sb->Append($this->CreatePageLink(
+    //         ['page' => max(
+    //             1,
+    //             $currentPage - 1
+    //         ), 'size' => $size, 'text' => '&laquo;'],
+    //         $smarty
+    //     ));
+    //     $sb->Append('</li>');
+
+    //     for ($i = 1; $i <= $pageInfo->TotalPages; $i++) {
+    //         $isCurrent = ($i == $currentPage);
+
+    //         if ($isCurrent) {
+    //             $sb->Append('<li class="active">');
+    //         } else {
+    //             $sb->Append('<li>');
+    //         }
+    //         $sb->Append($this->CreatePageLink(['page' => $i, 'size' => $size], $smarty));
+    //         $sb->Append('</li>');
+    //     }
+    //     $sb->Append('<li>');
+    //     $sb->Append($this->CreatePageLink(
+    //         ['page' => min(
+    //             $pageInfo->TotalPages,
+    //             $currentPage + 1
+    //         ), 'size' => $size, 'text' => '&raquo;'],
+    //         $smarty
+    //     ));
+    //     $sb->Append('</li>');
+    //     $sb->Append('</ul>');
+
+    //     return $sb->ToString();
+    // }
+
     public function CreatePagination($params, $smarty)
     {
         /** @var PageInfo $pageInfo */
@@ -563,21 +627,33 @@ class SmartyPage extends Smarty
             }
             $sb->Append('</div>');
         }
+
         $size = $pageInfo->PageSize;
         $currentPage = $pageInfo->CurrentPage;
+        $totalPages = $pageInfo->TotalPages;
 
         $sb->Append('<ul class="pagination">');
-        $sb->Append('<li>');
-        $sb->Append($this->CreatePageLink(
-            ['page' => max(
-                1,
-                $currentPage - 1
-            ), 'size' => $size, 'text' => '&laquo;'],
-            $smarty
-        ));
-        $sb->Append('</li>');
 
-        for ($i = 1; $i <= $pageInfo->TotalPages; $i++) {
+        // Nút Previous
+        if ($currentPage > 1) {
+            $sb->Append('<li>');
+            $sb->Append($this->CreatePageLink(
+                ['page' => $currentPage - 1, 'size' => $size, 'text' => '&laquo;'],
+                $smarty
+            ));
+            $sb->Append('</li>');
+        }
+
+        // Hiển thị trang đầu nếu cách xa trang hiện tại
+        if ($currentPage > 3) {
+            $sb->Append('<li>');
+            $sb->Append($this->CreatePageLink(['page' => 1, 'size' => $size], $smarty));
+            $sb->Append('</li>');
+            $sb->Append('<li><span>...</span></li>');
+        }
+
+        // Hiển thị các trang xung quanh trang hiện tại
+        for ($i = max(1, $currentPage - 2); $i <= min($totalPages, $currentPage + 2); $i++) {
             $isCurrent = ($i == $currentPage);
 
             if ($isCurrent) {
@@ -588,15 +664,25 @@ class SmartyPage extends Smarty
             $sb->Append($this->CreatePageLink(['page' => $i, 'size' => $size], $smarty));
             $sb->Append('</li>');
         }
-        $sb->Append('<li>');
-        $sb->Append($this->CreatePageLink(
-            ['page' => min(
-                $pageInfo->TotalPages,
-                $currentPage + 1
-            ), 'size' => $size, 'text' => '&raquo;'],
-            $smarty
-        ));
-        $sb->Append('</li>');
+
+        // Hiển thị trang cuối nếu cách xa trang hiện tại
+        if ($currentPage < $totalPages - 2) {
+            $sb->Append('<li><span>...</span></li>');
+            $sb->Append('<li>');
+            $sb->Append($this->CreatePageLink(['page' => $totalPages, 'size' => $size], $smarty));
+            $sb->Append('</li>');
+        }
+
+        // Nút Next
+        if ($currentPage < $totalPages) {
+            $sb->Append('<li>');
+            $sb->Append($this->CreatePageLink(
+                ['page' => $currentPage + 1, 'size' => $size, 'text' => '&raquo;'],
+                $smarty
+            ));
+            $sb->Append('</li>');
+        }
+
         $sb->Append('</ul>');
 
         return $sb->ToString();

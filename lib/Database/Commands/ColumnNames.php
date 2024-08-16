@@ -354,6 +354,7 @@ class ColumnNames
     public const SCHEDULE_ADMIN_GROUP_ID_RESERVATIONS = 'schedule_admin_group_id';
 
     //-------------------------------------------Source VLU--------------------------------
+    //Định nghĩa các hằng số để sử dụng các tên thuộc tính của sinh viên, giảng viên, và phòng ban trong hệ thống
     public const DEPARTMENT_ID = 'department_id';
     public const FULL_NAME = 'full_name';
     // Students

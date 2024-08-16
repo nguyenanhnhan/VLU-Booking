@@ -52,9 +52,12 @@ class MySqlConnection implements IDbConnection
 
     public function Disconnect()
     {
-        mysqli_close($this->_db);
-        $this->_db = null;
-        $this->_connected = false;
+        // Kiểm tra nếu _db không phải là null và đã kết nối
+        if ($this->_db !== null) {
+            mysqli_close($this->_db);
+            $this->_db = null;
+            $this->_connected = false;
+        }
     }
 
     public function Query(ISqlCommand $sqlCommand)
@@ -120,6 +123,22 @@ class MySqlConnection implements IDbConnection
         }
         return false;
     }
+
+    public function EscapeString($value)
+    {
+        $this->Connect();
+        $escapedValue = mysqli_real_escape_string($this->_db, $value);
+        $this->Disconnect();
+        return $escapedValue;
+    }
+
+    public function ExecuteRawQuery($query)
+    {
+        $this->Connect();
+        $result = mysqli_query($this->_db, $query);
+        $this->_handleError($result);
+        $this->Disconnect();
+    }
 }
 
 class MySqlLimitCommand extends SqlCommand
@@ -152,4 +171,5 @@ class MySqlLimitCommand extends SqlCommand
     {
         return $this->baseCommand->ContainsGroupConcat();
     }
+    
 }

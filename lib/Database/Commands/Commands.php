@@ -2989,6 +2989,7 @@ class UpdateUserSessionCommand extends SqlCommand
 }
 
 //-------------------------------------------Source VLU--------------------------------
+//Đại diện cho các lệnh SQL khác nhau, mỗi lớp được dùng để thực hiện một câu lệnh SQL cụ thể với các tham số liên quan đến sinh viên, giảng viên, phòng ban, và các thao tác như đăng ký, cập nhật, xóa, và kiểm tra thông tin
 class GetStudentByIdCommand extends SqlCommand
 {
     public function __construct($userId)
@@ -3344,6 +3345,29 @@ class GetAllDepartmentsCommand extends SqlCommand
         parent::__construct(Queries::GET_ALL_DEPARTMENT);
     }
 }
+class GetExistingDepartmentsCommand extends SqlCommand
+{
+    public function __construct()
+    {
+        parent::__construct(Queries::GET_EXISTING_DEPARTMENTS);
+    }
+}
+class GetAllStudentEmailsAndIdsCommand extends SqlCommand
+{
+    public function __construct()
+    {
+        parent::__construct(Queries::GET_ALL_STUDENT_EMAILS_AND_IDS);
+    }
+}
+class GetAllStudentsCommand extends SqlCommand
+{
+    public function __construct()
+    {
+        parent::__construct(Queries::GET_ALL_STUDENTS);
+    }
+}
+
+
 class CheckDepartmentExistenceCommand extends SqlCommand
 {
     public function __construct($departmentId)

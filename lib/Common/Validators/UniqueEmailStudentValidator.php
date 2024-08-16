@@ -1,5 +1,5 @@
 <?php
-
+//Kiểm tra xem email của sinh viên đã tồn tại trong hệ thống chưa, và đảm bảo rằng email là duy nhất trừ khi thuộc về sinh viên hiện tại.
 class UniqueEmailStudentValidator extends ValidatorBase implements IValidator
 {
     private $_email;

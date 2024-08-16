@@ -75,7 +75,7 @@ class DepartmentAutoCompletePage extends Page
         if (!$onlyActive && ($currentUser->IsAdmin || $currentUser->IsGroupAdmin)) {
             $status = AccountStatus::ALL;
         }
-        $results = $r->GetDepartmentList(1, PageInfo::All, null, null, $filter)->Results();
+        $results = $r->GetDepartmentList(1, 1, null, null, $filter)->Results();
         
 
         $hideUserDetails = Configuration::Instance()->GetSectionKey(ConfigSection::PRIVACY, ConfigKeys::PRIVACY_HIDE_USER_DETAILS, new BooleanConverter());
