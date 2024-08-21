@@ -218,10 +218,11 @@ class ExternalAuthLoginPresenter
                 false,
                 false);
             
+            
             // Cập nhật user_id trong bảng students/lecturers nếu email tồn tại
-            if ($userId !== null) {
-                $userRepository->syncUserIdWithStudent($email, $userId);
-            }
+            $usernewId = $userRepository->GetUserIdByEmail($email);
+            $userRepository->syncUserIdWithStudent($email, $usernewId);
+            
             $this->authentication->Login($email, new WebLoginContext(new LoginData()));
             LoginRedirector::Redirect($this->page);
             
